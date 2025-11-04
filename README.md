@@ -151,11 +151,23 @@ Detailed content in Markdown format...
 ## 🔌 API Endpoints
 
 ### Assets
-- `GET /api/assets` - List assets with filters
+- `GET /api/assets` - List assets with filters (supports category, assetType, status, tag, search)
 - `GET /api/assets/[id]` - Get asset details
 - `POST /api/assets` - Create asset
 - `PUT /api/assets/[id]` - Update asset
 - `DELETE /api/assets/[id]` - Delete asset
+
+**Query Parameters**:
+- `category` - Filter by category (e.g., CODE_COMPONENTS)
+- `assetType` - Filter by asset type (e.g., Scripts, REST APIs)
+- `status` - Filter by status (PUBLISHED, DRAFT, DEPRECATED, ARCHIVED)
+- `tag` - Filter by tag name
+- `search` - Search in name and description
+- `owner` - Filter by owner email
+- `page` - Pagination page (default: 1)
+- `limit` - Items per page (default: 20, max: 100)
+- `sortBy` - Sort field (createdAt, updatedAt, name)
+- `sortOrder` - Sort order (asc, desc)
 
 ### Tags
 - `GET /api/tags` - List all tags
@@ -308,10 +320,33 @@ Asset Golden Index MVP - Center of Excellence
   - [x] Unit tests for logger (13 tests)
   - [x] Unit tests for error handling (20 tests)
 
+### Phase 3: Frontend Development (IN PROGRESS)
+- [ ] Task 3: Home Page and Search Functionality
+  - [ ] 3.1: Header component
+  - [ ] 3.2: SearchBlock component
+  - [ ] 3.3: CategoryCard component
+  - [ ] 3.4: SolutionIntro component (6 categories)
+  - [ ] 3.5: FourPillars component
+  - [ ] 3.6: AssetCard component (with Asset Type)
+  - [ ] 3.7: AssetTypeFilter component
+  - [ ] 3.8: SearchResults component
+  - [ ] 3.9: useSearch Hook
+  - [ ] 3.10: useFilters Hook
+  - [ ] 3.11: Home page integration
+  - [ ] 3.12: Search results page integration
+  - [ ] 3.13: Component tests
+  - [ ] 3.14: Hook tests
+
+**Design Review Completed**:
+- ✅ Reviewed latest classification system (V2)
+- ✅ Updated design plan based on 6 categories and 32 asset types
+- ✅ Added assetType filtering support to API
+- ✅ Created categories constants file
+- ✅ See [TASK_3_REVIEW_COMPLETE.md](./TASK_3_REVIEW_COMPLETE.md) for details
+
 ### Next Steps
-- Task 2.7: Frontend pages development
-- Task 2.8: Integration tests for API endpoints
-- Task 2.9: Testing and optimization
+- Task 3: Frontend implementation (14 subtasks)
+- Task 4: Integration tests and optimization
 
 ### Database Setup Notes
 - Prisma schema is ready in `prisma/schema.prisma`
