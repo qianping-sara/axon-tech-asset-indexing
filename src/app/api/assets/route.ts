@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAssets, createAsset } from '@/lib/api/assets';
 import { AssetListQuery } from '@/lib/types/asset';
+import { validateAssetCreation } from '@/lib/utils/validation';
 
 /**
  * GET /api/assets
@@ -65,23 +66,37 @@ export async function GET(request: NextRequest) {
 /**
  * POST /api/assets
  * Create a new asset
+ *
+ * Request body (all fields required):
+ * {
+ *   "name": "Asset Name",
+ *   "description": "Asset description",
+ *   "category": "CODE_COMPONENTS",
+ *   "assetType": "Script",
+ *   "version": "1.0.0",
+ *   "status": "PUBLISHED",
+ *   "owner": "team@company.com",
+ *   "contentPath": "assets/code/scripts/asset.md",
+ *   "contentHash": "abc123...",
+ *   "sourceSystem": "GitHub",
+ *   "sourceLink": "https://github.com/..."
+ * }
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validate required fields
-    const required = ['name', 'description', 'category', 'assetType', 'version', 'status', 'owner', 'contentPath', 'contentHash', 'sourceSystem', 'sourceLink'];
-    for (const field of required) {
-      if (!body[field]) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: `Missing required field: ${field}`,
-          },
-          { status: 400 }
-        );
-      }
+    // Validate asset creation data
+    const validation = validateAssetCreation(body);
+    if (!validation.valid) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Validation failed',
+          details: validation.errors,
+        },
+        { status: 400 }
+      );
     }
 
     const asset = await createAsset(body);
