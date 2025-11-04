@@ -274,11 +274,19 @@ Asset Golden Index MVP - Center of Excellence
   - [x] Integration tests for detail API endpoints
   - [x] API documentation with examples
 
+- [x] Task 2.4: Tags and Categories API
+  - [x] GET /api/tags (list tags with pagination and filtering)
+  - [x] GET /api/tags/[id] (get tag details with associated assets)
+  - [x] GET /api/categories (list all categories with asset counts)
+  - [x] GET /api/categories/[category] (get category details with assets)
+  - [x] Category statistics and metadata
+  - [x] Unit tests for tags API
+  - [x] Unit tests for categories API
+
 ### Next Steps
-- Task 2.2: Tag Management API
-- Task 2.4: Frontend pages development
-- Task 2.5: Markdown content integration
-- Task 2.6: Testing and optimization
+- Task 2.5: Frontend pages development
+- Task 2.6: Markdown content integration
+- Task 2.7: Testing and optimization
 
 ### Database Setup Notes
 - Prisma schema is ready in `prisma/schema.prisma`
