@@ -5,6 +5,7 @@
  */
 
 import { describe, it, expect } from '@jest/globals';
+import { createHmac } from 'crypto';
 import {
   calculateSHA256,
   calculateFileHash,
@@ -131,8 +132,7 @@ describe('Webhook Utilities', () => {
       const secret = 'test-secret';
 
       // Calculate expected signature
-      const crypto = require('crypto');
-      const hmac = crypto.createHmac('sha256', secret);
+      const hmac = createHmac('sha256', secret);
       hmac.update(payload);
       const expectedSignature = 'sha256=' + hmac.digest('hex');
 
