@@ -11,6 +11,7 @@ import { validateAssetCreation } from '@/lib/utils/validation';
  * - page: number (default: 1)
  * - limit: number (default: 20, max: 100)
  * - category: string (e.g., CODE_COMPONENTS)
+ * - assetType: string (e.g., Scripts, REST APIs)
  * - status: string (e.g., PUBLISHED)
  * - tag: string (tag name)
  * - search: string (search in name and description)
@@ -22,6 +23,7 @@ import { validateAssetCreation } from '@/lib/utils/validation';
  * - GET /api/assets
  * - GET /api/assets?page=1&limit=20
  * - GET /api/assets?category=CODE_COMPONENTS
+ * - GET /api/assets?category=CODE_COMPONENTS&assetType=Scripts
  * - GET /api/assets?search=python
  * - GET /api/assets?tag=python&status=PUBLISHED
  */
@@ -33,6 +35,7 @@ export async function GET(request: NextRequest) {
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!) : undefined,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined,
       category: searchParams.get('category') || undefined,
+      assetType: searchParams.get('assetType') || undefined,
       status: searchParams.get('status') || undefined,
       tag: searchParams.get('tag') || undefined,
       search: searchParams.get('search') || undefined,

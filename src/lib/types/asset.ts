@@ -27,6 +27,7 @@ export interface AssetListQuery {
   page?: number;
   limit?: number;
   category?: string;
+  assetType?: string;
   status?: string;
   tag?: string;
   search?: string;

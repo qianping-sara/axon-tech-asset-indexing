@@ -22,6 +22,9 @@ export async function getAssets(
   if (query.category) {
     whereConditions.push({ category: query.category as Category });
   }
+  if (query.assetType) {
+    whereConditions.push({ assetType: { equals: query.assetType, mode: 'insensitive' } });
+  }
   if (query.status) {
     whereConditions.push({ status: query.status as Status });
   }
