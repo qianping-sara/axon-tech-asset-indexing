@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // For local development with SQLite, uncomment below and comment out above:
+  // provider = "sqlite"
+  // url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// Asset Models
+// ============================================================================
+
+model Asset {
+  id                String      @id @default(cuid())
+  name              String      @db.VarChar(255)
+  description       String      @db.Text
+  category          Category
+  assetType         String      @db.VarChar(100)
+
+  // Lifecycle
+  version           String      @db.VarChar(50)
+  status            Status      @default(PUBLISHED)
+  owner             String      @db.VarChar(255)
+
+  // Content as Code
+  contentPath       String      @db.VarChar(500)
+  contentHash       String      @db.VarChar(64)
+
+  // Discovery and Connection
+  sourceSystem      String      @db.VarChar(100)
+  sourceLink        String      @db.VarChar(500)
+
+  // Metadata
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  publishedAt       DateTime?
+
+  // Relations
+  tags              AssetTag[]
+  relations         AssetRelation[] @relation("from")
+  relatedBy         AssetRelation[] @relation("to")
+  versions          AssetVersion[]
+
+  @@index([category])
+  @@index([status])
+  @@index([owner])
+  @@index([updatedAt])
+}
+
+enum Category {
+  CODE_COMPONENTS
+  SERVICES_APIS
+  AUTOMATION_WORKFLOWS
+  DATA_ANALYTICS
+  ARCHITECTURE_GOVERNANCE
+  KNOWLEDGE_PRACTICES
+}
+
+enum Status {
+  DRAFT
+  PUBLISHED
+  DEPRECATED
+  ARCHIVED
+}
+
+// ============================================================================
+// Tag Models
+// ============================================================================
+
+model Tag {
+  id                String      @id @default(cuid())
+  name              String      @unique @db.VarChar(100)
+  description       String?     @db.Text
+  category          String      @db.VarChar(100)
+
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  assets            AssetTag[]
+
+  @@index([category])
+}
+
+model AssetTag {
+  id                String      @id @default(cuid())
+  assetId           String
+  tagId             String
+
+  createdAt         DateTime    @default(now())
+
+  // Relations
+  asset             Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  tag               Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([assetId, tagId])
+  @@index([assetId])
+  @@index([tagId])
+}
+
+// ============================================================================
+// Asset Relation Models
+// ============================================================================
+
+model AssetRelation {
+  id                String      @id @default(cuid())
+  fromAssetId       String
+  toAssetId         String
+  relationType      RelationType
+
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  fromAsset         Asset       @relation("from", fields: [fromAssetId], references: [id], onDelete: Cascade)
+  toAsset           Asset       @relation("to", fields: [toAssetId], references: [id], onDelete: Cascade)
+
+  @@unique([fromAssetId, toAssetId, relationType])
+  @@index([fromAssetId])
+  @@index([toAssetId])
+}
+
+enum RelationType {
+  USES
+  IMPLEMENTS
+  EXTENDS
+  RELATED_TO
+  DEPENDS_ON
+  SUPERSEDES
+}
+
+// ============================================================================
+// Asset Version Models
+// ============================================================================
+
+model AssetVersion {
+  id                String      @id @default(cuid())
+  assetId           String
+  version           String      @db.VarChar(50)
+  status            Status
+  contentHash       String      @db.VarChar(64)
+  changeLog         String?     @db.Text
+
+  createdAt         DateTime    @default(now())
+
+  // Relations
+  asset             Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([assetId])
+  @@index([version])
+}
+
