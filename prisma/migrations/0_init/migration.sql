@@ -5,10 +5,10 @@ CREATE TYPE "Category" AS ENUM ('CODE_COMPONENTS', 'SERVICES_APIS', 'AUTOMATION_
 CREATE TYPE "Status" AS ENUM ('DRAFT', 'PUBLISHED', 'DEPRECATED', 'ARCHIVED');
 
 -- CreateEnum
-CREATE TYPE "RelationType" AS ENUM ('USES', 'IMPLEMENTS', 'EXTENDS', 'RELATED_TO', 'DEPENDS_ON', 'SUPERSEDES');
+CREATE TYPE "RelationType" AS ENUM ('DEPENDS_ON', 'USED_BY', 'RELATED_TO', 'EXTENDS', 'IMPLEMENTS', 'REFERENCES');
 
 -- CreateTable
-CREATE TABLE "Asset" (
+CREATE TABLE "axon_asset" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "description" TEXT NOT NULL,
@@ -25,11 +25,11 @@ CREATE TABLE "Asset" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "publishedAt" TIMESTAMP(3),
 
-    CONSTRAINT "Asset_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "axon_asset_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Tag" (
+CREATE TABLE "axon_tag" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "description" TEXT,
@@ -37,21 +37,21 @@ CREATE TABLE "Tag" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "axon_tag_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "AssetTag" (
+CREATE TABLE "axon_asset_tag" (
     "id" TEXT NOT NULL,
     "assetId" TEXT NOT NULL,
     "tagId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "AssetTag_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "axon_asset_tag_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "AssetRelation" (
+CREATE TABLE "axon_asset_relation" (
     "id" TEXT NOT NULL,
     "fromAssetId" TEXT NOT NULL,
     "toAssetId" TEXT NOT NULL,
@@ -59,11 +59,11 @@ CREATE TABLE "AssetRelation" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "AssetRelation_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "axon_asset_relation_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "AssetVersion" (
+CREATE TABLE "axon_asset_version" (
     "id" TEXT NOT NULL,
     "assetId" TEXT NOT NULL,
     "version" VARCHAR(50) NOT NULL,
@@ -72,63 +72,62 @@ CREATE TABLE "AssetVersion" (
     "changeLog" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "AssetVersion_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "axon_asset_version_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
+CREATE UNIQUE INDEX "axon_tag_name_key" ON "axon_tag"("name");
 
 -- CreateIndex
-CREATE INDEX "Tag_category_idx" ON "Tag"("category");
+CREATE INDEX "axon_tag_category_idx" ON "axon_tag"("category");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "AssetTag_assetId_tagId_key" ON "AssetTag"("assetId", "tagId");
+CREATE UNIQUE INDEX "axon_asset_tag_assetId_tagId_key" ON "axon_asset_tag"("assetId", "tagId");
 
 -- CreateIndex
-CREATE INDEX "AssetTag_assetId_idx" ON "AssetTag"("assetId");
+CREATE INDEX "axon_asset_tag_assetId_idx" ON "axon_asset_tag"("assetId");
 
 -- CreateIndex
-CREATE INDEX "AssetTag_tagId_idx" ON "AssetTag"("tagId");
+CREATE INDEX "axon_asset_tag_tagId_idx" ON "axon_asset_tag"("tagId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "AssetRelation_fromAssetId_toAssetId_relationType_key" ON "AssetRelation"("fromAssetId", "toAssetId", "relationType");
+CREATE UNIQUE INDEX "axon_asset_relation_fromAssetId_toAssetId_relationType_key" ON "axon_asset_relation"("fromAssetId", "toAssetId", "relationType");
 
 -- CreateIndex
-CREATE INDEX "AssetRelation_fromAssetId_idx" ON "AssetRelation"("fromAssetId");
+CREATE INDEX "axon_asset_relation_fromAssetId_idx" ON "axon_asset_relation"("fromAssetId");
 
 -- CreateIndex
-CREATE INDEX "AssetRelation_toAssetId_idx" ON "AssetRelation"("toAssetId");
+CREATE INDEX "axon_asset_relation_toAssetId_idx" ON "axon_asset_relation"("toAssetId");
 
 -- CreateIndex
-CREATE INDEX "AssetVersion_assetId_idx" ON "AssetVersion"("assetId");
+CREATE INDEX "axon_asset_version_assetId_idx" ON "axon_asset_version"("assetId");
 
 -- CreateIndex
-CREATE INDEX "AssetVersion_version_idx" ON "AssetVersion"("version");
+CREATE INDEX "axon_asset_version_version_idx" ON "axon_asset_version"("version");
 
 -- CreateIndex
-CREATE INDEX "Asset_category_idx" ON "Asset"("category");
+CREATE INDEX "axon_asset_category_idx" ON "axon_asset"("category");
 
 -- CreateIndex
-CREATE INDEX "Asset_status_idx" ON "Asset"("status");
+CREATE INDEX "axon_asset_status_idx" ON "axon_asset"("status");
 
 -- CreateIndex
-CREATE INDEX "Asset_owner_idx" ON "Asset"("owner");
+CREATE INDEX "axon_asset_owner_idx" ON "axon_asset"("owner");
 
 -- CreateIndex
-CREATE INDEX "Asset_updatedAt_idx" ON "Asset"("updatedAt");
+CREATE INDEX "axon_asset_updatedAt_idx" ON "axon_asset"("updatedAt");
 
 -- AddForeignKey
-ALTER TABLE "AssetTag" ADD CONSTRAINT "AssetTag_assetId_fkey" FOREIGN KEY ("assetId") REFERENCES "Asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "axon_asset_tag" ADD CONSTRAINT "axon_asset_tag_assetId_fkey" FOREIGN KEY ("assetId") REFERENCES "axon_asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AssetTag" ADD CONSTRAINT "AssetTag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "axon_asset_tag" ADD CONSTRAINT "axon_asset_tag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "axon_tag"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AssetRelation" ADD CONSTRAINT "AssetRelation_fromAssetId_fkey" FOREIGN KEY ("fromAssetId") REFERENCES "Asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "axon_asset_relation" ADD CONSTRAINT "axon_asset_relation_fromAssetId_fkey" FOREIGN KEY ("fromAssetId") REFERENCES "axon_asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AssetRelation" ADD CONSTRAINT "AssetRelation_toAssetId_fkey" FOREIGN KEY ("toAssetId") REFERENCES "Asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "axon_asset_relation" ADD CONSTRAINT "axon_asset_relation_toAssetId_fkey" FOREIGN KEY ("toAssetId") REFERENCES "axon_asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AssetVersion" ADD CONSTRAINT "AssetVersion_assetId_fkey" FOREIGN KEY ("assetId") REFERENCES "Asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
+ALTER TABLE "axon_asset_version" ADD CONSTRAINT "axon_asset_version_assetId_fkey" FOREIGN KEY ("assetId") REFERENCES "axon_asset"("id") ON DELETE CASCADE ON UPDATE CASCADE;

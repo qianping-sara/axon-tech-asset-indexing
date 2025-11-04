@@ -8,9 +8,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  // For local development with SQLite, uncomment below and comment out above:
-  // provider = "sqlite"
-  // url      = env("DATABASE_URL")
 }
 
 // ============================================================================
@@ -48,6 +45,7 @@ model Asset {
   relatedBy         AssetRelation[] @relation("to")
   versions          AssetVersion[]
 
+  @@map("axon_asset")
   @@index([category])
   @@index([status])
   @@index([owner])
@@ -86,6 +84,7 @@ model Tag {
   // Relations
   assets            AssetTag[]
 
+  @@map("axon_tag")
   @@index([category])
 }
 
@@ -100,6 +99,7 @@ model AssetTag {
   asset             Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
   tag               Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
+  @@map("axon_asset_tag")
   @@unique([assetId, tagId])
   @@index([assetId])
   @@index([tagId])
@@ -122,6 +122,7 @@ model AssetRelation {
   fromAsset         Asset       @relation("from", fields: [fromAssetId], references: [id], onDelete: Cascade)
   toAsset           Asset       @relation("to", fields: [toAssetId], references: [id], onDelete: Cascade)
 
+  @@map("axon_asset_relation")
   @@unique([fromAssetId, toAssetId, relationType])
   @@index([fromAssetId])
   @@index([toAssetId])
@@ -153,6 +154,7 @@ model AssetVersion {
   // Relations
   asset             Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
+  @@map("axon_asset_version")
   @@index([assetId])
   @@index([version])
 }
