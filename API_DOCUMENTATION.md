@@ -87,18 +87,18 @@ curl "https://your-domain.vercel.app/api/assets?page=2&limit=10"
 POST /api/assets
 ```
 
-**请求体**
+**请求体**（所有字段必需）
 ```json
 {
   "name": "New Asset",
-  "description": "Asset description",
+  "description": "Asset description (at least 10 characters)",
   "category": "CODE_COMPONENTS",
   "assetType": "Script",
   "version": "1.0.0",
   "status": "PUBLISHED",
   "owner": "team@company.com",
   "contentPath": "assets/code/scripts/new-asset.md",
-  "contentHash": "abc123def456",
+  "contentHash": "a1b2c3d4e5f6...(64 hex characters - SHA256)",
   "sourceSystem": "GitHub",
   "sourceLink": "https://github.com/example/repo",
   "tags": ["tag-id-1", "tag-id-2"]
@@ -113,6 +113,161 @@ POST /api/assets
     "id": "clx1234567890",
     "name": "New Asset",
     ...
+  }
+}
+```
+
+**错误响应**
+```json
+{
+  "success": false,
+  "error": "Validation failed",
+  "details": {
+    "name": "Name must be at least 3 characters long",
+    "category": "Category must be one of: CODE_COMPONENTS, SERVICES_APIS, ..."
+  }
+}
+```
+
+### 获取资产详情
+
+**请求**
+```
+GET /api/assets/[id]
+```
+
+**示例**
+```bash
+curl "https://your-domain.vercel.app/api/assets/clx1234567890"
+```
+
+**响应**
+```json
+{
+  "success": true,
+  "data": {
+    "id": "clx1234567890",
+    "name": "Asset Name",
+    "description": "Asset description",
+    "category": "CODE_COMPONENTS",
+    "assetType": "Script",
+    "version": "1.0.0",
+    "status": "PUBLISHED",
+    "owner": "team@company.com",
+    "contentPath": "assets/code/scripts/asset.md",
+    "contentHash": "abc123...",
+    "sourceSystem": "GitHub",
+    "sourceLink": "https://github.com/...",
+    "createdAt": "2024-11-04T12:00:00Z",
+    "updatedAt": "2024-11-04T12:00:00Z",
+    "tags": [
+      {
+        "id": "tag1",
+        "name": "python",
+        "category": "language",
+        "description": "Python programming language",
+        "createdAt": "2024-11-04T12:00:00Z",
+        "updatedAt": "2024-11-04T12:00:00Z"
+      }
+    ],
+    "relations": [],
+    "relatedBy": [],
+    "versions": []
+  }
+}
+```
+
+### 更新资产
+
+**请求**
+```
+PUT /api/assets/[id]
+```
+
+**请求体**（所有字段可选）
+```json
+{
+  "name": "Updated Name",
+  "description": "Updated description",
+  "status": "DEPRECATED",
+  "version": "2.0.0",
+  "contentHash": "new_hash_value"
+}
+```
+
+**示例**
+```bash
+curl -X PUT "https://your-domain.vercel.app/api/assets/clx1234567890" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "PUBLISHED",
+    "version": "2.0.0"
+  }'
+```
+
+**响应**
+```json
+{
+  "success": true,
+  "data": {
+    "id": "clx1234567890",
+    "name": "Updated Name",
+    ...
+  }
+}
+```
+
+### 删除资产
+
+**请求**
+```
+DELETE /api/assets/[id]
+```
+
+**示例**
+```bash
+curl -X DELETE "https://your-domain.vercel.app/api/assets/clx1234567890"
+```
+
+**响应**
+```json
+{
+  "success": true,
+  "message": "Asset deleted successfully"
+}
+```
+
+## 数据验证
+
+所有 API 端点都进行严格的数据验证。验证规则如下：
+
+### 字段验证规则
+
+| 字段 | 类型 | 长度 | 规则 |
+|------|------|------|------|
+| name | string | 3-255 | 必需，至少 3 个字符 |
+| description | string | 10-5000 | 必需，至少 10 个字符 |
+| category | enum | - | 必需，必须是有效的分类 |
+| status | enum | - | 必需，必须是有效的状态 |
+| version | string | 1-50 | 必需，遵循语义化版本（如 1.0.0） |
+| owner | email | - | 必需，有效的电子邮件格式 |
+| assetType | string | 1-100 | 必需 |
+| contentPath | string | 1-500 | 必需，必须以 "assets/" 开头 |
+| contentHash | string | 64 | 必需，有效的 SHA256 哈希（64 个十六进制字符） |
+| sourceSystem | string | 1-100 | 必需 |
+| sourceLink | string | - | 必需，有效的 URL |
+
+### 验证错误示例
+
+```json
+{
+  "success": false,
+  "error": "Validation failed",
+  "details": {
+    "name": "Name must be at least 3 characters long",
+    "category": "Category must be one of: CODE_COMPONENTS, SERVICES_APIS, AUTOMATION_WORKFLOWS, DATA_ANALYTICS, ARCHITECTURE_GOVERNANCE, KNOWLEDGE_PRACTICES",
+    "owner": "Invalid email format",
+    "contentHash": "Content hash must be a valid SHA256 hash (64 hex characters)"
   }
 }
 ```
