@@ -180,27 +180,42 @@ npm run test:coverage    # Generate coverage report
 
 ## 🚢 Deployment
 
-### Vercel
+### Vercel (Recommended)
 
 1. **Connect repository**
-   - Push code to GitHub
-   - Connect repo to Vercel
+   ```bash
+   git push origin main
+   ```
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "Add New..." → "Project"
+   - Select your GitHub repository
+   - Click "Import"
 
-2. **Configure environment**
-   - Add `DATABASE_URL` to Vercel environment variables
-   - Add other required env vars
+2. **Configure environment variables**
+   - Add `DATABASE_URL` (pooled connection)
+   - Add `DATABASE_URL_UNPOOLED` (for migrations)
+   - Add `NEXT_PUBLIC_APP_NAME`
+   - Add `NEXT_PUBLIC_APP_URL`
+   - Add `GITHUB_WEBHOOK_SECRET`
 
-3. **Deploy**
+3. **Run database migration**
+   ```bash
+   DATABASE_URL_UNPOOLED="your_unpooled_url" npx prisma migrate deploy
+   ```
+
+4. **Deploy**
    - Vercel automatically deploys on push to main
 
 ### Environment Variables
 
 Required for production:
-- `DATABASE_URL` - Neon PostgreSQL connection string
-- `DATABASE_URL_UNPOOLED` - Non-pooled connection (for migrations)
+- `DATABASE_URL` - Neon PostgreSQL pooled connection string
+- `DATABASE_URL_UNPOOLED` - Non-pooled connection (for migrations only)
 - `NEXT_PUBLIC_APP_NAME` - Application name
 - `NEXT_PUBLIC_APP_URL` - Application URL
 - `GITHUB_WEBHOOK_SECRET` - GitHub webhook secret
+
+**See [VERCEL_SETUP.md](./VERCEL_SETUP.md) for detailed deployment instructions.**
 
 ## 📚 Documentation
 
