@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
       tag: searchParams.get('tag') || undefined,
       search: searchParams.get('search') || undefined,
       owner: searchParams.get('owner') || undefined,
-      sortBy: (searchParams.get('sortBy') as any) || undefined,
-      sortOrder: (searchParams.get('sortOrder') as any) || undefined,
+      sortBy: (searchParams.get('sortBy') as 'createdAt' | 'updatedAt' | 'name' | undefined) || undefined,
+      sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc' | undefined) || undefined,
     };
 
     const result = await getAssets(query);

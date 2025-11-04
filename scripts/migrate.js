@@ -11,6 +11,7 @@
  *   - DATABASE_URL_UNPOOLED: Non-pooled PostgreSQL connection string
  */
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { execSync } = require('child_process');
 
 const isDev = process.env.NODE_ENV !== 'production';

@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db/client';
 import { AssetListQuery, AssetListItem, PaginatedResponse } from '@/lib/types/asset';
-import { Prisma } from '@prisma/client';
+import { Prisma, Category, Status } from '@prisma/client';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
@@ -17,32 +17,39 @@ export async function getAssets(
   const skip = (page - 1) * limit;
 
   // Build where clause
-  const where: Prisma.AssetWhereInput = {
-    AND: [
-      query.category ? { category: query.category } : {},
-      query.status ? { status: query.status } : {},
-      query.owner ? { owner: query.owner } : {},
-      query.search
-        ? {
-            OR: [
-              { name: { contains: query.search, mode: 'insensitive' } },
-              { description: { contains: query.search, mode: 'insensitive' } },
-            ],
-          }
-        : {},
-      query.tag
-        ? {
-            tags: {
-              some: {
-                tag: {
-                  name: query.tag,
-                },
-              },
-            },
-          }
-        : {},
-    ].filter((obj) => Object.keys(obj).length > 0),
-  };
+  const whereConditions: Prisma.AssetWhereInput[] = [];
+
+  if (query.category) {
+    whereConditions.push({ category: query.category as Category });
+  }
+  if (query.status) {
+    whereConditions.push({ status: query.status as Status });
+  }
+  if (query.owner) {
+    whereConditions.push({ owner: query.owner });
+  }
+  if (query.search) {
+    whereConditions.push({
+      OR: [
+        { name: { contains: query.search, mode: 'insensitive' } },
+        { description: { contains: query.search, mode: 'insensitive' } },
+      ],
+    });
+  }
+  if (query.tag) {
+    whereConditions.push({
+      tags: {
+        some: {
+          tag: {
+            name: query.tag,
+          },
+        },
+      },
+    });
+  }
+
+  const where: Prisma.AssetWhereInput =
+    whereConditions.length > 0 ? { AND: whereConditions } : {};
 
   // Build order by
   const orderBy: Prisma.AssetOrderByWithRelationInput = {};
@@ -72,7 +79,10 @@ export async function getAssets(
               select: {
                 id: true,
                 name: true,
+                description: true,
                 category: true,
+                createdAt: true,
+                updatedAt: true,
               },
             },
           },
@@ -169,10 +179,10 @@ export async function createAsset(data: {
     data: {
       name: data.name,
       description: data.description,
-      category: data.category as any,
+      category: data.category as Category,
       assetType: data.assetType,
       version: data.version,
-      status: data.status as any,
+      status: data.status as Status,
       owner: data.owner,
       contentPath: data.contentPath,
       contentHash: data.contentHash,
@@ -213,7 +223,7 @@ export async function updateAsset(
     where: { id },
     data: {
       ...data,
-      status: data.status ? (data.status as any) : undefined,
+      status: data.status ? (data.status as Status) : undefined,
     },
     include: {
       tags: {
@@ -239,7 +249,7 @@ export async function deleteAsset(id: string) {
  */
 export async function getAssetsByCategory(category: string, limit = 10) {
   return prisma.asset.findMany({
-    where: { category },
+    where: { category: category as Category },
     select: {
       id: true,
       name: true,

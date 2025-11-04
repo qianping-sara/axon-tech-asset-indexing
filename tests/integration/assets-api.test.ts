@@ -9,8 +9,6 @@ import { createAsset } from '@/lib/api/assets';
 import { prisma } from '@/lib/db/client';
 
 describe('Asset API Endpoints', () => {
-  let testAssetId: string;
-
   beforeAll(async () => {
     // Clean up test data
     await prisma.asset.deleteMany({
@@ -20,7 +18,7 @@ describe('Asset API Endpoints', () => {
     });
 
     // Create test asset
-    const asset = await createAsset({
+    await createAsset({
       name: 'API Test Asset',
       description: 'An asset for API testing',
       category: 'CODE_COMPONENTS',
@@ -33,8 +31,6 @@ describe('Asset API Endpoints', () => {
       sourceSystem: 'GitHub',
       sourceLink: 'https://github.com/test',
     });
-
-    testAssetId = asset.id;
   });
 
   afterAll(async () => {
@@ -63,22 +59,22 @@ describe('Asset API Endpoints', () => {
       const response = await fetch(
         'http://localhost:3000/api/assets?category=CODE_COMPONENTS'
       );
-      const data = await response.json();
+      const data = await response.json() as { success: boolean; data: Array<{ category: string }> };
 
       expect(response.status).toBe(200);
       expect(data.success).toBe(true);
-      expect(data.data.every((asset: any) => asset.category === 'CODE_COMPONENTS')).toBe(true);
+      expect(data.data.every((asset) => asset.category === 'CODE_COMPONENTS')).toBe(true);
     });
 
     it('should filter by status', async () => {
       const response = await fetch(
         'http://localhost:3000/api/assets?status=PUBLISHED'
       );
-      const data = await response.json();
+      const data = await response.json() as { success: boolean; data: Array<{ status: string }> };
 
       expect(response.status).toBe(200);
       expect(data.success).toBe(true);
-      expect(data.data.every((asset: any) => asset.status === 'PUBLISHED')).toBe(true);
+      expect(data.data.every((asset) => asset.status === 'PUBLISHED')).toBe(true);
     });
 
     it('should search by keyword', async () => {
