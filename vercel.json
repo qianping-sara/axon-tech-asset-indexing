@@ -2,29 +2,6 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "env": [
-    {
-      "key": "DATABASE_URL",
-      "description": "Neon PostgreSQL pooled connection string"
-    },
-    {
-      "key": "DATABASE_URL_UNPOOLED",
-      "description": "Neon PostgreSQL non-pooled connection string (for migrations)"
-    },
-    {
-      "key": "NEXT_PUBLIC_APP_NAME",
-      "description": "Application name",
-      "value": "Asset Golden Index"
-    },
-    {
-      "key": "NEXT_PUBLIC_APP_URL",
-      "description": "Application URL"
-    },
-    {
-      "key": "GITHUB_WEBHOOK_SECRET",
-      "description": "GitHub webhook secret for content sync"
-    }
-  ]
+  "framework": "nextjs"
 }
 
