@@ -94,6 +94,9 @@ npm run lint:fix         # Fix ESLint issues
 npm run format           # Format code with Prettier
 npm run format:check     # Check code formatting
 npm run type-check       # Run TypeScript type check
+npm run test             # Run all tests
+npm run test:watch       # Run tests in watch mode
+npm run test:coverage    # Generate coverage report
 npm run prisma:generate  # Generate Prisma Client
 npm run prisma:migrate   # Run database migrations
 npm run prisma:studio    # Open Prisma Studio
@@ -248,14 +251,27 @@ Asset Golden Index MVP - Center of Excellence
 - [x] Task 1.3: Project structure creation
 - [x] Task 1.4: Git and CI/CD initialization
 
+### Phase 2: Backend API Development (IN PROGRESS)
+- [x] Task 2.1: Asset API - List, Search, and Filtering
+  - [x] GET /api/assets (pagination, filtering, sorting)
+  - [x] GET /api/assets?search=keyword (search)
+  - [x] GET /api/assets?category=CODE_COMPONENTS (category filter)
+  - [x] GET /api/assets?tag=python (tag filter)
+  - [x] Query optimization and caching strategy
+  - [x] Unit tests for asset API
+  - [x] Integration tests for API endpoints
+  - [x] API documentation
+
 ### Next Steps
-- Task 2.1: Backend API development
-- Task 2.2: Frontend pages development
-- Task 2.3: Markdown content integration
-- Task 2.4: Testing and optimization
+- Task 2.2: Asset Detail API (GET /api/assets/[id], PUT, DELETE)
+- Task 2.3: Tag Management API
+- Task 2.4: Frontend pages development
+- Task 2.5: Markdown content integration
+- Task 2.6: Testing and optimization
 
 ### Database Setup Notes
 - Prisma schema is ready in `prisma/schema.prisma`
 - Database migration will be executed in Vercel environment
 - Use `DATABASE_URL_UNPOOLED` for migrations in production
 - Use `DATABASE_URL` (pooled) for application connections
+- All tables prefixed with `axon_` for isolation from existing tables
