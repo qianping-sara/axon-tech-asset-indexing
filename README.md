@@ -283,10 +283,23 @@ Asset Golden Index MVP - Center of Excellence
   - [x] Unit tests for tags API
   - [x] Unit tests for categories API
 
+- [x] Task 2.5: Markdown Parsing and GitHub Webhook Sync
+  - [x] Markdown file parsing with Frontmatter extraction (gray-matter)
+  - [x] Asset metadata validation
+  - [x] SHA256 content hash calculation for change detection
+  - [x] GitHub webhook signature verification
+  - [x] File change detection (added, modified, removed)
+  - [x] Asset sync business logic (create, update, delete)
+  - [x] POST /api/sync (GitHub webhook endpoint)
+  - [x] GET /api/sync (sync status endpoint)
+  - [x] Unit tests for Markdown parser (15 tests)
+  - [x] Unit tests for hash and webhook utilities (20 tests)
+  - [x] Unit tests for sync business logic (8 tests)
+
 ### Next Steps
-- Task 2.5: Frontend pages development
-- Task 2.6: Markdown content integration
-- Task 2.7: Testing and optimization
+- Task 2.6: Frontend pages development
+- Task 2.7: Integration tests for sync API
+- Task 2.8: Testing and optimization
 
 ### Database Setup Notes
 - Prisma schema is ready in `prisma/schema.prisma`
