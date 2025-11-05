@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,46 +7,88 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================================================
-// Asset Models
-// ============================================================================
 
-model Asset {
-  id                String      @id @default(cuid())
-  name              String      @db.VarChar(255)
-  description       String      @db.Text
-  category          Category
-  assetType         String      @db.VarChar(100)
 
-  // Lifecycle
-  version           String      @db.VarChar(50)
-  status            Status      @default(PUBLISHED)
-  owner             String      @db.VarChar(255)
+model axon_asset {
+  id                                                              String                @id
+  name                                                            String                @db.VarChar(255)
+  description                                                     String
+  category                                                        Category
+  assetType                                                       String                @db.VarChar(100)
+  version                                                         String                @db.VarChar(50)
+  status                                                          Status                @default(PUBLISHED)
+  owner                                                           String                @db.VarChar(255)
+  contentPath                                                     String                @db.VarChar(500)
+  contentHash                                                     String                @db.VarChar(64)
+  sourceSystem                                                    String                @db.VarChar(100)
+  sourceLink                                                      String                @db.VarChar(500)
+  createdAt                                                       DateTime              @default(now())
+  updatedAt                                                       DateTime
+  publishedAt                                                     DateTime?
+  axon_asset_relation_axon_asset_relation_fromAssetIdToaxon_asset axon_asset_relation[] @relation("axon_asset_relation_fromAssetIdToaxon_asset")
+  axon_asset_relation_axon_asset_relation_toAssetIdToaxon_asset   axon_asset_relation[] @relation("axon_asset_relation_toAssetIdToaxon_asset")
+  axon_asset_tag                                                  axon_asset_tag[]
+  axon_asset_version                                              axon_asset_version[]
 
-  // Content as Code
-  contentPath       String      @db.VarChar(500)
-  contentHash       String      @db.VarChar(64)
-
-  // Discovery and Connection
-  sourceSystem      String      @db.VarChar(100)
-  sourceLink        String      @db.VarChar(500)
-
-  // Metadata
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  publishedAt       DateTime?
-
-  // Relations
-  tags              AssetTag[]
-  relations         AssetRelation[] @relation("from")
-  relatedBy         AssetRelation[] @relation("to")
-  versions          AssetVersion[]
-
-  @@map("axon_asset")
   @@index([category])
-  @@index([status])
   @@index([owner])
+  @@index([status])
   @@index([updatedAt])
+  @@map("axon_asset")
+}
+
+model axon_asset_relation {
+  id                                                     String       @id
+  fromAssetId                                            String
+  toAssetId                                              String
+  relationType                                           RelationType
+  createdAt                                              DateTime     @default(now())
+  updatedAt                                              DateTime
+  axon_asset_axon_asset_relation_fromAssetIdToaxon_asset axon_asset   @relation("axon_asset_relation_fromAssetIdToaxon_asset", fields: [fromAssetId], references: [id], onDelete: Cascade)
+  axon_asset_axon_asset_relation_toAssetIdToaxon_asset   axon_asset   @relation("axon_asset_relation_toAssetIdToaxon_asset", fields: [toAssetId], references: [id], onDelete: Cascade)
+
+  @@unique([fromAssetId, toAssetId, relationType])
+  @@index([fromAssetId])
+  @@index([toAssetId])
+}
+
+model axon_asset_tag {
+  id         String     @id
+  assetId    String
+  tagId      String
+  createdAt  DateTime   @default(now())
+  axon_asset axon_asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  axon_tag   axon_tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([assetId, tagId])
+  @@index([assetId])
+  @@index([tagId])
+}
+
+model axon_asset_version {
+  id          String     @id
+  assetId     String
+  version     String     @db.VarChar(50)
+  status      Status
+  contentHash String     @db.VarChar(64)
+  changeLog   String?
+  createdAt   DateTime   @default(now())
+  axon_asset  axon_asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([assetId])
+  @@index([version])
+}
+
+model axon_tag {
+  id             String           @id
+  name           String           @unique @db.VarChar(100)
+  description    String?
+  category       String           @db.VarChar(100)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  axon_asset_tag axon_asset_tag[]
+
+  @@index([category])
 }
 
 enum Category {
@@ -61,101 +100,18 @@ enum Category {
   KNOWLEDGE_PRACTICES
 }
 
+enum RelationType {
+  DEPENDS_ON
+  USED_BY
+  RELATED_TO
+  EXTENDS
+  IMPLEMENTS
+  REFERENCES
+}
+
 enum Status {
   DRAFT
   PUBLISHED
   DEPRECATED
   ARCHIVED
 }
-
-// ============================================================================
-// Tag Models
-// ============================================================================
-
-model Tag {
-  id                String      @id @default(cuid())
-  name              String      @unique @db.VarChar(100)
-  description       String?     @db.Text
-  category          String      @db.VarChar(100)
-
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-
-  // Relations
-  assets            AssetTag[]
-
-  @@map("axon_tag")
-  @@index([category])
-}
-
-model AssetTag {
-  id                String      @id @default(cuid())
-  assetId           String
-  tagId             String
-
-  createdAt         DateTime    @default(now())
-
-  // Relations
-  asset             Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  tag               Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@map("axon_asset_tag")
-  @@unique([assetId, tagId])
-  @@index([assetId])
-  @@index([tagId])
-}
-
-// ============================================================================
-// Asset Relation Models
-// ============================================================================
-
-model AssetRelation {
-  id                String      @id @default(cuid())
-  fromAssetId       String
-  toAssetId         String
-  relationType      RelationType
-
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-
-  // Relations
-  fromAsset         Asset       @relation("from", fields: [fromAssetId], references: [id], onDelete: Cascade)
-  toAsset           Asset       @relation("to", fields: [toAssetId], references: [id], onDelete: Cascade)
-
-  @@map("axon_asset_relation")
-  @@unique([fromAssetId, toAssetId, relationType])
-  @@index([fromAssetId])
-  @@index([toAssetId])
-}
-
-enum RelationType {
-  USES
-  IMPLEMENTS
-  EXTENDS
-  RELATED_TO
-  DEPENDS_ON
-  SUPERSEDES
-}
-
-// ============================================================================
-// Asset Version Models
-// ============================================================================
-
-model AssetVersion {
-  id                String      @id @default(cuid())
-  assetId           String
-  version           String      @db.VarChar(50)
-  status            Status
-  contentHash       String      @db.VarChar(64)
-  changeLog         String?     @db.Text
-
-  createdAt         DateTime    @default(now())
-
-  // Relations
-  asset             Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
-
-  @@map("axon_asset_version")
-  @@index([assetId])
-  @@index([version])
-}
-

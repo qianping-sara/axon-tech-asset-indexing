@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db/client';
 import { AssetListQuery, AssetListItem, PaginatedResponse } from '@/lib/types/asset';
-import { Prisma, Category, Status } from '@prisma/client';
+import { Category, Status } from '@prisma/client';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
@@ -17,7 +17,7 @@ export async function getAssets(
   const skip = (page - 1) * limit;
 
   // Build where clause
-  const whereConditions: Prisma.AssetWhereInput[] = [];
+  const whereConditions: any[] = [];
 
   if (query.category) {
     whereConditions.push({ category: query.category as Category });
@@ -41,9 +41,9 @@ export async function getAssets(
   }
   if (query.tag) {
     whereConditions.push({
-      tags: {
+      axon_asset_tag: {
         some: {
-          tag: {
+          axon_tag: {
             name: query.tag,
           },
         },
@@ -51,11 +51,11 @@ export async function getAssets(
     });
   }
 
-  const where: Prisma.AssetWhereInput =
+  const where: any =
     whereConditions.length > 0 ? { AND: whereConditions } : {};
 
   // Build order by
-  const orderBy: Prisma.AssetOrderByWithRelationInput = {};
+  const orderBy: any = {};
   if (query.sortBy) {
     orderBy[query.sortBy] = query.sortOrder || 'desc';
   } else {
@@ -64,7 +64,7 @@ export async function getAssets(
 
   // Execute queries in parallel
   const [assets, total] = await Promise.all([
-    prisma.asset.findMany({
+    prisma.axon_asset.findMany({
       where,
       select: {
         id: true,
@@ -76,9 +76,9 @@ export async function getAssets(
         status: true,
         owner: true,
         updatedAt: true,
-        tags: {
+        axon_asset_tag: {
           select: {
-            tag: {
+            axon_tag: {
               select: {
                 id: true,
                 name: true,
@@ -95,13 +95,13 @@ export async function getAssets(
       skip,
       take: limit,
     }),
-    prisma.asset.count({ where }),
+    prisma.axon_asset.count({ where }),
   ]);
 
   // Transform data
   const data: AssetListItem[] = assets.map((asset) => ({
     ...asset,
-    tags: asset.tags.map((at) => at.tag),
+    axon_asset_tag: asset.axon_asset_tag.map((at) => at.axon_tag),
   }));
 
   const totalPages = Math.ceil(total / limit);
@@ -122,17 +122,17 @@ export async function getAssets(
  * Get single asset by ID with all relations
  */
 export async function getAssetById(id: string) {
-  return prisma.asset.findUnique({
+  return prisma.axon_asset.findUnique({
     where: { id },
     include: {
-      tags: {
+      axon_asset_tag: {
         include: {
-          tag: true,
+          axon_tag: true,
         },
       },
-      relations: {
+      axon_asset_relation_axon_asset_relation_fromAssetIdToaxon_asset: {
         include: {
-          toAsset: {
+          axon_asset_axon_asset_relation_toAssetIdToaxon_asset: {
             select: {
               id: true,
               name: true,
@@ -141,9 +141,9 @@ export async function getAssetById(id: string) {
           },
         },
       },
-      relatedBy: {
+      axon_asset_relation_axon_asset_relation_toAssetIdToaxon_asset: {
         include: {
-          fromAsset: {
+          axon_asset_axon_asset_relation_fromAssetIdToaxon_asset: {
             select: {
               id: true,
               name: true,
@@ -152,7 +152,7 @@ export async function getAssetById(id: string) {
           },
         },
       },
-      versions: {
+      axon_asset_version: {
         orderBy: {
           createdAt: 'desc',
         },
@@ -178,7 +178,7 @@ export async function createAsset(data: {
   sourceLink: string;
   tags?: string[];
 }) {
-  return prisma.asset.create({
+  return prisma.axon_asset.create({
     data: {
       name: data.name,
       description: data.description,
@@ -191,7 +191,7 @@ export async function createAsset(data: {
       contentHash: data.contentHash,
       sourceSystem: data.sourceSystem,
       sourceLink: data.sourceLink,
-      tags: data.tags
+      axon_asset_tag: data.tags
         ? {
             create: data.tags.map((tagId) => ({
               tagId,
@@ -200,9 +200,9 @@ export async function createAsset(data: {
         : undefined,
     },
     include: {
-      tags: {
+      axon_asset_tag: {
         include: {
-          tag: true,
+          axon_tag: true,
         },
       },
     },
@@ -222,16 +222,16 @@ export async function updateAsset(
     contentHash: string;
   }>
 ) {
-  return prisma.asset.update({
+  return prisma.axon_asset.update({
     where: { id },
     data: {
       ...data,
       status: data.status ? (data.status as Status) : undefined,
     },
     include: {
-      tags: {
+      axon_asset_tag: {
         include: {
-          tag: true,
+          axon_tag: true,
         },
       },
     },
@@ -242,7 +242,7 @@ export async function updateAsset(
  * Delete asset
  */
 export async function deleteAsset(id: string) {
-  return prisma.asset.delete({
+  return prisma.axon_asset.delete({
     where: { id },
   });
 }
@@ -251,7 +251,7 @@ export async function deleteAsset(id: string) {
  * Get assets by category
  */
 export async function getAssetsByCategory(category: string, limit = 10) {
-  return prisma.asset.findMany({
+  return prisma.axon_asset.findMany({
     where: { category: category as Category },
     select: {
       id: true,
@@ -272,11 +272,11 @@ export async function getAssetsByCategory(category: string, limit = 10) {
  * Get assets by tag
  */
 export async function getAssetsByTag(tagName: string, limit = 10) {
-  return prisma.asset.findMany({
+  return prisma.axon_asset.findMany({
     where: {
-      tags: {
+      axon_asset_tag: {
         some: {
-          tag: {
+          axon_tag: {
             name: tagName,
           },
         },

@@ -44,7 +44,7 @@ export async function getTags(query: TagListQuery): Promise<PaginatedResponse<Ta
   const skip = (page - 1) * limit;
 
   // Build where conditions
-  const whereConditions: Prisma.TagWhereInput[] = [];
+  const whereConditions: Prisma.axon_tagWhereInput[] = [];
 
   if (query.category) {
     whereConditions.push({ category: query.category });
@@ -59,7 +59,7 @@ export async function getTags(query: TagListQuery): Promise<PaginatedResponse<Ta
     });
   }
 
-  const where: Prisma.TagWhereInput =
+  const where: Prisma.axon_tagWhereInput =
     whereConditions.length > 0 ? { AND: whereConditions } : {};
 
   // Determine sort order
@@ -68,7 +68,7 @@ export async function getTags(query: TagListQuery): Promise<PaginatedResponse<Ta
 
   // Execute queries in parallel
   const [tags, total] = await Promise.all([
-    prisma.tag.findMany({
+    prisma.axon_tag.findMany({
       where,
       select: {
         id: true,
@@ -78,14 +78,14 @@ export async function getTags(query: TagListQuery): Promise<PaginatedResponse<Ta
         createdAt: true,
         updatedAt: true,
         _count: {
-          select: { assets: true },
+          select: { axon_asset_tag: true },
         },
       },
       orderBy: { [sortBy]: sortOrder },
       skip,
       take: limit,
     }),
-    prisma.tag.count({ where }),
+    prisma.axon_tag.count({ where }),
   ]);
 
   const totalPages = Math.ceil(total / limit);
@@ -93,7 +93,7 @@ export async function getTags(query: TagListQuery): Promise<PaginatedResponse<Ta
   return {
     data: tags.map((tag) => ({
       ...tag,
-      assetCount: tag._count.assets,
+      assetCount: tag._count.axon_asset_tag,
       _count: undefined,
     })),
     pagination: {
@@ -110,12 +110,12 @@ export async function getTags(query: TagListQuery): Promise<PaginatedResponse<Ta
  * Get tag by ID with asset count
  */
 export async function getTagById(id: string) {
-  return prisma.tag.findUnique({
+  return prisma.axon_tag.findUnique({
     where: { id },
     include: {
-      assets: {
+      axon_asset_tag: {
         select: {
-          asset: {
+          axon_asset: {
             select: {
               id: true,
               name: true,
@@ -129,7 +129,7 @@ export async function getTagById(id: string) {
         },
       },
       _count: {
-        select: { assets: true },
+        select: { axon_asset_tag: true },
       },
     },
   });
@@ -139,11 +139,11 @@ export async function getTagById(id: string) {
  * Get tag by name
  */
 export async function getTagByName(name: string) {
-  return prisma.tag.findUnique({
+  return prisma.axon_tag.findUnique({
     where: { name },
     include: {
       _count: {
-        select: { assets: true },
+        select: { axon_asset_tag: true },
       },
     },
   });
@@ -157,11 +157,11 @@ export async function createTag(data: {
   description?: string;
   category: string;
 }) {
-  return prisma.tag.create({
+  return prisma.axon_tag.create({
     data,
     include: {
       _count: {
-        select: { assets: true },
+        select: { axon_asset_tag: true },
       },
     },
   });
@@ -178,12 +178,12 @@ export async function updateTag(
     category: string;
   }>
 ) {
-  return prisma.tag.update({
+  return prisma.axon_tag.update({
     where: { id },
     data,
     include: {
       _count: {
-        select: { assets: true },
+        select: { axon_asset_tag: true },
       },
     },
   });
@@ -193,7 +193,7 @@ export async function updateTag(
  * Delete tag
  */
 export async function deleteTag(id: string) {
-  return prisma.tag.delete({
+  return prisma.axon_tag.delete({
     where: { id },
   });
 }
@@ -202,7 +202,7 @@ export async function deleteTag(id: string) {
  * Get all unique tag categories
  */
 export async function getTagCategories(): Promise<string[]> {
-  const tags = await prisma.tag.findMany({
+  const tags = await prisma.axon_tag.findMany({
     select: { category: true },
     distinct: ['category'],
   });
@@ -214,7 +214,7 @@ export async function getTagCategories(): Promise<string[]> {
  * Get tags by category
  */
 export async function getTagsByCategory(category: string) {
-  return prisma.tag.findMany({
+  return prisma.axon_tag.findMany({
     where: { category },
     select: {
       id: true,
@@ -224,7 +224,7 @@ export async function getTagsByCategory(category: string) {
       createdAt: true,
       updatedAt: true,
       _count: {
-        select: { assets: true },
+        select: { axon_asset_tag: true },
       },
     },
     orderBy: { name: 'asc' },

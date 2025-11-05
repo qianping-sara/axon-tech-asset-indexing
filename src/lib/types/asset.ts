@@ -1,23 +1,23 @@
-import { Asset, Tag, AssetTag, AssetRelation, AssetVersion } from '@prisma/client';
+import { axon_asset, axon_tag, axon_asset_tag, axon_asset_relation, axon_asset_version } from '@prisma/client';
 
 /**
  * Asset with all relations
  */
-export type AssetWithRelations = Asset & {
-  tags: (AssetTag & { tag: Tag })[];
-  relations: (AssetRelation & { toAsset: Asset })[];
-  relatedBy: (AssetRelation & { fromAsset: Asset })[];
-  versions: AssetVersion[];
+export type AssetWithRelations = axon_asset & {
+  axon_asset_tag: (axon_asset_tag & { axon_tag: axon_tag })[];
+  axon_asset_relation_axon_asset_relation_fromAssetIdToaxon_asset: (axon_asset_relation & { axon_asset_axon_asset_relation_toAssetIdToaxon_asset: axon_asset })[];
+  axon_asset_relation_axon_asset_relation_toAssetIdToaxon_asset: (axon_asset_relation & { axon_asset_axon_asset_relation_fromAssetIdToaxon_asset: axon_asset })[];
+  axon_asset_version: axon_asset_version[];
 };
 
 /**
  * Asset list item (simplified for list view)
  */
 export type AssetListItem = Pick<
-  Asset,
+  axon_asset,
   'id' | 'name' | 'description' | 'category' | 'assetType' | 'version' | 'status' | 'owner' | 'updatedAt'
 > & {
-  tags: Tag[];
+  axon_asset_tag: axon_tag[];
 };
 
 /**

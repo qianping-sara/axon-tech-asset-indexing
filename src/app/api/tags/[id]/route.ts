@@ -42,8 +42,8 @@ export async function GET(
       category: tag.category,
       createdAt: tag.createdAt,
       updatedAt: tag.updatedAt,
-      assetCount: tag._count.assets,
-      assets: tag.assets.map((at) => at.asset),
+      assetCount: tag._count.axon_asset_tag,
+      assets: tag.axon_asset_tag.map((at) => at.axon_asset),
     };
 
     return NextResponse.json(
