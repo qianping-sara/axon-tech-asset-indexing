@@ -46,8 +46,16 @@ export default function SearchResults({
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
-  // Fetch assets when filters change
+  // Fetch assets when filters change (only if query is not empty)
   useEffect(() => {
+    // Don't fetch if query is empty
+    if (!query) {
+      setAssets([]);
+      setTotalCount(0);
+      setTotalPages(1);
+      return;
+    }
+
     const fetchAssets = async () => {
       try {
         setLoading(true);
@@ -159,12 +167,20 @@ export default function SearchResults({
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Search Summary */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Search results for &quot;{query || 'all assets'}&quot;
-          </h1>
-          <p className="text-gray-600">
-            Found {totalCount} asset{totalCount !== 1 ? 's' : ''}
-          </p>
+          {query ? (
+            <>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                Search results for &quot;{query}&quot;
+              </h1>
+              <p className="text-gray-600">
+                Found {totalCount} asset{totalCount !== 1 ? 's' : ''}
+              </p>
+            </>
+          ) : (
+            <p className="text-gray-500 text-sm">
+              Enter a search term above to find assets
+            </p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
