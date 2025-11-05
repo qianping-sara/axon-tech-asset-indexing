@@ -3,6 +3,7 @@
  * Handles syncing Markdown files from GitHub to database
  */
 
+import { randomUUID } from 'crypto';
 import { prisma } from '@/lib/db/client';
 import { parseAssetMarkdown, isAssetMarkdownFile } from '@/lib/markdown/parser';
 import { calculateFileHash } from '@/lib/utils/hash';
@@ -167,6 +168,7 @@ export async function syncAssetFile(
   // Create new asset
   await prisma.axon_asset.create({
     data: {
+      id: randomUUID(),
       name: metadata.name,
       description: metadata.description,
       category: metadata.category as Category,
@@ -178,6 +180,7 @@ export async function syncAssetFile(
       contentHash,
       sourceSystem: 'GitHub',
       sourceLink: '', // Will be set from webhook context
+      updatedAt: new Date(),
     },
   });
 

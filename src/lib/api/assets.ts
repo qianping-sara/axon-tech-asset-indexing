@@ -178,8 +178,11 @@ export async function createAsset(data: {
   sourceLink: string;
   tags?: string[];
 }) {
+  const { randomUUID } = require('crypto');
+
   return prisma.axon_asset.create({
     data: {
+      id: randomUUID(),
       name: data.name,
       description: data.description,
       category: data.category as Category,
@@ -191,9 +194,11 @@ export async function createAsset(data: {
       contentHash: data.contentHash,
       sourceSystem: data.sourceSystem,
       sourceLink: data.sourceLink,
+      updatedAt: new Date(),
       axon_asset_tag: data.tags
         ? {
             create: data.tags.map((tagId) => ({
+              id: randomUUID(),
               tagId,
             })),
           }

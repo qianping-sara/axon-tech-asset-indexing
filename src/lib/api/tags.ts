@@ -157,8 +157,14 @@ export async function createTag(data: {
   description?: string;
   category: string;
 }) {
+  const { randomUUID } = require('crypto');
+
   return prisma.axon_tag.create({
-    data,
+    data: {
+      id: randomUUID(),
+      ...data,
+      updatedAt: new Date(),
+    },
     include: {
       _count: {
         select: { axon_asset_tag: true },
