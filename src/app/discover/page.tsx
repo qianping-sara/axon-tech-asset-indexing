@@ -29,10 +29,8 @@ export default function DiscoverPage() {
             </p>
           </div>
 
-          {/* Categories Grid - Reuse from home */}
-          <div className="bg-white rounded-lg">
-            <CategoryGrid />
-          </div>
+          {/* Categories Grid - Reuse from home without title and section */}
+          <CategoryGrid showTitle={false} showSection={false} />
         </div>
       </section>
 
