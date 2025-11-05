@@ -34,12 +34,12 @@ export default function Header() {
           </div>
 
           {/* Right Side - Docs */}
-          <a
-            href="#"
-            className="flex items-center gap-1 text-gray-700 text-sm hover:text-gray-900 transition-colors"
+          <Link
+            href="/docs"
+            className="flex items-center gap-2 text-gray-700 text-sm hover:text-gray-900 transition-colors"
           >
             <svg
-              className="w-4 h-4"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -47,12 +47,12 @@ export default function Header() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17s4.5 10.747 10 10.747c5.5 0 10-4.998 10-10.747S17.5 6.253 12 6.253z"
+                strokeWidth={1.5}
+                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3.042.525A9.006 9.006 0 002.25 9v12a9.006 9.006 0 009.75 8.951h.008v-.008a8.967 8.967 0 016-2.292c1.052 0 2.062.18 3.042.525A9 9 0 0021.75 20V9a9.006 9.006 0 00-9.75-8.951z"
               />
             </svg>
             Docs
-          </a>
+          </Link>
         </div>
       </div>
     </header>
