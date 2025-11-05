@@ -60,13 +60,13 @@ export default function AssetCard({ asset }: AssetCardProps) {
 
         {/* Category and Asset Type Badges */}
         <div className="flex flex-wrap gap-1.5 mb-3">
-          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-green-700 text-white">
+          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-700 text-white">
             {asset.category}
           </span>
-          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500 text-white">
+          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-orange-500 text-white">
             {asset.assetType}
           </span>
-          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-white border border-gray-300 text-gray-700">
+          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-white border border-gray-300 text-gray-700">
             {asset.version}
           </span>
         </div>

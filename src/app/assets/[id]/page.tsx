@@ -11,6 +11,10 @@ interface Tag {
   name: string;
 }
 
+interface AssetTag {
+  axon_tag: Tag;
+}
+
 interface Asset {
   id: string;
   name: string;
@@ -25,7 +29,7 @@ interface Asset {
   contentPath?: string;
   createdAt: string;
   updatedAt: string;
-  axon_asset_tag?: Tag[];
+  axon_asset_tag?: AssetTag[];
 }
 
 export default function AssetDetailPage() {
@@ -163,12 +167,12 @@ export default function AssetDetailPage() {
               <div className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Tags</h2>
                 <div className="flex flex-wrap gap-2">
-                  {asset.axon_asset_tag.map((tag) => (
+                  {asset.axon_asset_tag.map((assetTag) => (
                     <span
-                      key={tag.id}
+                      key={assetTag.axon_tag.id}
                       className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded"
                     >
-                      {tag.name}
+                      {assetTag.axon_tag.name}
                     </span>
                   ))}
                 </div>
