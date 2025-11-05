@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Header from '@/components/layout/Header';
 
 // Mock next/link
@@ -18,30 +18,20 @@ describe('Header Component', () => {
 
   it('renders navigation links', () => {
     render(<Header />);
-    expect(screen.getByText('Home')).toBeInTheDocument();
     expect(screen.getByText('Discover')).toBeInTheDocument();
     expect(screen.getByText('Docs')).toBeInTheDocument();
   });
 
-  it('renders search button', () => {
+  it('renders logo as clickable link to home', () => {
     render(<Header />);
-    expect(screen.getByText('Search')).toBeInTheDocument();
+    const logoLink = screen.getByText('Axon').closest('a');
+    expect(logoLink).toHaveAttribute('href', '/');
   });
 
-  it('toggles mobile menu on button click', () => {
+  it('renders discover link', () => {
     render(<Header />);
-    const menuButton = screen.getAllByRole('button')[0];
-    
-    // Menu should not be visible initially
-    const mobileNav = screen.queryAllByText('Home');
-    expect(mobileNav.length).toBe(1); // Only desktop nav
-    
-    // Click menu button
-    fireEvent.click(menuButton);
-    
-    // Mobile menu should now be visible
-    const mobileNavAfter = screen.queryAllByText('Home');
-    expect(mobileNavAfter.length).toBeGreaterThan(1);
+    const discoverLink = screen.getByText('Discover').closest('a');
+    expect(discoverLink).toHaveAttribute('href', '/search');
   });
 
   it('has sticky positioning', () => {
