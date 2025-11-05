@@ -26,7 +26,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
     </svg>
   ),
   AI_ML_SERVICES: (
-    <svg className="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5a4 4 0 100-8 4 4 0 000 8z" />
     </svg>
   ),
@@ -81,11 +81,11 @@ export default function CategoryCard({ category }: CategoryCardProps) {
         </p>
 
         {/* Asset Types - Show all */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {category.assetTypes.map((type) => (
             <span
               key={type}
-              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+              className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
             >
               {type}
             </span>
