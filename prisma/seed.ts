@@ -1,85 +1,632 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient, Category, Status } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
+// Tag 数据 (从 Tag.csv 提取)
+const tagsData = [
+  { name: 'ADR' },
+  { name: 'Adviser' },
+  { name: 'AI' },
+  { name: 'Architecture' },
+  { name: 'Arrears' },
+  { name: 'Automation' },
+  { name: 'BaNCS' },
+  { name: 'Banking' },
+  { name: 'Beneficiary Management' },
+  { name: 'Best Practices' },
+  { name: 'Bizagi' },
+  { name: 'Blueprint' },
+  { name: 'Calculation' },
+  { name: 'Cancellation' },
+  { name: 'Charter' },
+  { name: 'Claims' },
+  { name: 'CoE Standards' },
+  { name: 'Common Business Services' },
+  { name: 'Core Services' },
+  { name: 'Corporate' },
+  { name: 'Customer' },
+  { name: 'Design Template' },
+  { name: 'Disclosures' },
+  { name: 'Disinvestment' },
+  { name: 'Document' },
+  { name: 'Document Processing' },
+  { name: 'Fund Management' },
+  { name: 'Governance' },
+  { name: 'Investments' },
+  { name: 'Knowledge' },
+  { name: 'Machine Learning' },
+  { name: 'NLP' },
+  { name: 'OCR' },
+  { name: 'Orchestration' },
+  { name: 'Party Management' },
+  { name: 'Playbook' },
+  { name: 'Policy' },
+  { name: 'Policy Cancellation' },
+  { name: 'Policy Management' },
+  { name: 'Prediction' },
+  { name: 'Premium Calculation' },
+  { name: 'Premiums' },
+  { name: 'Process' },
+  { name: 'Process Optimization' },
+  { name: 'Product' },
+  { name: 'Reference Data' },
+  { name: 'Reporting' },
+  { name: 'REST API' },
+  { name: 'Retirals' },
+  { name: 'Revival' },
+  { name: 'Risk Assessment' },
+  { name: 'RPA' },
+  { name: 'Scoring Model' },
+  { name: 'Security' },
+  { name: 'Tax' },
+  { name: 'Tool Selection' },
+  { name: 'UiPath' },
+  { name: 'Unclaimed Benefit' },
+  { name: 'Underwriting' },
+  { name: 'Workflow' },
+];
+
+// API 资产数据 (从 Asset.csv 提取)
+const apiAssetsData = [
+  {
+    id: 'api_arrears',
+    name: 'Premium Arrears API',
+    description: 'Allows customers to query their missed premiums and make arrangements to pay any outstanding premiums',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238555440/Premium+Arrears+API',
+    tags: ['REST API', 'Premiums', 'Arrears', 'Core Services'],
+  },
+  {
+    id: 'api_retirals_whatsapp',
+    name: 'Retirals API (WhatsApp)',
+    description: 'Allows customers to make a request to take their retirement benefit in the form of cash using WhatsApp',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DSAS/pages/660209674/Take+My+Retirement+Funds+RA+Disinvestment',
+    tags: ['REST API', 'Retirals', 'Core Services'],
+  },
+  {
+    id: 'api_retirals',
+    name: 'Retirals API',
+    description: 'Retirals api service managed by Servicing team',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DSAS/pages/660209674/Take+My+Retirement+Funds+RA+Disinvestment',
+    tags: ['REST API', 'Retirals', 'Core Services'],
+  },
+  {
+    id: 'api_security',
+    name: 'Servicing Security API',
+    description: 'To be confirmed/investigated',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: '',
+    tags: ['REST API', 'Security', 'Core Services'],
+  },
+  {
+    id: 'api_unclaimed_search',
+    name: 'Unclaimed Benefit Search API',
+    description: 'As a user of the My Old Mutual Public Web page I want to search for claimable benefits for myself or another individual So that I can collect benefits due',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/embed/1550713480?atl_f=PAGETREE',
+    tags: ['REST API', 'Unclaimed Benefit', 'Core Services'],
+  },
+  {
+    id: 'api_unclaimed',
+    name: 'Unclaimed Benefit API',
+    description: 'Unclaimed benefit api service managed by Servicing team',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/CLAIMS/pages/224021554/Architecture',
+    tags: ['REST API', 'Unclaimed Benefit', 'Core Services'],
+  },
+  {
+    id: 'api_beneficiary',
+    name: 'Beneficiary Management API',
+    description: 'Allow customers to view, add and delete beneficiaries on eligible products',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: '',
+    tags: ['REST API', 'Beneficiary Management', 'Party Management', 'Core Services'],
+  },
+  {
+    id: 'api_reporting_irr',
+    name: 'Reporting API (IRR)',
+    description: 'Initiate IRR report',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/376275016/DDAE+-+IRR',
+    tags: ['REST API', 'Reporting', 'Core Services'],
+  },
+  {
+    id: 'api_reporting_statements',
+    name: 'Reporting API (Statements)',
+    description: 'Transaction Statements',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/1295122911/DDAE+-+Transaction+Statements+and+Premium+History',
+    tags: ['REST API', 'Reporting', 'Core Services'],
+  },
+  {
+    id: 'api_reporting_premium',
+    name: 'Reporting API (Premium)',
+    description: 'Premium History',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/1295122911/DDAE+-+Transaction+Statements+and+Premium+History',
+    tags: ['REST API', 'Reporting', 'Premiums', 'Core Services'],
+  },
+  {
+    id: 'api_product',
+    name: 'Product API',
+    description: 'API that exposes product information from PDP and also product rules from the product rule service',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238555545/Product+API',
+    tags: ['REST API', 'Product', 'Core Services'],
+  },
+  {
+    id: 'api_investment_creation',
+    name: 'Investments API (Creation)',
+    description: 'Creation of the AdditonalInvetmentAPI for future growth and features',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556816/Additional+Investment+API',
+    tags: ['REST API', 'Investments', 'Core Services'],
+  },
+  {
+    id: 'api_premiums_add',
+    name: 'Premiums API (Add)',
+    description: 'Add a regular payment',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/1090289742/Premiums+API',
+    tags: ['REST API', 'Premiums', 'Premium Calculation', 'Core Services'],
+  },
+  {
+    id: 'api_premiums_adjust',
+    name: 'Premiums API (Adjust)',
+    description: 'Increase/decrease regular payment',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/1090289742/Premiums+API',
+    tags: ['REST API', 'Premiums', 'Premium Calculation', 'Core Services'],
+  },
+  {
+    id: 'api_premiums_cancel',
+    name: 'Premiums API (Cancel)',
+    description: 'Cancel regular payment',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/1090289742/Premiums+API',
+    tags: ['REST API', 'Premiums', 'Core Services'],
+  },
+  {
+    id: 'api_premiums_orchestration',
+    name: 'Premiums Orchestration API',
+    description: 'Premiums Orchestration api, purpose is to allow customers to make adjustments on the investments product\'s premiums',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/1090289742/Premiums+API',
+    tags: ['REST API', 'Premiums', 'Orchestration', 'Core Services'],
+  },
+  {
+    id: 'api_policy_legacy',
+    name: 'Policy API (Legacy)',
+    description: 'Legacy api, created to allow fast lookup of specific policy data in data platform rather than going to PVB (drives MIPS). This will still be useful in Digital, but we could conusme from Servicing or API enablement',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556821/Policy+API',
+    tags: ['REST API', 'Policy', 'Policy Management', 'Core Services'],
+  },
+  {
+    id: 'api_policy_dataplatform',
+    name: 'Policy API (Data Platform)',
+    description: 'Connects to Dataplatform for Policy data for disinvestments',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556821/Policy+API',
+    tags: ['REST API', 'Policy', 'Policy Management', 'Core Services'],
+  },
+  {
+    id: 'api_policy_twopot',
+    name: 'Policy API (Two-Pot)',
+    description: 'Passthrough for two-pot policy enquiries',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556821/Policy+API',
+    tags: ['REST API', 'Policy', 'Policy Management', 'Core Services'],
+  },
+  {
+    id: 'api_policy_transactions',
+    name: 'Policy API (Transactions)',
+    description: 'Allowable transactions for disinvestment and fund management',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556821/Policy+API',
+    tags: ['REST API', 'Policy', 'Policy Management', 'Core Services'],
+  },
+  {
+    id: 'api_reference_data',
+    name: 'Reference Data Service',
+    description: 'Used by many of the servicing apis and is integral part of generating XML data for bizagi or lookup values in the front-ends',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: '',
+    tags: ['REST API', 'Reference Data', 'Core Services'],
+  },
+  {
+    id: 'api_tax',
+    name: 'Tax API',
+    description: 'Integrations build to send out tax directives to SARS via EBTax (Two-pot)',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/791707649/Tax+API',
+    tags: ['REST API', 'Tax', 'Core Services'],
+  },
+  {
+    id: 'api_corporate',
+    name: 'Corporate API',
+    description: 'API wrapper for Corporate apis (Only a wrapper, doesn\'t do much)',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238572142/Corporate+API',
+    tags: ['REST API', 'Corporate', 'Core Services'],
+  },
+  {
+    id: 'api_customer',
+    name: 'Customer API',
+    description: 'Expose customer data',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238575010/Customer+API',
+    tags: ['REST API', 'Customer', 'Party Management', 'Core Services'],
+  },
+  {
+    id: 'api_document',
+    name: 'Document API',
+    description: 'Generate and retrieve documents',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238575003/Document+API',
+    tags: ['REST API', 'Document', 'Document Processing', 'Core Services'],
+  },
+  {
+    id: 'api_adviser',
+    name: 'Adviser API',
+    description: 'Retrieve adviser details',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238574996/Adviser+API',
+    tags: ['REST API', 'Adviser', 'Party Management', 'Core Services'],
+  },
+  {
+    id: 'api_disclosures',
+    name: 'Dynamic Disclosures API',
+    description: 'Dynamically display the correct disclaimers, terms and conditions, etc. from ContentStack',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238555756/DynamicDisclosuresAPI',
+    tags: ['REST API', 'Disclosures', 'Core Services'],
+  },
+  {
+    id: 'api_fund_switch',
+    name: 'Fund Management API (Switch)',
+    description: 'Allow customers to switch funds on PF investment products',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/465043457/DDAE+-+Fund+Management',
+    tags: ['REST API', 'Fund Management', 'Investments', 'Core Services'],
+  },
+  {
+    id: 'api_avsr',
+    name: 'Banking API (AVSR)',
+    description: 'AVSR - We may want to expose a separate front-end validation service',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238551680/Banking+API',
+    tags: ['REST API', 'Banking', 'Core Services'],
+  },
+  {
+    id: 'api_check_digit',
+    name: 'Banking API (Check Digit)',
+    description: 'Check Digit Validation',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: '',
+    tags: ['REST API', 'Banking', 'Core Services'],
+  },
+  {
+    id: 'api_get_bank_details',
+    name: 'Banking API (Get Details)',
+    description: 'Get customer bank details for a policy from the mandates',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: '',
+    tags: ['REST API', 'Banking', 'Core Services'],
+  },
+  {
+    id: 'api_get_all_bank',
+    name: 'Banking API (Get All)',
+    description: 'Get all customer bank details',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: '',
+    tags: ['REST API', 'Banking', 'Core Services'],
+  },
+  {
+    id: 'api_update_banking',
+    name: 'Banking API (Update)',
+    description: 'Update Banking Details and change debit order day',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: '',
+    tags: ['REST API', 'Banking', 'Core Services'],
+  },
+  {
+    id: 'api_twopot_calc',
+    name: 'Calculation API (Two-Pot)',
+    description: 'Two-pot calculations fees & tax',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/444072687/DDAE+-+Servicing+Automation+-+2+Pot+Withdrawals',
+    tags: ['REST API', 'Calculation', 'Tax', 'Core Services'],
+  },
+  {
+    id: 'api_calculation',
+    name: 'Calculation API',
+    description: 'Calculation api service managed by Servicing team',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/444072687/DDAE+-+Servicing+Automation+-+2+Pot+Withdrawals',
+    tags: ['REST API', 'Calculation', 'Core Services'],
+  },
+  {
+    id: 'api_cancellation',
+    name: 'Cancellation API',
+    description: 'Capture a servicing cancellation or paid-up transaction',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238574973/Cancellation+API',
+    tags: ['REST API', 'Cancellation', 'Policy Cancellation', 'Core Services'],
+  },
+  {
+    id: 'api_claims',
+    name: 'Claims API',
+    description: 'Capture death/funeral/disability claims',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238555618/Claims+API',
+    tags: ['REST API', 'Claims', 'Core Services'],
+  },
+  {
+    id: 'api_disinvestment',
+    name: 'Disinvestment API',
+    description: 'Capture a disinvestment from a savings, retirement or investment product',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238552716/Disinvestments',
+    tags: ['REST API', 'Disinvestment', 'Investments', 'Core Services'],
+  },
+  {
+    id: 'api_fund_allocation',
+    name: 'Fund Management API (Allocation)',
+    description: 'Allow customers to change how future contributions are allocated to existing funds',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/465043457/DDAE+-+Fund+Management',
+    tags: ['REST API', 'Fund Management', 'Investments', 'Core Services'],
+  },
+  {
+    id: 'api_fund_injection',
+    name: 'Fund Management API (Injection)',
+    description: 'Allow customers to do a lump sum injection into existing funds',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/465043457/DDAE+-+Fund+Management',
+    tags: ['REST API', 'Fund Management', 'Investments', 'Core Services'],
+  },
+  {
+    id: 'api_investment_papertrail',
+    name: 'Investments API (PaperTrail)',
+    description: 'In Scope: PaperTrail integration',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556816/Additional+Investment+API',
+    tags: ['REST API', 'Investments', 'Core Services'],
+  },
+  {
+    id: 'api_investment_data',
+    name: 'Investments API (Data)',
+    description: 'Access to data micro services to be exposed for pre-pop requirements of customer data',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556816/Additional+Investment+API',
+    tags: ['REST API', 'Investments', 'Core Services'],
+  },
+  {
+    id: 'api_investment_validation',
+    name: 'Investments API (Validation)',
+    description: 'Access to validation services for upfront data verification',
+    assetType: 'REST APIs',
+    version: '1.0',
+    owner: 'Servicing',
+    sourceSystem: 'Confluence',
+    sourceLink: 'https://oldmutual.atlassian.net/wiki/spaces/DIGITALARCHITECTURE/pages/238556816/Additional+Investment+API',
+    tags: ['REST API', 'Investments', 'Core Services'],
+  },
+];
+
 async function main() {
-  console.log('🌱 Seeding database...');
+  console.log('🌱 Starting seed with API assets and tags...');
 
-  // Create sample tags
-  const tags = await Promise.all([
-    prisma.tag.upsert({
-      where: { name: 'python' },
-      update: {},
-      create: {
-        name: 'python',
-        category: 'technology',
-        description: 'Python programming language',
-      },
-    }),
-    prisma.tag.upsert({
-      where: { name: 'data-processing' },
-      update: {},
-      create: {
-        name: 'data-processing',
-        category: 'domain',
-        description: 'Data processing and ETL',
-      },
-    }),
-    prisma.tag.upsert({
-      where: { name: 'api' },
-      update: {},
-      create: {
-        name: 'api',
-        category: 'technology',
-        description: 'API and web services',
-      },
-    }),
-    prisma.tag.upsert({
-      where: { name: 'react' },
-      update: {},
-      create: {
-        name: 'react',
-        category: 'technology',
-        description: 'React framework',
-      },
-    }),
-  ]);
+  try {
+    // 1. Import Tags
+    console.log('📝 Importing tags...');
+    for (const tag of tagsData) {
+      await prisma.tag.upsert({
+        where: { name: tag.name },
+        update: {},
+        create: {
+          name: tag.name,
+          category: 'general',
+        },
+      });
+    }
+    console.log(`✅ Imported ${tagsData.length} tags`);
 
-  console.log(`✅ Created ${tags.length} tags`);
+    // 2. Import Assets
+    console.log('📦 Importing API assets...');
+    for (const asset of apiAssetsData) {
+      const { tags, ...assetData } = asset;
+      await prisma.asset.upsert({
+        where: { id: assetData.id },
+        update: {},
+        create: {
+          ...assetData,
+          category: Category.SERVICES_APIS,
+          status: Status.PUBLISHED,
+          contentPath: '',
+          contentHash: '',
+          publishedAt: new Date(),
+        },
+      });
+    }
+    console.log(`✅ Imported ${apiAssetsData.length} API assets`);
 
-  // Create sample asset
-  const asset = await prisma.asset.create({
-    data: {
-      name: 'Sample Data Processing Script',
-      description: 'A sample script for data processing',
-      category: 'CODE_COMPONENTS',
-      assetType: 'Script',
-      version: '1.0.0',
-      status: 'PUBLISHED',
-      owner: 'team@company.com',
-      contentPath: 'assets/code/scripts/sample-script.md',
-      contentHash: 'abc123def456',
-      sourceSystem: 'GitHub',
-      sourceLink: 'https://github.com/example/repo',
-      tags: {
-        create: [
-          { tagId: tags[0].id },
-          { tagId: tags[1].id },
-        ],
-      },
-    },
-  });
+    // 3. Link Assets and Tags
+    console.log('🔗 Linking assets and tags...');
+    let linkCount = 0;
+    for (const asset of apiAssetsData) {
+      const dbAsset = await prisma.asset.findUnique({
+        where: { id: asset.id },
+      });
 
-  console.log(`✅ Created sample asset: ${asset.name}`);
-  console.log('🎉 Seeding completed!');
+      if (dbAsset) {
+        for (const tagName of asset.tags) {
+          const tag = await prisma.tag.findUnique({
+            where: { name: tagName },
+          });
+
+          if (tag) {
+            await prisma.assetTag.upsert({
+              where: {
+                assetId_tagId: {
+                  assetId: dbAsset.id,
+                  tagId: tag.id,
+                },
+              },
+              update: {},
+              create: {
+                assetId: dbAsset.id,
+                tagId: tag.id,
+              },
+            });
+            linkCount++;
+          }
+        }
+      }
+    }
+    console.log(`✅ Created ${linkCount} asset-tag links`);
+
+    console.log('✨ Seed completed successfully!');
+  } catch (error) {
+    console.error('❌ Seed failed:', error);
+    throw error;
+  }
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seeding failed:', e);
+    console.error(e);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
-
