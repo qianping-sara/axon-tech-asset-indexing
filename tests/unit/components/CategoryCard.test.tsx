@@ -15,7 +15,7 @@ describe('CategoryCard Component', () => {
     name: 'CODE_COMPONENTS',
     displayName: 'Code & Components',
     description: 'Scripts, libraries, frameworks, components, and reusable code modules',
-    icon: '💻',
+    icon: 'CODE_COMPONENTS',
     assetTypes: ['Scripts', 'Frontend Components', 'Backend Libraries', 'Development Frameworks', 'Open Source Projects'],
     assetCount: 42,
   };
@@ -30,34 +30,22 @@ describe('CategoryCard Component', () => {
     expect(screen.getByText(/Scripts, libraries, frameworks/)).toBeInTheDocument();
   });
 
-  it('renders category icon', () => {
-    render(<CategoryCard category={mockCategory} />);
-    expect(screen.getByText('💻')).toBeInTheDocument();
-  });
-
   it('renders asset count badge', () => {
     render(<CategoryCard category={mockCategory} />);
     expect(screen.getByText('42')).toBeInTheDocument();
   });
 
-  it('displays first 3 asset types', () => {
+  it('displays all asset types without truncation', () => {
     render(<CategoryCard category={mockCategory} />);
     expect(screen.getByText('Scripts')).toBeInTheDocument();
     expect(screen.getByText('Frontend Components')).toBeInTheDocument();
     expect(screen.getByText('Backend Libraries')).toBeInTheDocument();
+    expect(screen.getByText('Development Frameworks')).toBeInTheDocument();
+    expect(screen.getByText('Open Source Projects')).toBeInTheDocument();
   });
 
-  it('shows +more indicator when more than 3 asset types', () => {
+  it('does not show +more indicator', () => {
     render(<CategoryCard category={mockCategory} />);
-    expect(screen.getByText('+2 more')).toBeInTheDocument();
-  });
-
-  it('does not show +more when 3 or fewer asset types', () => {
-    const categoryWith3Types = {
-      ...mockCategory,
-      assetTypes: ['Scripts', 'Frontend Components', 'Backend Libraries'],
-    };
-    render(<CategoryCard category={categoryWith3Types} />);
     expect(screen.queryByText(/\+\d+ more/)).not.toBeInTheDocument();
   });
 

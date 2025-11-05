@@ -1,7 +1,8 @@
 import Header from '@/components/layout/Header';
 import SearchBlock from '@/components/home/SearchBlock';
-import SolutionIntro from '@/components/home/SolutionIntro';
 import FourPillars from '@/components/home/FourPillars';
+import SolutionIntro from '@/components/home/SolutionIntro';
+import CategoryGrid from '@/components/home/CategoryGrid';
 
 export const metadata = {
   title: 'Axon - Asset Golden Index',
@@ -13,8 +14,9 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
       <SearchBlock />
-      <SolutionIntro />
       <FourPillars />
+      <SolutionIntro />
+      <CategoryGrid />
     </div>
   );
 }
