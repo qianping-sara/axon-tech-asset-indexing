@@ -2,146 +2,86 @@
 
 Welcome to Axon, your comprehensive technical asset discovery and management platform.
 
+
+
 ## 🎯 Platform Positioning
 
 ### The Problem
 
-When automation assets are scattered across disconnected systems (Bizagi, Gravitee, EA Platform, RPA Control Room, Confluence), developers waste time searching and often reinvent solutions that already exist. This leads to:
-
-- **Wasted Effort**: "Reinventing the wheel" violates the "Accelerate" objective
-- **Increased Costs**: Redundant work and higher maintenance burden
-- **Poor Decisions**: Lack of clear references and supporting tools for solution selection
-- **Visibility Gaps**: Business teams struggle to track system requirements and technical contributions
+> When automation assets are scattered across disconnected systems (Gravitee, EA Platform, Confluence...etc), developers waste time searching and often reinvent solutions that already exist. 
 
 ### The Solution: Your Unified Discovery Portal
 
-**Axon is the Golden Index for automation assets.** We don't replace your existing systems—we connect them, providing a **single search interface** to discover all automation capabilities across your organization.
+> **Axon is the Golden Index for automation assets.** We don't replace your existing systems—we connect them, providing a **single search interface** to discover all automation capabilities across your organization.
 
 ### Core Value Proposition
 
-- 🔍 **Contextual Search**: Search across all asset types and discover related assets with one click
-- 🛡️ **Trusted Metadata**: Indexed and linked data from your source systems
-- 📈 **Accelerate Delivery, Reduce Costs**: Reuse proven assets instead of rebuilding
+> - 🔍 **Contextual Search**: Search across all asset types and discover related assets with one click
+> - 🛡️ **Trusted Metadata**: Indexed and linked data from your source systems
+> - 📈 **Accelerate Delivery, Reduce Costs**: Reuse proven assets instead of rebuilding
 
 ### Key Differentiators
 
-**Unlike Gravitee (API Portal)**
-- Gravitee is the "System of Record" for APIs (publication, security, lifecycle)
-- Axon is the "System of Discovery" for automation—it answers "To implement this business process, which API, which RPA Bot, and which AI model should I use?"
-
-**Unlike Bizagi (Process Platform)**
-- Bizagi is the "System of Record" for business processes (modeling, execution, monitoring)
-- Axon links the "process steps" within Bizagi to the "technical assets" (APIs, Bots) that implement them
-
-**Unlike EA Platform (Architecture Management)**
-- EA Platform is the "System of Record" for architecture blueprints (top-down governance, L1-L5 models)
-- Axon is a "practical utility" for frontline developers—a bottom-up discovery tool focused on "what's available for reuse today"
+> **Unlike Gravitee (API Portal)**
+> - Gravitee is the "System of Record" for APIs (publication, security, lifecycle)
+> - Axon is the "System of Discovery" for automation—it answers "To implement this business process, which API, which RPA Bot, and which AI model should I use?"
+> 
+> **Unlike Sparx (Architecture modeling)**
+> - Sparx is the "System of Record" for architecture blueprints & modeling tool
+> - Axon is a "practical utility" for frontline developers—a bottom-up discovery tool focused on "what's available for reuse today"
 
 ## 📦 Asset Categories
 
 Axon manages **7 primary categories** of technical assets, each containing multiple asset types:
 
-### 1. **Code & Components**
-Reusable code modules, libraries, frameworks, and UI components
-- Scripts (Shell, Python, etc.)
-- Frontend Components (React, Vue, etc.)
-- Backend Libraries
-- Development Frameworks & SDKs
-- Open Source Projects
 
-### 2. **Services & APIs**
-Microservices, REST/GraphQL APIs, and integration services
-- REST APIs
-- GraphQL APIs
-- Microservices
-- Integration Services
+| Category | Asset Type | Description | Example |
+|---|---|---|---|
+| CODE_COMPONENTS | Scripts | Reusable automation scripts (Shell, Python, etc.) | "Deployment automation script" |
+| | Frontend Components | Reusable UI components (React, Vue, etc.) | "Shared Date Picker component" |
+| | Backend Libraries | Reusable backend modules and packages | "Shared Java library for policyholder verification" |
+| | Development Frameworks | SDKs, scaffolding, and development toolkits | "Development Framework, SDK" |
+| | Open Source Projects | Curated and approved open-source tools | "Curated list of approved Python libraries" |
+| SERVICES_APIS | REST APIs | HTTP-based services for system-to-system interaction | "Policy Basic Info API, Banking Detail Check API" |
+| | GraphQL APIs | Flexible query language APIs | "Mobile App Gateway API" |
+| | Microservices | Domain-driven services oriented to business scenarios | "Scenario driven domain API" |
+| | Integration Services | Middleware components connecting disparate systems | "ETL services" |
+| AI_ML_SERVICES | ML Models | Trained machine learning models for prediction/classification | "Fraud Detection Model", "Risk Scoring Model" |
+| | LLM Services | Large Language Model services and APIs | "Document Classification LLM", "Chatbot Service" |
+| | AI Agents | Autonomous AI agents for specific tasks | "Customer Service Agent", "Data Analysis Agent" |
+| | ML Pipelines | End-to-end ML workflows (training, evaluation, deployment) | "Model Training Pipeline", "Feature Engineering Pipeline" |
+| | Feature Stores | Centralized repositories for ML features | "Customer Features Store", "Transaction Features Store" |
+| AUTOMATION_WORKFLOWS | RPA Bots | Robotic Process Automation components | "RPA Bot" |
+| | No-Code Workflows | Low-code/no-code automation platforms | "Front-end Widget, No-code App, Plugin" |
+| | Business Processes | Business logic and process definitions (BPMN) | "Process/Subprocess module inventory (Bizagi)", "Revival Qualification rules" |
+| | Scheduled Jobs | Batch processing tasks | "Synchronizing data from Bancs to PVB+" |
+| DATA_ANALYTICS | Data Products | Standardized, governed datasets for business scenarios | "Data/Data product" |
+| | Data Schemas | Formal data structure definitions (JSON, Avro, etc.) | "Data Template, Data platform schema" |
+| | Datasets | Cleansed, curated foundational data collections | "Data Set" |
+| | Data Pipelines | ETL/ELT workflows for data movement and transformation | "Nightly pipeline from core systems to data warehouse" |
+| | Data Dictionaries | Centralized data element definitions and relationships | "Enterprise Data Dictionary for customer domain" |
+| ARCHITECTURE_GOVERNANCE | Reference Architectures | High-level technical architecture designs | "Automation CoE Blueprint" |
+| | Solution Patterns | Standardized designs for recurring business problems | "Revival Qualification Service Design, Partial STP Report (UI Design)" |
+| | Technology Stacks | Approved technology combinations for project types | "Standard Java Spring Boot stack" |
+| | Standards | Mandatory rules and specifications | "API Service Catalog, Data Schemas" |
+| | Principles | High-level direction statements | "Cloud-First", "CoE Vision Guiding Principles" |
+| | Checklists | Verifiable quality assurance lists | "Deployment Readiness Checklist", "Security Review Checklist" |
+| | Policies | Governance documents defining operating models | "CoE Governance Charter" |
+| | Decision Records | Immutable logs of architectural decisions | "ADR record" |
+| KNOWLEDGE_PRACTICES | SOPs | Step-by-step operational procedures | "SOP for new API deployment" |
+| | Playbooks | Strategic guides for complex tasks | "Process Optimization Playbook", "Opportunity Assessment Framework" |
+| | Best Practices | Curated principles and successful patterns | "Tool Selection Guide", "Selection criteria for Bizagi, Rule engine..." |
+| | Tutorials | Hands-on learning materials | "How to connect to the Policy API tutorial" |
+| | Quick Start Guides | Concise actionable instructions | "5-minute quick start for the development framework" |
 
-### 3. **AI/ML Services** ⭐
-Machine learning models, LLM services, and AI agents
-- ML Models (Fraud Detection, Risk Scoring, etc.)
-- LLM Services (Document Classification, Chatbots, etc.)
-- AI Agents
-- ML Pipelines
-- Feature Stores
-
-### 4. **Automation & Workflows**
-RPA bots, no-code workflows, and business processes
-- RPA Bots
-- No-Code Workflows
-- Business Processes (BPMN)
-- Scheduled Jobs
-
-### 5. **Data & Analytics**
-Datasets, data pipelines, schemas, and data products
-- Data Products
-- Data Schemas
-- Datasets
-- Data Pipelines (ETL/ELT)
-- Data Dictionaries
-
-### 6. **Architecture & Governance**
-Architecture designs, standards, policies, and governance documents
-- Reference Architectures
-- Solution Patterns
-- Technology Stacks
-- Standards & Specifications
-- Principles & Guidelines
-- Checklists
-- Policies
-- Decision Records (ADRs)
-
-### 7. **Knowledge & Practices**
-SOPs, playbooks, tutorials, and best practices
-- Standard Operating Procedures (SOPs)
-- Playbooks & Guides
-- Best Practices
-- Tutorials & Learning Materials
-- Quick Start Guides
+---
 
 ## 🎯 Key Features
 
-### 🔍 Search & Discovery
-- **Full-Text Search**: Search assets by name, description, or keywords
-- **Category Browsing**: Browse all assets within a specific category
-- **Tag Filtering**: Filter assets by tags for precise discovery
-- **Recently Updated**: Discover the latest and most recently updated assets
-- **Advanced Filtering**: Combine multiple filters for targeted searches
+-  Search & Discovery
+-  Asset Details
+-  Content as Code Workflow
 
-### 📋 Asset Details
-Each asset includes:
-- **Comprehensive Description**: Full Markdown-formatted documentation
-- **Metadata**: Version, status, owner, and creation/update dates
-- **Tags**: Categorization tags for easy filtering and discovery
-- **Asset Type**: Specific classification within the category
-- **Related Assets**: Links to related or dependent assets
-- **Version History**: Track changes and updates over time
-
-### 🔄 Content as Code Workflow
-- Assets are stored as **Markdown files** with YAML frontmatter
-- Changes are **version-controlled** via Git
-- Automatic **indexing and sync** via GitHub webhooks
-- **GitOps-friendly**: Manage assets through pull requests and code reviews
-
-## 🚀 How to Use Axon
-
-### 1. **Browse by Category**
-Start on the home page and explore assets organized by category. Click on any category card to see all assets within that category.
-
-### 2. **Search for Specific Assets**
-Use the search bar at the top to find assets by name or keyword. Results are filtered in real-time as you type.
-
-### 3. **Discover New Assets**
-Visit the **Discover** page to see recently updated assets and trending content in your organization.
-
-### 4. **View Asset Details**
-Click on any asset to view its full details, including:
-- Complete documentation
-- Associated tags and metadata
-- Related assets
-- Version information
-
-### 5. **Filter by Tags**
-Use tags to narrow down results and find assets relevant to your specific needs (e.g., "Python", "REST API", "Real-time").
 
 ## 💡 Tips & Best Practices
 
@@ -170,4 +110,5 @@ For more information or support:
 - Check the asset documentation for detailed usage instructions
 - Contact your team administrator
 - Refer to the asset owner listed in the metadata
+
 
