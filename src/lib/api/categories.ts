@@ -125,6 +125,7 @@ export async function getCategoryStats() {
       return {
         name: category,
         description: CATEGORY_METADATA[category].description,
+        assetCount: total,
         total,
         published,
         draft,
