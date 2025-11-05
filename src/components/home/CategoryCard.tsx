@@ -55,7 +55,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
 export default function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link href={`/search?category=${encodeURIComponent(category.name)}`}>
-      <div className="p-5 bg-white hover:bg-gray-50 transition-colors cursor-pointer border-b border-r border-gray-200 last:border-b-0 last:border-r-0 odd:border-r-0 lg:odd:border-r">
+      <div className="h-32 p-5 bg-white hover:bg-gray-50 transition-colors cursor-pointer flex flex-col justify-between">
         {/* Header with Icon and Count */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3 flex-1">

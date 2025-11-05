@@ -78,9 +78,11 @@ export default function CategoryGrid({ showTitle = true, showSection = true }: C
           <p className="text-gray-500">Loading categories...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border border-gray-200 rounded-lg overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 border border-gray-200 rounded-lg overflow-hidden p-6">
           {categories.map((category) => (
-            <CategoryCard key={category.name} category={category} />
+            <div key={category.name} className="border border-gray-200 rounded-lg overflow-hidden">
+              <CategoryCard category={category} />
+            </div>
           ))}
         </div>
       )}
