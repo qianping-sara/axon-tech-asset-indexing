@@ -103,15 +103,11 @@ export default function RecentlyUpdatedAssets() {
                     <h3 className="text-base font-semibold text-gray-900 flex-1 line-clamp-2">
                       {asset.name}
                     </h3>
-                    <a
-                      href={`/search?q=${encodeURIComponent(asset.name)}`}
-                      className="text-gray-400 hover:text-gray-600 flex-shrink-0 mt-0.5"
-                      onClick={(e) => e.preventDefault()}
-                    >
+                    <div className="text-gray-400 flex-shrink-0 mt-0.5">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
-                    </a>
+                    </div>
                   </div>
 
                   {/* Category Badge */}
