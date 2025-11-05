@@ -155,8 +155,10 @@ export function extractAssetNameFromPath(filePath: string): string {
 
 /**
  * 从文件系统读取并解析 Markdown 文件
+ * 文件应该存储在 public/assets/ 目录下
+ *
  * @param contentPath - 相对于项目根目录的文件路径
- *                     例如: "app/assets/services/rest-apis/policy-api.md"
+ *                     例如: "public/assets/services/rest-apis/policy-api.md"
  * @returns 解析后的 Markdown 内容（包含 frontmatter 和 content）
  * @throws 如果文件不存在或解析失败
  */
