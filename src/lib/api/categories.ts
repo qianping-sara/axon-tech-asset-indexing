@@ -56,7 +56,7 @@ export async function getCategories() {
   const categories = Object.values(Category) as Category[];
 
   // Get asset counts for each category
-  const counts = await prisma.asset.groupBy({
+  const counts = await prisma.axon_asset.groupBy({
     by: ['category'],
     _count: {
       id: true,
@@ -85,7 +85,7 @@ export async function getCategoryDetail(categoryName: string): Promise<CategoryD
   const category = categoryName as Category;
 
   // Get assets in this category
-  const assets = await prisma.asset.findMany({
+  const assets = await prisma.axon_asset.findMany({
     where: { category },
     select: {
       id: true,
@@ -115,11 +115,11 @@ export async function getCategoryStats() {
   const stats = await Promise.all(
     categories.map(async (category) => {
       const [total, published, draft, deprecated, archived] = await Promise.all([
-        prisma.asset.count({ where: { category } }),
-        prisma.asset.count({ where: { category, status: 'PUBLISHED' } }),
-        prisma.asset.count({ where: { category, status: 'DRAFT' } }),
-        prisma.asset.count({ where: { category, status: 'DEPRECATED' } }),
-        prisma.asset.count({ where: { category, status: 'ARCHIVED' } }),
+        prisma.axon_asset.count({ where: { category } }),
+        prisma.axon_asset.count({ where: { category, status: 'PUBLISHED' } }),
+        prisma.axon_asset.count({ where: { category, status: 'DRAFT' } }),
+        prisma.axon_asset.count({ where: { category, status: 'DEPRECATED' } }),
+        prisma.axon_asset.count({ where: { category, status: 'ARCHIVED' } }),
       ]);
 
       return {
