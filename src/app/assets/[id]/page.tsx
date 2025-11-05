@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import Header from '@/components/layout/Header';
+import MarkdownRenderer from '@/components/markdown/MarkdownRenderer';
 
 interface Tag {
   id: string;
@@ -40,6 +41,8 @@ export default function AssetDetailPage() {
   const [asset, setAsset] = useState<Asset | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [markdownContent, setMarkdownContent] = useState<string | null>(null);
+  const [contentLoading, setContentLoading] = useState(false);
 
   useEffect(() => {
     const fetchAsset = async () => {
@@ -67,6 +70,27 @@ export default function AssetDetailPage() {
       fetchAsset();
     }
   }, [assetId]);
+
+  // 加载 markdown 内容
+  useEffect(() => {
+    if (asset?.contentPath) {
+      const fetchContent = async () => {
+        try {
+          setContentLoading(true);
+          const response = await fetch(`/api/assets/${assetId}/content`);
+          const data = await response.json();
+          if (data.success && data.data?.content) {
+            setMarkdownContent(data.data.content);
+          }
+        } catch (err) {
+          console.error('Failed to fetch markdown:', err);
+        } finally {
+          setContentLoading(false);
+        }
+      };
+      fetchContent();
+    }
+  }, [assetId, asset?.contentPath]);
 
   if (loading) {
     return (
@@ -179,13 +203,17 @@ export default function AssetDetailPage() {
               </div>
             )}
 
-            {/* Content Details - Placeholder for markdown rendering */}
+            {/* Content Details - Markdown rendering */}
             {asset.contentPath && (
               <div className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Details</h2>
-                <p className="text-gray-500 text-sm">
-                  Content rendering will be implemented here (contentPath: {asset.contentPath})
-                </p>
+                {contentLoading ? (
+                  <p className="text-gray-500 text-sm">Loading content...</p>
+                ) : markdownContent ? (
+                  <MarkdownRenderer content={markdownContent} />
+                ) : (
+                  <p className="text-gray-500 text-sm">No details available</p>
+                )}
               </div>
             )}
           </div>

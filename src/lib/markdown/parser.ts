@@ -2,6 +2,8 @@
  * Markdown file parser with Frontmatter extraction
  */
 
+import fs from 'fs';
+import path from 'path';
 import matter from 'gray-matter';
 
 export interface ParsedMarkdown {
@@ -149,5 +151,35 @@ export function extractCategoryFromPath(filePath: string): string | null {
 export function extractAssetNameFromPath(filePath: string): string {
   const fileName = filePath.split('/').pop() || '';
   return fileName.replace(/\.md$/, '');
+}
+
+/**
+ * 从文件系统读取并解析 Markdown 文件
+ * @param contentPath - 相对于项目根目录的文件路径
+ *                     例如: "app/assets/services/rest-apis/policy-api.md"
+ * @returns 解析后的 Markdown 内容（包含 frontmatter 和 content）
+ * @throws 如果文件不存在或解析失败
+ */
+export async function parseMarkdownFileFromDisk(
+  contentPath: string
+): Promise<ParsedMarkdown> {
+  try {
+    // 构建完整的文件路径
+    const filePath = path.join(process.cwd(), contentPath);
+
+    // 检查文件是否存在
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File not found: ${contentPath}`);
+    }
+
+    // 读取文件内容
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+    // 使用现有的 parseMarkdown 函数解析
+    return parseMarkdown(fileContent);
+  } catch (error) {
+    console.error('Error parsing markdown file:', error);
+    throw error;
+  }
 }
 
