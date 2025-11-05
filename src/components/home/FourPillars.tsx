@@ -30,22 +30,22 @@ const pillars = [
 // Minimalist SVG icons
 const icons: Record<string, React.ReactNode> = {
   shield: (
-    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   ),
   zap: (
-    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
     </svg>
   ),
   'trending-up': (
-    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
     </svg>
   ),
   search: (
-    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
     </svg>
   ),
@@ -53,37 +53,37 @@ const icons: Record<string, React.ReactNode> = {
 
 export default function FourPillars() {
   return (
-    <section className="bg-white py-16 md:py-20">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="bg-white py-20 md:py-24">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Title */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Built on Four Pillars
           </h2>
-          <p className="text-gray-600 text-sm md:text-base">
+          <p className="text-gray-600 text-base">
             Our vision for horizontal technical asset management
           </p>
         </div>
 
         {/* Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {pillars.map((pillar) => (
             <div
               key={pillar.id}
-              className="p-6 bg-white rounded-lg border border-gray-200 hover:shadow-sm transition-shadow flex flex-col items-center text-center"
+              className="p-8 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow flex flex-col h-full"
             >
               {/* Icon */}
-              <div className="mb-4 p-3 bg-green-50 rounded-lg flex items-center justify-center">
+              <div className="mb-6 flex-shrink-0">
                 {icons[pillar.icon]}
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 {pillar.title}
               </h3>
 
               {/* Description */}
-              <p className="text-xs text-gray-600 leading-relaxed">
+              <p className="text-sm text-gray-600 leading-relaxed flex-grow">
                 {pillar.description}
               </p>
             </div>
