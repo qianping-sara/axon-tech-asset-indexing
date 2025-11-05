@@ -91,7 +91,7 @@ export default function SearchBlock() {
             </div>
             <button
               type="submit"
-              className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm"
+              className="px-8 py-3 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-medium text-sm"
             >
               Search
             </button>

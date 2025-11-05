@@ -10,7 +10,7 @@ export default function Header() {
           {/* Logo and App Name - Left Side */}
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center">
+              <div className="w-8 h-8 bg-green-700 rounded flex items-center justify-center">
                 <span className="text-white font-bold text-sm">A</span>
               </div>
               <span className="text-base font-semibold text-gray-900">Axon</span>
