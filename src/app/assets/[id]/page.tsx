@@ -189,31 +189,35 @@ export default function AssetDetailPage() {
             {/* Tags */}
             {asset.axon_asset_tag && asset.axon_asset_tag.length > 0 && (
               <div className="mb-6">
-                <h2 className="text-base font-semibold text-gray-900 mb-3">Tags</h2>
-                <div className="flex flex-wrap gap-2">
-                  {asset.axon_asset_tag.map((assetTag) => (
-                    <span
-                      key={assetTag.axon_tag.id}
-                      className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded"
-                    >
-                      {assetTag.axon_tag.name}
-                    </span>
-                  ))}
+                <div className="flex items-center gap-3 mb-3">
+                  <h2 className="text-base font-semibold text-gray-900">Tags</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {asset.axon_asset_tag.map((assetTag) => (
+                      <span
+                        key={assetTag.axon_tag.id}
+                        className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+                      >
+                        {assetTag.axon_tag.name}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
 
             {/* Content Details - Markdown rendering */}
             {asset.contentPath && (
-              <div className="mb-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Details</h2>
-                {contentLoading ? (
-                  <p className="text-gray-500 text-sm">Loading content...</p>
-                ) : markdownContent ? (
-                  <MarkdownRenderer content={markdownContent} />
-                ) : (
-                  <p className="text-gray-500 text-sm">No details available</p>
-                )}
+              <div className="mb-8">
+                <h2 className="text-base font-semibold text-gray-900 mb-3">Details</h2>
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                  {contentLoading ? (
+                    <p className="text-gray-500 text-sm">Loading content...</p>
+                  ) : markdownContent ? (
+                    <MarkdownRenderer content={markdownContent} />
+                  ) : (
+                    <p className="text-gray-500 text-sm">No details available</p>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -226,27 +230,27 @@ export default function AssetDetailPage() {
               {/* Owner */}
               {asset.owner && (
                 <div className="mb-4 pb-4 border-b border-gray-200">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
+                  <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-1">
                     Owner
                   </p>
-                  <p className="text-sm text-gray-900">{asset.owner}</p>
+                  <p className="text-sm text-gray-700">{asset.owner}</p>
                 </div>
               )}
 
               {/* Source System */}
               {asset.sourceSystem && (
                 <div className="mb-4 pb-4 border-b border-gray-200">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
+                  <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-1">
                     Source System
                   </p>
-                  <p className="text-sm text-gray-900">{asset.sourceSystem}</p>
+                  <p className="text-sm text-gray-700">{asset.sourceSystem}</p>
                 </div>
               )}
 
               {/* Source Link */}
               {asset.sourceLink && (
                 <div className="mb-4 pb-4 border-b border-gray-200">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
+                  <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-1">
                     Source Link
                   </p>
                   <a
@@ -262,18 +266,18 @@ export default function AssetDetailPage() {
 
               {/* Created Date */}
               <div className="mb-4 pb-4 border-b border-gray-200">
-                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
+                <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-1">
                   Created
                 </p>
-                <p className="text-sm text-gray-900">{formattedCreatedDate}</p>
+                <p className="text-sm text-gray-700">{formattedCreatedDate}</p>
               </div>
 
               {/* Updated Date */}
               <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
+                <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-1">
                   Last Updated
                 </p>
-                <p className="text-sm text-gray-900">{formattedUpdatedDate}</p>
+                <p className="text-sm text-gray-700">{formattedUpdatedDate}</p>
               </div>
             </div>
           </div>
