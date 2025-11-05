@@ -105,7 +105,7 @@ export default function SolutionWithPillars() {
 
             {/* CTA Button */}
             <a
-              href="/search"
+              href="/discover"
               className="inline-flex items-center gap-2 px-6 py-3 bg-green-700 text-white font-medium rounded-lg hover:bg-green-800 transition-colors w-fit"
             >
               Start Discovering Assets

@@ -34,7 +34,7 @@ describe('SolutionWithPillars Component', () => {
     render(<SolutionWithPillars />);
     const button = screen.getByText('Start Discovering Assets');
     expect(button).toBeInTheDocument();
-    expect(button.closest('a')).toHaveAttribute('href', '/search');
+    expect(button.closest('a')).toHaveAttribute('href', '/discover');
   });
 
   it('renders all four pillars', () => {
