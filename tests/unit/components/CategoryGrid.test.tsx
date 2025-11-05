@@ -90,14 +90,14 @@ describe('CategoryGrid Component', () => {
     });
   });
 
-  it('has gray background', () => {
+  it('has white background', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       json: async () => ({ success: true, data: [] }),
     });
-    
+
     const { container } = render(<CategoryGrid />);
     const section = container.querySelector('section');
-    expect(section).toHaveClass('bg-gray-50');
+    expect(section).toHaveClass('bg-white');
   });
 });
 
