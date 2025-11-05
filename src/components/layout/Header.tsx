@@ -1,8 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
+  const pathname = usePathname();
+  const isDiscoverActive = pathname === '/discover';
+
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-3">
@@ -18,8 +22,12 @@ export default function Header() {
 
             {/* Navigation - Discover */}
             <Link
-              href="/search"
-              className="text-gray-700 text-sm hover:text-gray-900 transition-colors ml-6"
+              href="/discover"
+              className={`text-sm transition-colors ml-6 pb-2 border-b-2 ${
+                isDiscoverActive
+                  ? 'text-gray-900 border-gray-900 font-medium'
+                  : 'text-gray-700 border-transparent hover:text-gray-900'
+              }`}
             >
               Discover
             </Link>
