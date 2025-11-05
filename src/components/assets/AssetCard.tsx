@@ -31,7 +31,7 @@ export default function AssetCard({ asset }: AssetCardProps) {
     <Link href={`/assets/${asset.id}`}>
       <div className="h-full p-5 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all cursor-pointer flex flex-col">
         {/* Header with Title and Icons */}
-        <div className="flex items-start justify-between gap-3 mb-2">
+        <div className="flex items-start justify-between gap-3 mb-1">
           <h3 className="text-base font-bold text-gray-800 flex-1 line-clamp-2">
             {asset.name}
           </h3>
@@ -58,20 +58,20 @@ export default function AssetCard({ asset }: AssetCardProps) {
         </div>
 
         {/* Category and Asset Type Badges */}
-        <div className="flex flex-wrap gap-2 mb-3">
-          <span className="inline-block px-2.5 py-1 rounded text-xs font-semibold bg-green-700 text-white">
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-green-700 text-white">
             {asset.category}
           </span>
-          <span className="inline-block px-2.5 py-1 rounded text-xs font-semibold bg-orange-500 text-white">
+          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500 text-white">
             {asset.assetType}
           </span>
-          <span className="inline-block px-2.5 py-1 rounded text-xs font-semibold bg-white border border-gray-300 text-gray-700">
+          <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-white border border-gray-300 text-gray-700">
             {asset.version}
           </span>
         </div>
 
         {/* Description */}
-        <p className="text-sm text-gray-700 mb-3 line-clamp-2 flex-grow">
+        <p className="text-sm text-gray-700 mb-4 line-clamp-2 flex-grow">
           {asset.description}
         </p>
 
@@ -98,9 +98,9 @@ export default function AssetCard({ asset }: AssetCardProps) {
         <div className="flex items-center justify-between text-xs text-gray-600 pt-3 border-t border-gray-100">
           <div className="flex items-center gap-3">
             {asset.owner && (
-              <span>{asset.owner}</span>
+              <span>Owner: <span className="text-gray-700">{asset.owner}</span></span>
             )}
-            <span>Status: {asset.status}</span>
+            <span>Status: <span className="text-gray-700">{asset.status}</span></span>
           </div>
           <span>{formattedDate}</span>
         </div>
