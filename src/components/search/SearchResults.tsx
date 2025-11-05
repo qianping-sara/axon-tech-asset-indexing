@@ -15,6 +15,7 @@ interface Asset {
   version: string;
   status: string;
   owner?: string;
+  sourceLink?: string;
   updatedAt: Date | string;
   axon_asset_tag?: Array<{ id: string; name: string }>;
 }

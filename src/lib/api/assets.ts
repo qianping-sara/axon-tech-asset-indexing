@@ -75,6 +75,7 @@ export async function getAssets(
         version: true,
         status: true,
         owner: true,
+        sourceLink: true,
         updatedAt: true,
         axon_asset_tag: {
           select: {
