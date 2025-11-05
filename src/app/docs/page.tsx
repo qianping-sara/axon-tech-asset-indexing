@@ -31,17 +31,9 @@ export default function DocsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-green-50 to-green-100 border-b border-green-200">
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Documentation</h1>
-          <p className="text-gray-600">Learn how to use Axon to manage your automation assets</p>
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-white pt-16">
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-4xl mx-auto px-6 py-8">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
