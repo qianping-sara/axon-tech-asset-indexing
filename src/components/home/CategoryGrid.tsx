@@ -14,7 +14,9 @@ interface CategoryWithStats {
 }
 
 export default function CategoryGrid() {
-  const [categories, setCategories] = useState<CategoryWithStats[]>([]);
+  const [categories, setCategories] = useState<CategoryWithStats[]>(
+    CATEGORIES.map((cat) => ({ ...cat, assetCount: 0 }))
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

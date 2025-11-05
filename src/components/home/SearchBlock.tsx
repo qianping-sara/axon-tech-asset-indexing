@@ -6,7 +6,11 @@ import { useRouter } from 'next/navigation';
 interface Tag {
   id: string;
   name: string;
-  count: number;
+  description: string | null;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+  assetCount: number;
 }
 
 export default function SearchBlock() {
