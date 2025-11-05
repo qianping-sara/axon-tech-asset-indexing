@@ -15,7 +15,7 @@ export async function searchAssets(
   const searchTerm = query.trim();
 
   // Search assets
-  const assets = await prisma.asset.findMany({
+  const assets = await prisma.axon_asset.findMany({
     where: {
       OR: [
         { name: { contains: searchTerm, mode: 'insensitive' } },
@@ -33,7 +33,7 @@ export async function searchAssets(
   });
 
   // Search tags
-  const tags = await prisma.tag.findMany({
+  const tags = await prisma.axon_tag.findMany({
     where: {
       OR: [
         { name: { contains: searchTerm, mode: 'insensitive' } },
@@ -118,7 +118,7 @@ export async function getSearchSuggestions(
   const searchTerm = query.trim();
 
   // Get asset names
-  const assetNames = await prisma.asset.findMany({
+  const assetNames = await prisma.axon_asset.findMany({
     where: {
       name: { contains: searchTerm, mode: 'insensitive' },
     },
@@ -130,7 +130,7 @@ export async function getSearchSuggestions(
   });
 
   // Get tag names
-  const tagNames = await prisma.tag.findMany({
+  const tagNames = await prisma.axon_tag.findMany({
     where: {
       name: { contains: searchTerm, mode: 'insensitive' },
     },

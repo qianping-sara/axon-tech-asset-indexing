@@ -133,7 +133,7 @@ export async function syncAssetFile(
   const { metadata } = parsed;
 
   // Check if asset already exists
-  const existingAsset = await prisma.asset.findFirst({
+  const existingAsset = await prisma.axon_asset.findFirst({
     where: {
       contentPath: filePath,
     },
@@ -146,7 +146,7 @@ export async function syncAssetFile(
     }
 
     // Update existing asset
-    await prisma.asset.update({
+    await prisma.axon_asset.update({
       where: { id: existingAsset.id },
       data: {
         name: metadata.name,
@@ -165,7 +165,7 @@ export async function syncAssetFile(
   }
 
   // Create new asset
-  await prisma.asset.create({
+  await prisma.axon_asset.create({
     data: {
       name: metadata.name,
       description: metadata.description,
@@ -188,12 +188,12 @@ export async function syncAssetFile(
  * Delete asset by file path
  */
 export async function deleteAssetByPath(filePath: string): Promise<void> {
-  const asset = await prisma.asset.findFirst({
+  const asset = await prisma.axon_asset.findFirst({
     where: { contentPath: filePath },
   });
 
   if (asset) {
-    await prisma.asset.delete({
+    await prisma.axon_asset.delete({
       where: { id: asset.id },
     });
   }
@@ -203,15 +203,15 @@ export async function deleteAssetByPath(filePath: string): Promise<void> {
  * Get sync status
  */
 export async function getSyncStatus() {
-  const totalAssets = await prisma.asset.count();
-  const publishedAssets = await prisma.asset.count({
+  const totalAssets = await prisma.axon_asset.count();
+  const publishedAssets = await prisma.axon_asset.count({
     where: { status: 'PUBLISHED' },
   });
-  const draftAssets = await prisma.asset.count({
+  const draftAssets = await prisma.axon_asset.count({
     where: { status: 'DRAFT' },
   });
 
-  const lastAsset = await prisma.asset.findFirst({
+  const lastAsset = await prisma.axon_asset.findFirst({
     orderBy: { updatedAt: 'desc' },
     select: { updatedAt: true },
   });

@@ -79,7 +79,7 @@ export async function GET() {
     const { prisma } = await import('@/lib/db/client');
 
     // Try to query the database
-    const assetCount = await prisma.asset.count();
+    const assetCount = await prisma.axon_asset.count();
 
     return NextResponse.json(
       {
