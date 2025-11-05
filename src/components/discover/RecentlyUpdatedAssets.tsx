@@ -84,7 +84,7 @@ export default function RecentlyUpdatedAssets() {
           </p>
         </div>
 
-        {/* Assets Grid */}
+        {/* Assets Grid - 2 columns layout */}
         {loading ? (
           <div className="flex justify-center items-center py-12">
             <p className="text-gray-500">Loading assets...</p>
@@ -94,21 +94,21 @@ export default function RecentlyUpdatedAssets() {
             <p className="text-gray-500">{error}</p>
           </div>
         ) : assets.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {assets.map((asset) => (
               <Link key={asset.id} href={`/search?q=${encodeURIComponent(asset.name)}`}>
-                <div className="h-full p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all cursor-pointer">
-                  {/* Header with Title and Category Badge */}
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-gray-900 flex-1 line-clamp-2">
+                <div className="h-full p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all cursor-pointer flex flex-col">
+                  {/* Header with Title and External Link Icon */}
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <h3 className="text-base font-semibold text-gray-900 flex-1 line-clamp-2">
                       {asset.name}
                     </h3>
                     <a
                       href={`/search?q=${encodeURIComponent(asset.name)}`}
-                      className="ml-2 text-gray-400 hover:text-gray-600 flex-shrink-0"
+                      className="text-gray-400 hover:text-gray-600 flex-shrink-0 mt-0.5"
                       onClick={(e) => e.preventDefault()}
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
@@ -122,14 +122,14 @@ export default function RecentlyUpdatedAssets() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
                     {asset.description}
                   </p>
 
                   {/* Tags */}
                   {asset.axon_asset_tag && asset.axon_asset_tag.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {asset.axon_asset_tag.slice(0, 3).map((tag) => (
+                      {asset.axon_asset_tag.slice(0, 2).map((tag) => (
                         <span
                           key={tag.id}
                           className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
@@ -137,9 +137,9 @@ export default function RecentlyUpdatedAssets() {
                           {tag.name}
                         </span>
                       ))}
-                      {asset.axon_asset_tag.length > 3 && (
+                      {asset.axon_asset_tag.length > 2 && (
                         <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                          +{asset.axon_asset_tag.length - 3}
+                          +{asset.axon_asset_tag.length - 2}
                         </span>
                       )}
                     </div>
