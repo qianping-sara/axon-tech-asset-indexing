@@ -66,14 +66,19 @@ export const ASSET_TYPES: Record<string, string[]> = {
 // Asset Status
 export const ASSET_STATUS = ['DRAFT', 'PUBLISHED', 'DEPRECATED', 'ARCHIVED'] as const;
 
-// Relation Types
+// Relation Types (ArchiMate 3.x Standard)
 export const RELATION_TYPES = [
-  'USES',
-  'IMPLEMENTS',
-  'EXTENDS',
-  'RELATED_TO',
-  'DEPENDS_ON',
-  'SUPERSEDES',
+  // Structural Relationships
+  'COMPOSITION',   // Strong lifecycle dependency
+  'AGGREGATION',   // Weak lifecycle dependency
+  'ASSIGNMENT',    // Allocation of responsibility/behavior/storage
+  'REALIZATION',   // Concrete implementation of abstract element
+
+  // Dependency Relationships
+  'SERVING',       // Provides functionality to another element
+  'ACCESS',        // Accesses passive elements
+  'INFLUENCE',     // Affects implementation/achievement
+  'ASSOCIATION',   // Unspecified relationship
 ] as const;
 
 // Pagination

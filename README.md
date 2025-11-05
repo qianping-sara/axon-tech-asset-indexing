@@ -112,9 +112,11 @@ npm run prisma:studio    # Open Prisma Studio
 - **AssetVersion**: Version history tracking
 
 ### Enums
-- **Category**: 6 asset categories
+- **Category**: 7 asset categories
 - **Status**: DRAFT, PUBLISHED, DEPRECATED, ARCHIVED
-- **RelationType**: USES, IMPLEMENTS, EXTENDS, RELATED_TO, DEPENDS_ON, SUPERSEDES
+- **RelationType**: 8 ArchiMate relationship types
+  - **Structural**: COMPOSITION, AGGREGATION, ASSIGNMENT, REALIZATION
+  - **Dependency**: SERVING, ACCESS, INFLUENCE, ASSOCIATION
 
 ## 📝 Asset Categories
 

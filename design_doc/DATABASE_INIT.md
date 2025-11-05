@@ -184,7 +184,7 @@ axon_asset (main record)
 | `id` | TEXT | PRIMARY KEY | Unique relation identifier |
 | `fromAssetId` | TEXT | FOREIGN KEY | Source asset |
 | `toAssetId` | TEXT | FOREIGN KEY | Target asset |
-| `relationType` | RelationType ENUM | NOT NULL | Type of relationship (6 types) |
+| `relationType` | RelationType ENUM | NOT NULL | Type of relationship (8 ArchiMate types) |
 | `createdAt` | TIMESTAMP | DEFAULT: NOW() | Creation timestamp |
 | `updatedAt` | TIMESTAMP | NOT NULL | Last update timestamp |
 
@@ -197,13 +197,26 @@ axon_asset (main record)
 - `fromAssetId` - Find outgoing relations
 - `toAssetId` - Find incoming relations
 
-**Relation Types**:
-- `DEPENDS_ON` - Asset A depends on Asset B
-- `USED_BY` - Asset A is used by Asset B
-- `RELATED_TO` - Asset A is related to Asset B
-- `EXTENDS` - Asset A extends Asset B
-- `IMPLEMENTS` - Asset A implements Asset B
-- `REFERENCES` - Asset A references Asset B
+**Relation Types** (ArchiMate 3.x Standard):
+
+**Structural Relationships**:
+- `COMPOSITION` - A is composed of B (strong lifecycle dependency)
+- `AGGREGATION` - A aggregates B (weak lifecycle dependency)
+- `ASSIGNMENT` - A is assigned to B (allocation of responsibility/behavior/storage)
+- `REALIZATION` - A realizes/implements B (concrete implementation of abstract element)
+
+**Dependency Relationships**:
+- `SERVING` - A serves/provides functionality to B
+- `ACCESS` - A accesses/uses B (active element accesses passive element)
+- `INFLUENCE` - A influences B's implementation/achievement
+- `ASSOCIATION` - Unspecified relationship between A and B
+
+**Usage Examples**:
+- API-1 calls API-2: `API-1 SERVING API-2` (API-1 serves API-2)
+- Process uses API: `Process ACCESS API` (Process accesses API)
+- SOP guides Process: `SOP REALIZATION Process` (SOP realizes/implements process)
+- Architecture Blueprint guides API: `API REALIZATION ArchitectureBlueprint` (API implements blueprint)
+- Architecture Principle guides ADR: `ADR REALIZATION Principle` (ADR implements principle)
 
 ---
 

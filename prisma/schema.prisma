@@ -102,12 +102,17 @@ enum Category {
 }
 
 enum RelationType {
-  DEPENDS_ON
-  USED_BY
-  RELATED_TO
-  EXTENDS
-  IMPLEMENTS
-  REFERENCES
+  // Structural Relationships
+  COMPOSITION  // Strong lifecycle dependency (A is composed of B)
+  AGGREGATION  // Weak lifecycle dependency (A aggregates B)
+  ASSIGNMENT   // Allocation of responsibility/behavior/storage
+  REALIZATION  // A realizes/implements B (concrete implementation of abstract)
+
+  // Dependency Relationships
+  SERVING      // A serves/provides functionality to B
+  ACCESS       // A accesses/uses B (active element accesses passive element)
+  INFLUENCE    // A influences B's implementation/achievement
+  ASSOCIATION  // Unspecified relationship
 }
 
 enum Status {
