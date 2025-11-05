@@ -14,6 +14,7 @@ interface Asset {
   assetType: string;
   version: string;
   status: string;
+  owner?: string;
   updatedAt: Date | string;
   axon_asset_tag?: Array<{ id: string; name: string }>;
 }
