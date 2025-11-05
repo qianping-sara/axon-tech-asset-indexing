@@ -2,6 +2,7 @@
 export const ASSET_CATEGORIES = [
   'CODE_COMPONENTS',
   'SERVICES_APIS',
+  'AI_ML_SERVICES',
   'AUTOMATION_WORKFLOWS',
   'DATA_ANALYTICS',
   'ARCHITECTURE_GOVERNANCE',
@@ -22,7 +23,13 @@ export const ASSET_TYPES: Record<string, string[]> = {
     'GraphQL API',
     'Microservice',
     'Integration Service',
-    'AI/ML Service',
+  ],
+  AI_ML_SERVICES: [
+    'ML Model',
+    'LLM Service',
+    'AI Agent',
+    'ML Pipeline',
+    'Feature Store',
   ],
   AUTOMATION_WORKFLOWS: [
     'RPA Bot',

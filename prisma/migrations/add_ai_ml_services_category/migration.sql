@@ -1,0 +1,3 @@
+-- Add AI_ML_SERVICES to Category enum
+ALTER TYPE "Category" ADD VALUE 'AI_ML_SERVICES' AFTER 'SERVICES_APIS';
+

@@ -31,6 +31,10 @@ const CATEGORY_METADATA: Record<Category, { description: string; icon?: string }
     description: 'REST APIs, GraphQL endpoints, microservices, and web services',
     icon: '🔌',
   },
+  AI_ML_SERVICES: {
+    description: 'Machine learning models, LLM services, AI agents, ML pipelines, and feature stores',
+    icon: '🤖',
+  },
   AUTOMATION_WORKFLOWS: {
     description: 'RPA bots, workflows, processes, and automation scripts',
     icon: '⚙️',
