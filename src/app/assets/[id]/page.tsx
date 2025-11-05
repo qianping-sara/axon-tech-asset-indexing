@@ -151,16 +151,16 @@ export default function AssetDetailPage() {
 
           {/* Badges */}
           <div className="flex flex-wrap gap-2 mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-green-700 text-white">
+            <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-700 text-white">
               {asset.category}
             </span>
-            <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-orange-500 text-white">
+            <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500 text-white">
               {asset.assetType}
             </span>
-            <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-white border border-gray-300 text-gray-700">
+            <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-white border border-gray-300 text-gray-700">
               {asset.version}
             </span>
-            <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+            <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${
               asset.status === 'PUBLISHED'
                 ? 'bg-green-100 text-green-700'
                 : asset.status === 'DRAFT'
@@ -179,22 +179,22 @@ export default function AssetDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Description */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Description</h2>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+            <div className="mb-6">
+              <h2 className="text-base font-semibold text-gray-900 mb-3">Description</h2>
+              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                 {asset.description}
               </p>
             </div>
 
             {/* Tags */}
             {asset.axon_asset_tag && asset.axon_asset_tag.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Tags</h2>
+              <div className="mb-6">
+                <h2 className="text-base font-semibold text-gray-900 mb-3">Tags</h2>
                 <div className="flex flex-wrap gap-2">
                   {asset.axon_asset_tag.map((assetTag) => (
                     <span
                       key={assetTag.axon_tag.id}
-                      className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded"
+                      className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded"
                     >
                       {assetTag.axon_tag.name}
                     </span>
@@ -205,8 +205,8 @@ export default function AssetDetailPage() {
 
             {/* Content Details - Markdown rendering */}
             {asset.contentPath && (
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Details</h2>
+              <div className="mb-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Details</h2>
                 {contentLoading ? (
                   <p className="text-gray-500 text-sm">Loading content...</p>
                 ) : markdownContent ? (
@@ -221,39 +221,39 @@ export default function AssetDetailPage() {
           {/* Sidebar - Overview Information */}
           <div className="lg:col-span-1">
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Overview</h3>
+              <h3 className="text-base font-semibold text-gray-900 mb-4">Overview</h3>
 
               {/* Owner */}
               {asset.owner && (
-                <div className="mb-6">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                <div className="mb-4 pb-4 border-b border-gray-200">
+                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
                     Owner
                   </p>
-                  <p className="text-gray-900">{asset.owner}</p>
+                  <p className="text-sm text-gray-900">{asset.owner}</p>
                 </div>
               )}
 
               {/* Source System */}
               {asset.sourceSystem && (
-                <div className="mb-6">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                <div className="mb-4 pb-4 border-b border-gray-200">
+                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
                     Source System
                   </p>
-                  <p className="text-gray-900">{asset.sourceSystem}</p>
+                  <p className="text-sm text-gray-900">{asset.sourceSystem}</p>
                 </div>
               )}
 
               {/* Source Link */}
               {asset.sourceLink && (
-                <div className="mb-6">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                <div className="mb-4 pb-4 border-b border-gray-200">
+                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
                     Source Link
                   </p>
                   <a
                     href={asset.sourceLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-green-700 hover:text-green-800 break-all text-sm underline"
+                    className="text-green-700 hover:text-green-800 break-all text-xs underline"
                   >
                     {asset.sourceLink}
                   </a>
@@ -261,19 +261,19 @@ export default function AssetDetailPage() {
               )}
 
               {/* Created Date */}
-              <div className="mb-6">
-                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+              <div className="mb-4 pb-4 border-b border-gray-200">
+                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
                   Created
                 </p>
-                <p className="text-gray-900">{formattedCreatedDate}</p>
+                <p className="text-sm text-gray-900">{formattedCreatedDate}</p>
               </div>
 
               {/* Updated Date */}
               <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
                   Last Updated
                 </p>
-                <p className="text-gray-900">{formattedUpdatedDate}</p>
+                <p className="text-sm text-gray-900">{formattedUpdatedDate}</p>
               </div>
             </div>
           </div>

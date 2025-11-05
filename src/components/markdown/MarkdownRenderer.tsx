@@ -20,24 +20,24 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
         components={{
-          // 标题样式
+          // 标题样式 - 缩小尺寸以适应详情页面
           h1: ({ node, ...props }) => (
-            <h1 className="text-3xl font-bold mt-6 mb-4 text-gray-900" {...props} />
+            <h1 className="text-xl font-bold mt-4 mb-3 text-gray-900" {...props} />
           ),
           h2: ({ node, ...props }) => (
-            <h2 className="text-2xl font-bold mt-5 mb-3 text-gray-900" {...props} />
+            <h2 className="text-lg font-bold mt-3 mb-2 text-gray-900" {...props} />
           ),
           h3: ({ node, ...props }) => (
-            <h3 className="text-xl font-bold mt-4 mb-2 text-gray-900" {...props} />
+            <h3 className="text-base font-bold mt-3 mb-2 text-gray-900" {...props} />
           ),
           h4: ({ node, ...props }) => (
-            <h4 className="text-lg font-semibold mt-3 mb-2 text-gray-800" {...props} />
+            <h4 className="text-sm font-semibold mt-2 mb-1 text-gray-800" {...props} />
           ),
           h5: ({ node, ...props }) => (
-            <h5 className="text-base font-semibold mt-2 mb-1 text-gray-800" {...props} />
+            <h5 className="text-sm font-semibold mt-2 mb-1 text-gray-800" {...props} />
           ),
           h6: ({ node, ...props }) => (
-            <h6 className="text-sm font-semibold mt-2 mb-1 text-gray-700" {...props} />
+            <h6 className="text-xs font-semibold mt-2 mb-1 text-gray-700" {...props} />
           ),
 
           // 段落样式
