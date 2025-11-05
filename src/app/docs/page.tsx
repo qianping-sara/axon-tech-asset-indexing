@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Header from '@/components/layout/Header';
 import MarkdownRenderer from '@/components/markdown/MarkdownRenderer';
 
 export default function DocsPage() {
@@ -31,7 +32,8 @@ export default function DocsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white pt-16">
+    <div className="min-h-screen bg-white">
+      <Header />
       {/* Content */}
       <div className="max-w-4xl mx-auto px-6 py-8">
         {loading ? (
