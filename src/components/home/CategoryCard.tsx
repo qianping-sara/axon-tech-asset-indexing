@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Code2, Zap, TrendingUp, Workflow, Shield, BookMarked } from 'lucide-react';
 
 interface CategoryCardProps {
   category: {
@@ -13,43 +14,15 @@ interface CategoryCardProps {
   };
 }
 
-// Minimalist SVG icons for categories
+// Lucide icons for categories
 const categoryIcons: Record<string, React.ReactNode> = {
-  CODE_COMPONENTS: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-    </svg>
-  ),
-  SERVICES_APIS: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-    </svg>
-  ),
-  AI_ML_SERVICES: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5a4 4 0 100-8 4 4 0 000 8z" />
-    </svg>
-  ),
-  AUTOMATION_WORKFLOWS: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-    </svg>
-  ),
-  DATA_ANALYTICS: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-    </svg>
-  ),
-  ARCHITECTURE_GOVERNANCE: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  ),
-  KNOWLEDGE_PRACTICES: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17s4.5 10.747 10 10.747c5.5 0 10-4.998 10-10.747S17.5 6.253 12 6.253z" />
-    </svg>
-  ),
+  CODE_COMPONENTS: <Code2 className="w-6 h-6 text-green-700" />,
+  SERVICES_APIS: <Zap className="w-6 h-6 text-green-700" />,
+  AI_ML_SERVICES: <TrendingUp className="w-6 h-6 text-green-700" />,
+  AUTOMATION_WORKFLOWS: <Workflow className="w-6 h-6 text-green-700" />,
+  DATA_ANALYTICS: <TrendingUp className="w-6 h-6 text-green-700" />,
+  ARCHITECTURE_GOVERNANCE: <Shield className="w-6 h-6 text-green-700" />,
+  KNOWLEDGE_PRACTICES: <BookMarked className="w-6 h-6 text-green-700" />,
 };
 
 export default function CategoryCard({ category }: CategoryCardProps) {

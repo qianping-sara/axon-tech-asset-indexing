@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { ArrowLeft } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import MarkdownRenderer from '@/components/markdown/MarkdownRenderer';
 
@@ -138,9 +139,7 @@ export default function AssetDetailPage() {
             onClick={() => router.back()}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ArrowLeft className="w-5 h-5" />
             <span>Back</span>
           </button>
         </div>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { BookOpen } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
@@ -38,19 +39,7 @@ export default function Header() {
             href="/docs"
             className="flex items-center gap-2 text-gray-700 text-sm hover:text-gray-900 transition-colors"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3.042.525A9.006 9.006 0 002.25 9v12a9.006 9.006 0 009.75 8.951h.008v-.008a8.967 8.967 0 016-2.292c1.052 0 2.062.18 3.042.525A9 9 0 0021.75 20V9a9.006 9.006 0 00-9.75-8.951z"
-              />
-            </svg>
+            <BookOpen className="w-5 h-5" />
             Docs
           </Link>
         </div>

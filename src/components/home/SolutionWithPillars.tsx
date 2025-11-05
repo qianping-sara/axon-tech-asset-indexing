@@ -1,5 +1,7 @@
 'use client';
 
+import { Shield, Zap, TrendingUp, Search } from 'lucide-react';
+
 const pillars = [
   {
     id: 'reliable',
@@ -27,28 +29,12 @@ const pillars = [
   },
 ];
 
-// Minimalist SVG icons
+// Lucide icons
 const icons: Record<string, React.ReactNode> = {
-  shield: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  ),
-  zap: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-    </svg>
-  ),
-  'trending-up': (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-    </svg>
-  ),
-  search: (
-    <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  ),
+  shield: <Shield className="w-6 h-6 text-green-700" />,
+  zap: <Zap className="w-6 h-6 text-green-700" />,
+  'trending-up': <TrendingUp className="w-6 h-6 text-green-700" />,
+  search: <Search className="w-6 h-6 text-green-700" />,
 };
 
 export default function SolutionWithPillars() {
@@ -60,9 +46,7 @@ export default function SolutionWithPillars() {
           <div className="flex flex-col justify-start">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full w-fit mb-6">
-              <svg className="w-4 h-4 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+              <Zap className="w-4 h-4 text-green-700" />
               <span className="text-sm font-medium text-green-700">The Solution</span>
             </div>
 
