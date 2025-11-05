@@ -1,7 +1,6 @@
 import Header from '@/components/layout/Header';
 import SearchBlock from '@/components/home/SearchBlock';
-import FourPillars from '@/components/home/FourPillars';
-import SolutionIntro from '@/components/home/SolutionIntro';
+import SolutionWithPillars from '@/components/home/SolutionWithPillars';
 import CategoryGrid from '@/components/home/CategoryGrid';
 
 export const metadata = {
@@ -14,8 +13,7 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
       <SearchBlock />
-      <FourPillars />
-      <SolutionIntro />
+      <SolutionWithPillars />
       <CategoryGrid />
     </div>
   );
