@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import AssetCard from '@/components/assets/AssetCard';
 import AssetTypeFilter from './AssetTypeFilter';
 import { CATEGORIES } from '@/lib/constants/categories';
@@ -14,7 +15,7 @@ interface Asset {
   version: string;
   status: string;
   updatedAt: Date | string;
-  tags?: Array<{ id: string; name: string }>;
+  axon_asset_tag?: Array<{ id: string; name: string }>;
 }
 
 interface SearchResultsProps {
@@ -30,6 +31,8 @@ export default function SearchResults({
   initialAssetType = '',
   initialStatus = '',
 }: SearchResultsProps) {
+  const router = useRouter();
+  const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState(initialCategory);
   const [assetTypes, setAssetTypes] = useState<string[]>(
     initialAssetType ? [initialAssetType] : []
@@ -40,6 +43,7 @@ export default function SearchResults({
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   // Fetch assets when filters change
   useEffect(() => {
@@ -49,7 +53,7 @@ export default function SearchResults({
         setError(null);
 
         const params = new URLSearchParams();
-        if (initialQuery) params.append('search', initialQuery);
+        if (query) params.append('search', query);
         if (category) params.append('category', category);
         if (assetTypes.length > 0) {
           assetTypes.forEach((t) => params.append('assetType', t));
@@ -64,6 +68,7 @@ export default function SearchResults({
         if (data.success) {
           setAssets(data.data || []);
           setTotalPages(data.pagination?.totalPages || 1);
+          setTotalCount(data.pagination?.total || 0);
         } else {
           setError('Failed to load assets');
         }
@@ -76,7 +81,26 @@ export default function SearchResults({
     };
 
     fetchAssets();
-  }, [initialQuery, category, assetTypes, status, page]);
+  }, [query, category, assetTypes, status, page]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPage(1);
+    // Update URL with new search query
+    const params = new URLSearchParams();
+    if (query) params.append('q', query);
+    if (category) params.append('category', category);
+    if (assetTypes.length > 0) {
+      assetTypes.forEach((t) => params.append('assetType', t));
+    }
+    if (status) params.append('status', status);
+    router.push(`/search?${params.toString()}`);
+  };
+
+  const handleClearSearch = () => {
+    setQuery('');
+    setPage(1);
+  };
 
   const handleCategoryChange = (newCategory: string) => {
     setCategory(newCategory);
@@ -85,18 +109,64 @@ export default function SearchResults({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
-      {/* Search Summary */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Search Results</h1>
-        {initialQuery && (
-          <p className="text-gray-600">
-            Results for &quot;<span className="font-semibold">{initialQuery}</span>&quot;
-          </p>
-        )}
+    <div className="min-h-screen bg-white">
+      {/* Search Bar */}
+      <div className="bg-white border-b border-gray-200 sticky top-16 z-40">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <form onSubmit={handleSearch} className="flex gap-3">
+            <div className="flex-1 relative">
+              <svg
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search for APIs, processes, bots, or knowledge..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-sm"
+              />
+            </div>
+            <button
+              type="submit"
+              className="px-6 py-2 bg-green-700 text-white font-medium rounded-lg hover:bg-green-800 transition-colors"
+            >
+              Search
+            </button>
+            {query && (
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Clear
+              </button>
+            )}
+          </form>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Search Summary */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Search results for &quot;{query || 'all assets'}&quot;
+          </h1>
+          <p className="text-gray-600">
+            Found {totalCount} asset{totalCount !== 1 ? 's' : ''}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Sidebar - Filters */}
         <div className="lg:col-span-1 space-y-4">
           {/* Category Filter */}
@@ -162,10 +232,7 @@ export default function SearchResults({
             </div>
           ) : (
             <>
-              <div className="mb-4 text-sm text-gray-600">
-                Found {assets.length} asset{assets.length !== 1 ? 's' : ''}
-              </div>
-              <div className="space-y-4 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {assets.map((asset) => (
                   <AssetCard key={asset.id} asset={asset} />
                 ))}
@@ -195,6 +262,7 @@ export default function SearchResults({
               )}
             </>
           )}
+        </div>
         </div>
       </div>
     </div>
