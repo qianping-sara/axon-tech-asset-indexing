@@ -55,37 +55,39 @@ const categoryIcons: Record<string, React.ReactNode> = {
 export default function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link href={`/search?category=${encodeURIComponent(category.name)}`}>
-      <div className="h-full p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-all cursor-pointer">
-        {/* Icon and Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-shrink-0">
-            {categoryIcons[category.name] || (
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-              </svg>
-            )}
+      <div className="p-5 bg-white hover:bg-gray-50 transition-colors cursor-pointer border-b border-r border-gray-200 last:border-b-0 last:border-r-0 odd:border-r-0 lg:odd:border-r">
+        {/* Header with Icon and Count */}
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3 flex-1">
+            <div className="flex-shrink-0">
+              {categoryIcons[category.name] || (
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+              )}
+            </div>
+            <div className="flex-1">
+              <h3 className="text-base font-semibold text-gray-900">
+                {category.displayName}
+              </h3>
+              <p className="text-xs text-gray-500 line-clamp-1">
+                {category.description}
+              </p>
+            </div>
           </div>
           {category.assetCount !== undefined && (
-            <span className="px-3 py-1 bg-green-50 text-green-700 text-sm font-medium rounded-full">
+            <span className="ml-2 px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full flex-shrink-0">
               {category.assetCount}
             </span>
           )}
         </div>
 
-        {/* Title and Description */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          {category.displayName}
-        </h3>
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-          {category.description}
-        </p>
-
-        {/* Asset Types - Show all */}
-        <div className="flex flex-wrap gap-1.5">
+        {/* Asset Types */}
+        <div className="flex flex-wrap gap-1">
           {category.assetTypes.map((type) => (
             <span
               key={type}
-              className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+              className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full"
             >
               {type}
             </span>
