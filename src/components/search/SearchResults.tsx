@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import AssetCard from '@/components/assets/AssetCard';
 import AssetTypeFilter from './AssetTypeFilter';
 import { CATEGORIES } from '@/lib/constants/categories';
+import { BIZ_DOMAINS } from '@/lib/constants/bizDomains';
 
 interface Asset {
   id: string;
@@ -26,6 +27,7 @@ interface SearchResultsProps {
   initialCategory?: string;
   initialAssetType?: string;
   initialStatus?: string;
+  initialBizDomain?: string;
 }
 
 export default function SearchResults({
@@ -33,6 +35,7 @@ export default function SearchResults({
   initialCategory = '',
   initialAssetType = '',
   initialStatus = '',
+  initialBizDomain = '',
 }: SearchResultsProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
@@ -41,6 +44,7 @@ export default function SearchResults({
     initialAssetType ? [initialAssetType] : []
   );
   const [status, setStatus] = useState(initialStatus);
+  const [bizDomain, setBizDomain] = useState(initialBizDomain);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,10 +52,10 @@ export default function SearchResults({
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
-  // Fetch assets when filters change (if query is not empty OR category/assetTypes/status are set)
+  // Fetch assets when filters change (if query is not empty OR category/assetTypes/status/bizDomain are set)
   useEffect(() => {
     // Don't fetch if no search criteria is provided
-    if (!query && !category && assetTypes.length === 0 && !status) {
+    if (!query && !category && assetTypes.length === 0 && !status && !bizDomain) {
       setAssets([]);
       setTotalCount(0);
       setTotalPages(1);
@@ -70,6 +74,7 @@ export default function SearchResults({
           assetTypes.forEach((t) => params.append('assetType', t));
         }
         if (status) params.append('status', status);
+        if (bizDomain) params.append('bizDomain', bizDomain);
         params.append('page', page.toString());
         params.append('limit', '20');
 
@@ -92,7 +97,7 @@ export default function SearchResults({
     };
 
     fetchAssets();
-  }, [query, category, assetTypes, status, page]);
+  }, [query, category, assetTypes, status, bizDomain, page]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,6 +110,7 @@ export default function SearchResults({
       assetTypes.forEach((t) => params.append('assetType', t));
     }
     if (status) params.append('status', status);
+    if (bizDomain) params.append('bizDomain', bizDomain);
     router.push(`/search?${params.toString()}`);
   };
 
@@ -231,6 +237,26 @@ export default function SearchResults({
               <option value="PUBLISHED">Published</option>
               <option value="DEPRECATED">Deprecated</option>
               <option value="ARCHIVED">Archived</option>
+            </select>
+          </div>
+
+          {/* Business Domain Filter */}
+          <div className="p-4 bg-white border border-gray-200 rounded-lg">
+            <h3 className="font-semibold text-gray-900 mb-3">Business Domain</h3>
+            <select
+              value={bizDomain}
+              onChange={(e) => {
+                setBizDomain(e.target.value);
+                setPage(1);
+              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            >
+              <option value="">All Domains</option>
+              {BIZ_DOMAINS.map((domain) => (
+                <option key={domain.name} value={domain.name}>
+                  {domain.displayName}
+                </option>
+              ))}
             </select>
           </div>
         </div>
