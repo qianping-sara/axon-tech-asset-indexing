@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AssetCard from '@/components/assets/AssetCard';
-import AssetTypeFilter from './AssetTypeFilter';
 import { CATEGORIES } from '@/lib/constants/categories';
 import { BIZ_DOMAINS } from '@/lib/constants/bizDomains';
 
@@ -194,50 +193,53 @@ export default function SearchResults({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Sidebar - Filters */}
         <div className="lg:col-span-1 space-y-4">
-          {/* Category Filter */}
+          {/* Classification Filters (Category + Asset Type) */}
           <div className="p-4 bg-white border border-gray-200 rounded-lg">
-            <h3 className="font-semibold text-gray-900 mb-3">Category</h3>
-            <select
-              value={category}
-              onChange={(e) => handleCategoryChange(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
-            >
-              <option value="">All Categories</option>
-              {CATEGORIES.map((cat) => (
-                <option key={cat.name} value={cat.name}>
-                  {cat.displayName}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Category Filter */}
+            <div className="mb-4">
+              <h3 className="font-semibold text-gray-900 mb-3">Category</h3>
+              <select
+                value={category}
+                onChange={(e) => handleCategoryChange(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              >
+                <option value="">All Categories</option>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat.name} value={cat.name}>
+                    {cat.displayName}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Asset Type Filter */}
-          <AssetTypeFilter
-            selectedCategory={category}
-            selectedAssetTypes={assetTypes}
-            onChange={(types) => {
-              setAssetTypes(types);
-              setPage(1);
-            }}
-          />
-
-          {/* Status Filter */}
-          <div className="p-4 bg-white border border-gray-200 rounded-lg">
-            <h3 className="font-semibold text-gray-900 mb-3">Status</h3>
-            <select
-              value={status}
-              onChange={(e) => {
-                setStatus(e.target.value);
-                setPage(1);
-              }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
-            >
-              <option value="">All Status</option>
-              <option value="DRAFT">Draft</option>
-              <option value="PUBLISHED">Published</option>
-              <option value="DEPRECATED">Deprecated</option>
-              <option value="ARCHIVED">Archived</option>
-            </select>
+            {/* Asset Type Filter */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">Asset Type</h3>
+              <div className="space-y-2">
+                {category ? (
+                  CATEGORIES.find((c) => c.name === category)?.assetTypes.map((type) => (
+                    <label key={type} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={assetTypes.includes(type)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setAssetTypes([...assetTypes, type]);
+                          } else {
+                            setAssetTypes(assetTypes.filter((t) => t !== type));
+                          }
+                          setPage(1);
+                        }}
+                        className="w-4 h-4 border border-gray-300 rounded focus:ring-2 focus:ring-green-600"
+                      />
+                      <span className="text-sm text-gray-700">{type}</span>
+                    </label>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">Select a category first</p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Business Domain Filter */}
@@ -257,6 +259,25 @@ export default function SearchResults({
                   {domain.displayName}
                 </option>
               ))}
+            </select>
+          </div>
+
+          {/* Status Filter */}
+          <div className="p-4 bg-white border border-gray-200 rounded-lg">
+            <h3 className="font-semibold text-gray-900 mb-3">Status</h3>
+            <select
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(1);
+              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            >
+              <option value="">All Status</option>
+              <option value="DRAFT">Draft</option>
+              <option value="PUBLISHED">Published</option>
+              <option value="DEPRECATED">Deprecated</option>
+              <option value="ARCHIVED">Archived</option>
             </select>
           </div>
         </div>
