@@ -45,7 +45,7 @@ export const BIZ_DOMAINS: BizDomainInfo[] = [
   },
   {
     name: 'MONEY_OUT',
-    displayName: 'Money Out (Value Withdrawal)',
+    displayName: 'Money Out',
     description: 'Processes all non-claim related fund withdrawals initiated by the customer or as scheduled by the contract.',
     icon: 'arrow-down-circle',
     category: 'core',
@@ -75,7 +75,7 @@ export const BIZ_DOMAINS: BizDomainInfo[] = [
   {
     name: 'PAYMENT_SETTLEMENT',
     displayName: 'Payment & Settlement',
-    description: 'Provides the underlying infrastructure for all fund movements (inflows and outflows) supporting business processes.',
+    description: 'Provides the underlying infrastructure for all money movements (inflows and outflows) supporting business processes.',
     icon: 'credit-card',
     category: 'support',
   },

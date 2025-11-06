@@ -19,13 +19,13 @@ export default function DiscoverPage() {
       <SearchBlock />
 
       {/* Browse Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
+      <section className="py-8 md:py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           {/* Tab Navigation */}
           <BrowseTabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
           {/* Content based on active tab */}
-          <div className="mt-4">
+          <div className="mt-6">
             {activeTab === 'bizDomain' ? (
               <BizDomainGrid />
             ) : (
