@@ -21,25 +21,17 @@ export default function DiscoverPage() {
       {/* Browse Section */}
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
-          {/* Title and Description */}
-          <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-              Browse
-            </h2>
-            <p className="text-gray-600">
-              Explore automation assets
-            </p>
-          </div>
-
           {/* Tab Navigation */}
           <BrowseTabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
           {/* Content based on active tab */}
-          {activeTab === 'bizDomain' ? (
-            <BizDomainGrid />
-          ) : (
-            <CategoryGrid showTitle={false} showSection={false} />
-          )}
+          <div className="mt-8">
+            {activeTab === 'bizDomain' ? (
+              <BizDomainGrid />
+            ) : (
+              <CategoryGrid showTitle={false} showSection={false} />
+            )}
+          </div>
         </div>
       </section>
 

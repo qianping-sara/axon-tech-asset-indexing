@@ -66,9 +66,9 @@ export default function BizDomainGrid() {
       {supportDomains.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-gray-900 mb-4">Support Domain Capabilities</h3>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {supportDomains.map(domain => (
-              <div key={domain.name} className="h-24">
+              <div key={domain.name} className="h-20">
                 <BizDomainCard domain={domain} assetCount={domain.assetCount} />
               </div>
             ))}
@@ -82,7 +82,7 @@ export default function BizDomainGrid() {
           <h3 className="text-sm font-semibold text-gray-900 mb-4">General Domain Capabilities</h3>
           <div className="grid grid-cols-1 gap-4">
             {commonDomains.map(domain => (
-              <div key={domain.name} className="h-40">
+              <div key={domain.name} className="h-20">
                 <BizDomainCard domain={domain} assetCount={domain.assetCount} />
               </div>
             ))}

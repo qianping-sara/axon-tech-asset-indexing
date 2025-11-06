@@ -16,7 +16,7 @@ export default function BrowseTabNavigation({ activeTab, onTabChange }: BrowseTa
             : 'text-gray-500 hover:text-gray-700'
         }`}
       >
-        Business Domain
+        Browse by business domain
       </button>
       <button
         onClick={() => onTabChange('category')}
@@ -26,7 +26,7 @@ export default function BrowseTabNavigation({ activeTab, onTabChange }: BrowseTa
             : 'text-gray-500 hover:text-gray-700'
         }`}
       >
-        Category
+        Browse by category
       </button>
     </div>
   );
