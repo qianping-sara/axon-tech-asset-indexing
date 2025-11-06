@@ -54,7 +54,7 @@ export default function BizDomainGrid() {
           <h3 className="text-sm font-semibold text-gray-900 mb-4">Core Servicing Domains</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {coreDomains.map(domain => (
-              <div key={domain.name} className="h-32">
+              <div key={domain.name} className="h-40">
                 <BizDomainCard domain={domain} assetCount={domain.assetCount} />
               </div>
             ))}

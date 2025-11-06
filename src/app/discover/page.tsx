@@ -25,7 +25,7 @@ export default function DiscoverPage() {
           <BrowseTabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
           {/* Content based on active tab */}
-          <div className="mt-8">
+          <div className="mt-4">
             {activeTab === 'bizDomain' ? (
               <BizDomainGrid />
             ) : (
