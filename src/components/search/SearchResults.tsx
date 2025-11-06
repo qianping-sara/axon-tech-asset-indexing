@@ -16,6 +16,7 @@ interface Asset {
   status: string;
   owner?: string;
   sourceLink?: string;
+  bizDomain?: string;
   updatedAt: Date | string;
   axon_asset_tag?: Array<{ id: string; name: string }>;
 }

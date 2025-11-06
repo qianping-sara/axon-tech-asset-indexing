@@ -13,7 +13,7 @@ describe('Asset Detail API', () => {
 
   beforeAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'detail-test@example.com',
       },
@@ -39,7 +39,7 @@ describe('Asset Detail API', () => {
 
   afterAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'detail-test@example.com',
       },
@@ -64,14 +64,14 @@ describe('Asset Detail API', () => {
     it('should include all relations', async () => {
       const asset = await getAssetById(testAssetId);
 
-      expect(asset?.tags).toBeDefined();
-      expect(asset?.relations).toBeDefined();
-      expect(asset?.relatedBy).toBeDefined();
-      expect(asset?.versions).toBeDefined();
-      expect(Array.isArray(asset?.tags)).toBe(true);
-      expect(Array.isArray(asset?.relations)).toBe(true);
-      expect(Array.isArray(asset?.relatedBy)).toBe(true);
-      expect(Array.isArray(asset?.versions)).toBe(true);
+      expect(asset?.axon_asset_tag).toBeDefined();
+      expect(asset?.axon_asset_relation_axon_asset_relation_fromAssetIdToaxon_asset).toBeDefined();
+      expect(asset?.axon_asset_relation_axon_asset_relation_toAssetIdToaxon_asset).toBeDefined();
+      expect(asset?.axon_asset_version).toBeDefined();
+      expect(Array.isArray(asset?.axon_asset_tag)).toBe(true);
+      expect(Array.isArray(asset?.axon_asset_relation_axon_asset_relation_fromAssetIdToaxon_asset)).toBe(true);
+      expect(Array.isArray(asset?.axon_asset_relation_axon_asset_relation_toAssetIdToaxon_asset)).toBe(true);
+      expect(Array.isArray(asset?.axon_asset_version)).toBe(true);
     });
   });
 

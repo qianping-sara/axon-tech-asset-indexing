@@ -16,6 +16,7 @@ import { validateAssetCreation } from '@/lib/utils/validation';
  * - tag: string (tag name)
  * - search: string (search in name and description)
  * - owner: string (owner email)
+ * - bizDomain: string (e.g., CLAIM, FINANCIAL_CHANGE)
  * - sortBy: 'createdAt' | 'updatedAt' | 'name' (default: updatedAt)
  * - sortOrder: 'asc' | 'desc' (default: desc)
  *
@@ -24,6 +25,7 @@ import { validateAssetCreation } from '@/lib/utils/validation';
  * - GET /api/assets?page=1&limit=20
  * - GET /api/assets?category=CODE_COMPONENTS
  * - GET /api/assets?category=CODE_COMPONENTS&assetType=Scripts
+ * - GET /api/assets?bizDomain=FINANCIAL_CHANGE
  * - GET /api/assets?search=python
  * - GET /api/assets?tag=python&status=PUBLISHED
  */
@@ -40,6 +42,7 @@ export async function GET(request: NextRequest) {
       tag: searchParams.get('tag') || undefined,
       search: searchParams.get('search') || undefined,
       owner: searchParams.get('owner') || undefined,
+      bizDomain: searchParams.get('bizDomain') || undefined,
       sortBy: (searchParams.get('sortBy') as 'createdAt' | 'updatedAt' | 'name' | undefined) || undefined,
       sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc' | undefined) || undefined,
     };
@@ -70,7 +73,7 @@ export async function GET(request: NextRequest) {
  * POST /api/assets
  * Create a new asset
  *
- * Request body (all fields required):
+ * Request body (all fields required except bizDomain):
  * {
  *   "name": "Asset Name",
  *   "description": "Asset description",
@@ -82,7 +85,8 @@ export async function GET(request: NextRequest) {
  *   "contentPath": "assets/code/scripts/asset.md",
  *   "contentHash": "abc123...",
  *   "sourceSystem": "GitHub",
- *   "sourceLink": "https://github.com/..."
+ *   "sourceLink": "https://github.com/...",
+ *   "bizDomain": "FINANCIAL_CHANGE" (optional)
  * }
  */
 export async function POST(request: NextRequest) {

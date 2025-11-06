@@ -30,7 +30,7 @@ This is a test asset for sync functionality.
 
   beforeAll(async () => {
     // Clean up any existing test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         contentPath: testFilePath,
       },
@@ -39,7 +39,7 @@ This is a test asset for sync functionality.
 
   afterAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         contentPath: testFilePath,
       },
@@ -54,7 +54,7 @@ This is a test asset for sync functionality.
       expect(result.updated).toBe(false);
 
       // Verify asset was created
-      const asset = await prisma.asset.findFirst({
+      const asset = await prisma.axon_asset.findFirst({
         where: { contentPath: testFilePath },
       });
 
@@ -90,7 +90,7 @@ This is a test asset for sync functionality.
       expect(result.updated).toBe(true);
 
       // Verify asset was updated
-      const asset = await prisma.asset.findFirst({
+      const asset = await prisma.axon_asset.findFirst({
         where: { contentPath: testFilePath },
       });
 
@@ -117,7 +117,7 @@ Content`;
       await syncAssetFile(filePath, testAssetMarkdown);
 
       // Verify it exists
-      let asset = await prisma.asset.findFirst({
+      let asset = await prisma.axon_asset.findFirst({
         where: { contentPath: filePath },
       });
       expect(asset).toBeDefined();
@@ -126,7 +126,7 @@ Content`;
       await deleteAssetByPath(filePath);
 
       // Verify it's deleted
-      asset = await prisma.asset.findFirst({
+      asset = await prisma.axon_asset.findFirst({
         where: { contentPath: filePath },
       });
       expect(asset).toBeNull();

@@ -22,6 +22,7 @@ model axon_asset {
   contentHash                                                     String                @db.VarChar(64)
   sourceSystem                                                    String                @db.VarChar(100)
   sourceLink                                                      String                @db.VarChar(500)
+  bizDomain                                                       BizDomain?
   createdAt                                                       DateTime              @default(now())
   updatedAt                                                       DateTime
   publishedAt                                                     DateTime?
@@ -31,6 +32,7 @@ model axon_asset {
   axon_asset_version                                              axon_asset_version[]
 
   @@index([category])
+  @@index([bizDomain])
   @@index([owner])
   @@index([status])
   @@index([updatedAt])
@@ -89,6 +91,23 @@ model axon_tag {
   axon_asset_tag axon_asset_tag[]
 
   @@index([category])
+}
+
+enum BizDomain {
+  // Core Servicing Domains (5)
+  CLAIM
+  FINANCIAL_CHANGE
+  INQUIRY_GENERAL_CHANGES
+  MONEY_OUT
+  WEALTH
+  // Support Domain Capabilities (5)
+  CHANNEL_EXPERIENCE
+  PAYMENT_SETTLEMENT
+  FINANCE_ACCOUNTING
+  RISK_COMPLIANCE
+  CUSTOMER_COMMUNICATION
+  // General Domain Capabilities (1)
+  COMMON_CAPABILITIES
 }
 
 enum Category {

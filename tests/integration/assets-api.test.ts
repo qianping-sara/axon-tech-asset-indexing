@@ -11,7 +11,7 @@ import { prisma } from '@/lib/db/client';
 describe('Asset API Endpoints', () => {
   beforeAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'api-test@example.com',
       },
@@ -35,7 +35,7 @@ describe('Asset API Endpoints', () => {
 
   afterAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'api-test@example.com',
       },

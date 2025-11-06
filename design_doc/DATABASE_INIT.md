@@ -44,8 +44,8 @@
 ### Key Statistics
 
 - **Tables**: 5 core tables
-- **Enums**: 3 enums (Category, Status, RelationType)
-- **Indexes**: 13 indexes for performance
+- **Enums**: 4 enums (Category, Status, BizDomain, RelationType)
+- **Indexes**: 14 indexes for performance
 - **Foreign Keys**: 5 relationships with CASCADE delete
 - **Unique Constraints**: 3 unique constraints
 
@@ -94,6 +94,7 @@ axon_asset (main record)
 | `contentHash` | VARCHAR(64) | NOT NULL | SHA256 hash of content |
 | `sourceSystem` | VARCHAR(100) | NOT NULL | Source system (e.g., GitHub) |
 | `sourceLink` | VARCHAR(500) | NOT NULL | Link to source |
+| `bizDomain` | BizDomain ENUM | NULLABLE | Business domain classification (11 types) |
 | `createdAt` | TIMESTAMP | DEFAULT: NOW() | Creation timestamp |
 | `updatedAt` | TIMESTAMP | NOT NULL | Last update timestamp |
 | `publishedAt` | TIMESTAMP | NULLABLE | Publication timestamp |
@@ -102,6 +103,7 @@ axon_asset (main record)
 - `category` - Filter by category
 - `status` - Filter by status
 - `owner` - Filter by owner
+- `bizDomain` - Filter by business domain
 - `updatedAt` - Sort by update time
 
 **Example**:
@@ -118,7 +120,8 @@ axon_asset (main record)
   "contentPath": "public/assets/services/rest-apis/bank-detail-check-api.md",
   "contentHash": "abc123def456...",
   "sourceSystem": "Servicing Layer",
-  "sourceLink": "https://github.com/example/insurance-api-suite"
+  "sourceLink": "https://github.com/example/insurance-api-suite",
+  "bizDomain": "FINANCIAL_CHANGE"
 }
 ```
 
@@ -274,7 +277,30 @@ CREATE TYPE "Status" AS ENUM (
 );
 ```
 
-### 3. RelationType (6 values)
+### 3. BizDomain (11 values)
+
+Business domain classification for assets:
+
+```sql
+CREATE TYPE "BizDomain" AS ENUM (
+  'CLAIM',
+  'FINANCIAL_CHANGE',
+  'INQUIRY_GENERAL_CHANGES',
+  'MONEY_OUT',
+  'WEALTH',
+  'CHANNEL_EXPERIENCE',
+  'PAYMENT_SETTLEMENT',
+  'FINANCE_ACCOUNTING',
+  'RISK_COMPLIANCE',
+  'CUSTOMER_COMMUNICATION'
+);
+```
+
+**Categories**:
+- **Core Servicing Domains** (5): CLAIM, FINANCIAL_CHANGE, INQUIRY_GENERAL_CHANGES, MONEY_OUT, WEALTH
+- **Horizontal Capabilities** (6): CHANNEL_EXPERIENCE, PAYMENT_SETTLEMENT, FINANCE_ACCOUNTING, RISK_COMPLIANCE, CUSTOMER_COMMUNICATION
+
+### 4. RelationType (6 values)
 
 Asset relationship types:
 

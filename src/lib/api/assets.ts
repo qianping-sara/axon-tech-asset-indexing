@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db/client';
 import { AssetListQuery, AssetListItem, PaginatedResponse } from '@/lib/types/asset';
-import { Category, Status } from '@prisma/client';
+import { Category, Status, BizDomain } from '@prisma/client';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
@@ -30,6 +30,9 @@ export async function getAssets(
   }
   if (query.owner) {
     whereConditions.push({ owner: query.owner });
+  }
+  if (query.bizDomain) {
+    whereConditions.push({ bizDomain: query.bizDomain as BizDomain });
   }
   if (query.search) {
     whereConditions.push({
@@ -75,6 +78,7 @@ export async function getAssets(
         version: true,
         status: true,
         owner: true,
+        bizDomain: true,
         sourceLink: true,
         updatedAt: true,
         axon_asset_tag: {
@@ -177,6 +181,7 @@ export async function createAsset(data: {
   contentHash: string;
   sourceSystem: string;
   sourceLink: string;
+  bizDomain?: string;
   tags?: string[];
 }) {
   const { randomUUID } = require('crypto');
@@ -195,6 +200,7 @@ export async function createAsset(data: {
       contentHash: data.contentHash,
       sourceSystem: data.sourceSystem,
       sourceLink: data.sourceLink,
+      bizDomain: data.bizDomain ? (data.bizDomain as BizDomain) : undefined,
       updatedAt: new Date(),
       axon_asset_tag: data.tags
         ? {
@@ -226,6 +232,7 @@ export async function updateAsset(
     status: string;
     version: string;
     contentHash: string;
+    bizDomain: string;
   }>
 ) {
   return prisma.axon_asset.update({
@@ -233,6 +240,7 @@ export async function updateAsset(
     data: {
       ...data,
       status: data.status ? (data.status as Status) : undefined,
+      bizDomain: data.bizDomain ? (data.bizDomain as BizDomain) : undefined,
     },
     include: {
       axon_asset_tag: {

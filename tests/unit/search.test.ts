@@ -43,7 +43,7 @@ describe('Search API', () => {
 
   afterAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'test@example.com',
       },

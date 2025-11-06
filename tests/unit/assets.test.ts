@@ -13,7 +13,7 @@ describe('Asset API', () => {
 
   beforeAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'test@example.com',
       },
@@ -22,7 +22,7 @@ describe('Asset API', () => {
 
   afterAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'test@example.com',
       },
@@ -156,10 +156,10 @@ describe('Asset API', () => {
 
       const asset = await getAssetById(testAssetId);
 
-      expect(asset?.tags).toBeDefined();
-      expect(asset?.relations).toBeDefined();
-      expect(asset?.relatedBy).toBeDefined();
-      expect(asset?.versions).toBeDefined();
+      expect(asset?.axon_asset_tag).toBeDefined();
+      expect(asset?.axon_asset_relation_axon_asset_relation_fromAssetIdToaxon_asset).toBeDefined();
+      expect(asset?.axon_asset_relation_axon_asset_relation_toAssetIdToaxon_asset).toBeDefined();
+      expect(asset?.axon_asset_version).toBeDefined();
     });
   });
 

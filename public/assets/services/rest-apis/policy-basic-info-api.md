@@ -6,8 +6,8 @@ category: SERVICES_APIS
 assetType: REST APIs
 version: 1.0.0
 status: DRAFT
-owner: Revival Team
-sourceSystem: Insurance API Suite
+owner: AutomationCoE Team
+sourceSystem: Servicing Layer
 ---
 
 # Policy Basic Info API

@@ -14,6 +14,7 @@ interface Asset {
   version: string;
   status: string;
   owner: string;
+  bizDomain?: string;
   updatedAt: string;
   axon_asset_tag: Array<{
     id: string;

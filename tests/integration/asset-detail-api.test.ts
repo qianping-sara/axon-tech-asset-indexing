@@ -13,7 +13,7 @@ describe('Asset Detail API Endpoints', () => {
 
   beforeAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'detail-api-test@example.com',
       },
@@ -39,7 +39,7 @@ describe('Asset Detail API Endpoints', () => {
 
   afterAll(async () => {
     // Clean up test data
-    await prisma.asset.deleteMany({
+    await prisma.axon_asset.deleteMany({
       where: {
         owner: 'detail-api-test@example.com',
       },

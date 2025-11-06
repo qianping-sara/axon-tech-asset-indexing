@@ -7,7 +7,7 @@ assetType: REST APIs
 version: 1.0.0
 status: DRAFT
 owner: AutomationCoE Team
-sourceSystem: Insurance API Suite
+sourceSystem: Servicing Layer
 ---
 
 # Bank Detail Check API

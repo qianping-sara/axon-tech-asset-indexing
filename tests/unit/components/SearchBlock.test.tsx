@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import SearchBlock from '@/components/home/SearchBlock';
+import SearchBlock from '@/components/search/SearchBlock';
 
 // Mock next/navigation
 jest.mock('next/navigation', () => ({

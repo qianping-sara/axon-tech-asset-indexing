@@ -29,6 +29,7 @@ interface Asset {
   sourceLink?: string;
   sourceSystem?: string;
   contentPath?: string;
+  bizDomain?: string;
   createdAt: string;
   updatedAt: string;
   axon_asset_tag?: AssetTag[];
@@ -225,6 +226,16 @@ export default function AssetDetailPage() {
           <div className="lg:col-span-1">
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 sticky top-24">
               <h3 className="text-base font-semibold text-gray-900 mb-4">Overview</h3>
+
+              {/* Business Domain */}
+              {asset.bizDomain && (
+                <div className="mb-4 pb-4 border-b border-gray-200">
+                  <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-1">
+                    Business Domain
+                  </p>
+                  <p className="text-sm text-gray-700">{asset.bizDomain}</p>
+                </div>
+              )}
 
               {/* Owner */}
               {asset.owner && (

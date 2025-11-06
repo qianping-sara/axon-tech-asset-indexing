@@ -1,0 +1,9 @@
+-- CreateEnum
+CREATE TYPE "BizDomain" AS ENUM ('CLAIM', 'FINANCIAL_CHANGE', 'INQUIRY_GENERAL_CHANGES', 'MONEY_OUT', 'WEALTH', 'CHANNEL_EXPERIENCE', 'PAYMENT_SETTLEMENT', 'FINANCE_ACCOUNTING', 'RISK_COMPLIANCE', 'CUSTOMER_COMMUNICATION');
+
+-- AlterTable
+ALTER TABLE "axon_asset" ADD COLUMN "bizDomain" "BizDomain";
+
+-- CreateIndex
+CREATE INDEX "axon_asset_bizDomain_idx" ON "axon_asset"("bizDomain");
+

@@ -9,10 +9,31 @@
 ## 📋 Overview
 
 This document defines the comprehensive asset classification system for Axon, including:
-- 7 primary categories (L1)
-- 34 asset types (L2)
+- 7 primary categories (L1) - Technical asset classification
+- 34 asset types (L2) - Specific asset types within categories
+- 11 business domains - Business domain classification (see BIZ_DOMAIN.md)
 - Classification hierarchy and relationships
 - Migration guide from v1.0 to v2.0
+
+### Classification Dimensions
+
+Axon uses a **multi-dimensional classification system**:
+
+1. **Technical Classification** (L1 & L2)
+   - **Level 1**: 7 Categories (CODE_COMPONENTS, SERVICES_APIS, etc.)
+   - **Level 2**: 34 Asset Types (Scripts, REST APIs, ML Models, etc.)
+   - **Purpose**: Organize assets by technical nature and implementation
+
+2. **Business Domain Classification** (New)
+   - **11 Business Domains**: CLAIM, FINANCIAL_CHANGE, MONEY_OUT, WEALTH, etc.
+   - **Purpose**: Align assets with business capabilities and services
+   - **Relationship**: One asset belongs to one business domain (optional)
+   - **See**: BIZ_DOMAIN.md for detailed business domain definitions
+
+3. **Tagging System** (Flexible)
+   - **Tags**: Flexible labels with categories (e.g., domain, language, technology)
+   - **Purpose**: Cross-cutting concerns and secondary classification
+   - **Example**: Tags with category="domain" can represent sub-domains within a business domain
 
 ---
 
@@ -72,42 +93,6 @@ This document defines the comprehensive asset classification system for Axon, in
 | | Best Practices | Curated principles and successful patterns | "Tool Selection Guide", "Selection criteria for Bizagi, Rule engine..." |
 | | Tutorials | Hands-on learning materials | "How to connect to the Policy API tutorial" |
 | | Quick Start Guides | Concise actionable instructions | "5-minute quick start for the development framework" |
-
----
-
-## 🔄 Migration Guide: v1.0 → v2.0
-
-### Changes Summary
-
-| Change Type | Details |
-|---|---|
-| **New Category** | `AI_ML_SERVICES` added as Category L1 |
-| **Moved Asset Types** | `AI/ML Services` moved from `SERVICES_APIS` to `AI_ML_SERVICES` |
-| **New Asset Types** | ML Models, LLM Services, AI Agents, ML Pipelines, Feature Stores |
-| **Total Categories** | 6 → 7 |
-| **Total Asset Types** | 32 → 34 |
-
-### Migration Steps
-
-1. **Database Schema Update**
-   - Add `AI_ML_SERVICES` to `Category` enum in Prisma schema
-   - Create migration script to update existing assets
-
-2. **Code Updates**
-   - Update `ASSET_TYPES_BY_CATEGORY` in `src/lib/constants/categories.ts`
-   - Update `CATEGORIES` array with new category definition
-   - Update all related constants and types
-
-3. **Data Migration**
-   - Identify all assets with `assetType = 'AI/ML Services'`
-   - Update their `category` from `SERVICES_APIS` to `AI_ML_SERVICES`
-   - Verify data integrity
-
-4. **UI/UX Updates**
-   - Update category filters and dropdowns
-   - Update asset type filters
-   - Update category display names and icons
-   - Update search and discovery pages
 
 ---
 

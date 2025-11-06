@@ -64,7 +64,8 @@ export async function GET(
  *   "description": "Updated description",
  *   "status": "PUBLISHED",
  *   "version": "2.0.0",
- *   "contentHash": "new_hash_value"
+ *   "contentHash": "new_hash_value",
+ *   "bizDomain": "FINANCIAL_CHANGE"
  * }
  */
 export async function PUT(

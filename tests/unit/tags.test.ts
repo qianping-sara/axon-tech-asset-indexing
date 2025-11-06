@@ -13,7 +13,7 @@ describe('Tags API', () => {
 
   beforeAll(async () => {
     // Clean up test data
-    await prisma.tag.deleteMany({
+    await prisma.axon_tag.deleteMany({
       where: {
         category: 'test-category',
       },
@@ -31,7 +31,7 @@ describe('Tags API', () => {
 
   afterAll(async () => {
     // Clean up test data
-    await prisma.tag.deleteMany({
+    await prisma.axon_tag.deleteMany({
       where: {
         category: 'test-category',
       },
@@ -96,7 +96,7 @@ describe('Tags API', () => {
       const tag = await getTagById(testTagId);
 
       expect(tag?._count).toBeDefined();
-      expect(tag?._count.assets).toBeDefined();
+      expect(tag?._count.axon_asset_tag).toBeDefined();
     });
 
     it('should return null for non-existent tag', async () => {
@@ -129,7 +129,7 @@ describe('Tags API', () => {
       });
 
       expect(tag._count).toBeDefined();
-      expect(tag._count.assets).toBe(0);
+      expect(tag._count.axon_asset_tag).toBe(0);
 
       // Clean up
       await deleteTag(tag.id);

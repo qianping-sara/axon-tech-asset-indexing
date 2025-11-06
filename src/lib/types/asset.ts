@@ -15,7 +15,7 @@ export type AssetWithRelations = axon_asset & {
  */
 export type AssetListItem = Pick<
   axon_asset,
-  'id' | 'name' | 'description' | 'category' | 'assetType' | 'version' | 'status' | 'owner' | 'updatedAt'
+  'id' | 'name' | 'description' | 'category' | 'assetType' | 'version' | 'status' | 'owner' | 'bizDomain' | 'updatedAt'
 > & {
   axon_asset_tag: axon_tag[];
 };
@@ -32,6 +32,7 @@ export interface AssetListQuery {
   tag?: string;
   search?: string;
   owner?: string;
+  bizDomain?: string;
   sortBy?: 'createdAt' | 'updatedAt' | 'name';
   sortOrder?: 'asc' | 'desc';
 }

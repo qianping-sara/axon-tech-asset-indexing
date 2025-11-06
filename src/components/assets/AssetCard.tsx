@@ -19,6 +19,7 @@ interface AssetCardProps {
     status: string;
     owner?: string;
     sourceLink?: string;
+    bizDomain?: string;
     updatedAt: Date | string;
     axon_asset_tag?: Tag[];
   };
@@ -66,6 +67,11 @@ export default function AssetCard({ asset }: AssetCardProps) {
           <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-orange-500 text-white">
             {asset.assetType}
           </span>
+          {asset.bizDomain && (
+            <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-600 text-white">
+              {asset.bizDomain}
+            </span>
+          )}
           <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-white border border-gray-300 text-gray-700">
             {asset.version}
           </span>
