@@ -18,11 +18,18 @@ export default function BizDomainGrid() {
         setLoading(true);
         const response = await fetch('/api/biz-domains?stats=true');
         const data = await response.json();
+        console.log('BizDomainGrid API response:', data);
         if (data.success && data.data) {
           setDomains(data.data);
+        } else if (!data.success) {
+          console.error('API error:', data.error);
+          // Fallback to BIZ_DOMAINS without stats
+          setDomains(BIZ_DOMAINS.map(d => ({ ...d, assetCount: 0 })));
         }
       } catch (err) {
         console.error('Failed to fetch biz domains:', err);
+        // Fallback to BIZ_DOMAINS without stats
+        setDomains(BIZ_DOMAINS.map(d => ({ ...d, assetCount: 0 })));
       } finally {
         setLoading(false);
       }
