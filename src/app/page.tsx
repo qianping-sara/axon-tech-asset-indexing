@@ -1,7 +1,6 @@
 import Header from '@/components/layout/Header';
 import SearchBlock from '@/components/search/SearchBlock';
 import SolutionWithPillars from '@/components/home/SolutionWithPillars';
-import CategoryGrid from '@/components/home/CategoryGrid';
 
 export const metadata = {
   title: 'Axon - Asset Golden Index',
@@ -14,7 +13,6 @@ export default function Home() {
       <Header />
       <SearchBlock />
       <SolutionWithPillars />
-      <CategoryGrid />
     </div>
   );
 }
