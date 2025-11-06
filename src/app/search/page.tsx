@@ -11,6 +11,7 @@ function SearchPageContent() {
   const category = searchParams.get('category') || '';
   const assetType = searchParams.get('assetType') || '';
   const status = searchParams.get('status') || '';
+  const bizDomain = searchParams.get('bizDomain') || '';
 
   return (
     <div className="min-h-screen bg-white">
@@ -20,6 +21,7 @@ function SearchPageContent() {
         initialCategory={category}
         initialAssetType={assetType}
         initialStatus={status}
+        initialBizDomain={bizDomain}
       />
     </div>
   );
