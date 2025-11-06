@@ -29,7 +29,7 @@ INSERT INTO "axon_asset" (
   'DRAFT',
   'AutomationCoE',
   'public/assets/architecture/policies/coe-governance-charter.md',
-  'edb694a157e4b27e1529cefb15707c91981fb889d36f17cb2669d0005ae1f559',
+  'e39e83ba2b1a6c2ebaaffbc1357c84da61a6a2c208efcee770fadbc7b9341063',
   'Internal',
   'https://internal.company.com/coe-governance',
   NOW(),

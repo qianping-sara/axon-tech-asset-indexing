@@ -67,7 +67,7 @@ The CoE operates under five core principles:
 
 The CoE prioritizes initiatives based on the following value lever mapping:
 
-![Domain Value-Driven WoW - Automation CoE](./images/domain-value-mapping.jpg)
+![Domain Value-Driven WoW - Automation CoE](/assets/architecture/policies/images/domain-value-mapping.jpg)
 
 
 
@@ -77,7 +77,7 @@ The CoE prioritizes initiatives based on the following value lever mapping:
 ### 3.1 End-to-End Impact Assessment Framework
 
 For each prioritized domain, the CoE systematically evaluates upstream and downstream impacts across five dimensions:
-![Systematically plan for upstream and downstream impacts](./images/updown-stream-impact.jpg)
+![Systematically plan for upstream and downstream impacts](/assets/architecture/policies/images/updown-stream-impact.jpg)
 
 #### **End-to-End Processes**
 - **Question**: How is the process affected?
@@ -114,7 +114,7 @@ For each domain, the CoE addresses:
 
 The CoE follows a systematic five-step cycle for adoption and scaling:
 
-![Adoption and Scaling Model](./images/adoption.jpg)
+![Adoption and Scaling Model](/assets/architecture/policies/images/adoption.jpg)
 
 1. **Continuously Re-prioritize and Fund Domains**
    - Ongoing assessment of domain priorities
