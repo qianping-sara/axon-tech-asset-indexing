@@ -60,7 +60,7 @@ export default function AssetCard({ asset }: AssetCardProps) {
         </div>
 
         {/* Category and Asset Type Badges */}
-        <div className="flex flex-wrap gap-1 mb-2">
+        <div className="flex flex-wrap gap-1 mb-1">
           <span className="inline-block px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-green-700 text-white">
             {asset.category}
           </span>
