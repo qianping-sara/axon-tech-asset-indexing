@@ -1,0 +1,40 @@
+-- Add CoE Governance Charter Asset
+-- This migration adds the CoE Governance Charter policy asset to the ARCHITECTURE_GOVERNANCE category
+
+-- Insert CoE Governance Charter Asset
+INSERT INTO "axon_asset" (
+  id,
+  name,
+  description,
+  category,
+  "assetType",
+  version,
+  status,
+  owner,
+  "contentPath",
+  "contentHash",
+  "sourceSystem",
+  "sourceLink",
+  "createdAt",
+  "updatedAt",
+  "publishedAt"
+) VALUES
+(
+  'asset-coe-governance-charter-001',
+  'CoE Governance Charter',
+  'Comprehensive governance framework defining the Automation CoE''s vision, operating model, domain-driven approach, and adoption strategy',
+  'ARCHITECTURE_GOVERNANCE',
+  'Policies',
+  '1.0.0',
+  'DRAFT',
+  'AutomationCoE',
+  'public/assets/architecture/policies/coe-governance-charter.md',
+  'edb694a157e4b27e1529cefb15707c91981fb889d36f17cb2669d0005ae1f559',
+  'Internal',
+  'https://internal.company.com/coe-governance',
+  NOW(),
+  NOW(),
+  NULL
+)
+ON CONFLICT (id) DO NOTHING;
+
