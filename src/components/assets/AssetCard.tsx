@@ -64,11 +64,11 @@ export default function AssetCard({ asset }: AssetCardProps) {
           <span className="inline-block px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-green-700 text-white">
             {asset.category}
           </span>
-          <span className="inline-block px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-orange-600 text-white">
+          <span className="inline-block px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-green-400 text-white">
             {asset.assetType}
           </span>
           {asset.bizDomain && (
-            <span className="inline-block px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-blue-700 text-white">
+            <span className="inline-block px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-orange-500 text-white">
               {asset.bizDomain}
             </span>
           )}
