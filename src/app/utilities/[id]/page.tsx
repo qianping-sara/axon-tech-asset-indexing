@@ -161,14 +161,12 @@ export default function UtilityDetailPage() {
           {/* Actions */}
           <div className="flex flex-wrap gap-4 pt-8 border-t border-gray-200">
             {/* Open Tool Button */}
-            <a
+            <Link
               href={utility.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-green-700 text-white font-medium rounded-lg hover:bg-green-800 transition-colors"
+              className="px-6 py-3 bg-green-700 text-white font-medium rounded-lg hover:bg-green-800 transition-colors inline-block"
             >
               Open Tool
-            </a>
+            </Link>
 
             {/* Copy Link Button */}
             <button
