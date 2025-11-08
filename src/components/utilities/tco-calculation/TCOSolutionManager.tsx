@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Solution, CostData } from '@/lib/types/tco-calculation';
 import { createNewSolution } from '@/lib/utils/tco-calculation';
-import { Trash2, Edit2, Check, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { Trash2, Edit2, Check, X, ChevronDown, ChevronRight, RotateCcw } from 'lucide-react';
 import TCOCostTable from './TCOCostTable';
 
 interface TCOSolutionManagerProps {
@@ -174,7 +174,7 @@ export default function TCOSolutionManager({
                         className="p-2 text-orange-600 hover:bg-orange-50 rounded transition-colors"
                         title="Clear all data"
                       >
-                        <Trash2 size={18} />
+                        <RotateCcw size={18} />
                       </button>
                       <button
                         onClick={() => onDeleteSolution(solution.id)}
