@@ -11,7 +11,7 @@ import { ArrowLeft, Copy, Check } from 'lucide-react';
 export default function UtilityDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const id = params.id as string;
+  const id = typeof params.id === 'string' ? params.id : (params.id as string);
 
   const [utility, setUtility] = useState<Utility | null>(null);
   const [isLoading, setIsLoading] = useState(true);
