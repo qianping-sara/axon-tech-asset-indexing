@@ -104,9 +104,8 @@ export default function SourcingModelSpecificCriteria({
   return (
     <div className="mb-12">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Part 2: Sourcing Model Specific Evaluation</h2>
-        <p className="text-sm text-gray-600 mt-2">
-          Note: Fill only the section corresponding to your selected sourcing model ({selectedModel})
+        <p className="text-sm text-orange-600 font-medium">
+          ⚠️ Fill only the section corresponding to your selected sourcing model: <span className="font-semibold">{selectedModel.toUpperCase()}</span>
         </p>
       </div>
 
@@ -156,11 +155,6 @@ export default function SourcingModelSpecificCriteria({
                 </div>
                 <div className="text-right flex-shrink-0 ml-4 text-sm text-gray-700">
                   <div className="font-medium">Score: {modelScore.toFixed(1)}/5</div>
-                  {selectedModel === model && (
-                    <div className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded mt-1">
-                      Selected
-                    </div>
-                  )}
                 </div>
               </button>
 
@@ -170,13 +164,13 @@ export default function SourcingModelSpecificCriteria({
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200 bg-gray-50">
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 w-1/3">
                           Criterion
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 w-32">
+                        <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 w-1/3">
                           Score
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 w-48">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 w-1/3">
                           Notes
                         </th>
                       </tr>

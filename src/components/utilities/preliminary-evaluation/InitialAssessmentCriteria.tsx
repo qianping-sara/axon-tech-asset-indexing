@@ -63,17 +63,16 @@ export default function InitialAssessmentCriteria({
 
   return (
     <div className="mb-12">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Part 1: Initial Assessment</h2>
-        {hasInput && (
+      {hasInput && (
+        <div className="flex justify-end mb-6">
           <button
             onClick={onClearAll}
             className="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
           >
             Clear All
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="space-y-3">
         {INITIAL_ASSESSMENT_CRITERIA_GROUPS.map((group) => {
@@ -109,13 +108,13 @@ export default function InitialAssessmentCriteria({
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200 bg-gray-50">
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 w-1/3">
                           Dimension
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 w-32">
+                        <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 w-1/3">
                           Score
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 w-48">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 w-1/3">
                           Notes
                         </th>
                       </tr>

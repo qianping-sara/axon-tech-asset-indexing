@@ -226,7 +226,7 @@ export default function PreliminaryEvaluationPage() {
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Part 1: Initial Assessment
+            Initial Assessment
           </button>
           <button
             onClick={() => setActiveSection('part2')}
@@ -236,7 +236,7 @@ export default function PreliminaryEvaluationPage() {
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Part 2: Sourcing Model Specific
+            Sourcing Model Specific
           </button>
         </div>
 
