@@ -13,6 +13,7 @@ import {
   Settings,
   Database,
   Code2,
+  Calculator,
 } from 'lucide-react';
 
 export const UTILITY_ICON_MAP: Record<string, React.ReactNode> = {
@@ -24,6 +25,7 @@ export const UTILITY_ICON_MAP: Record<string, React.ReactNode> = {
   'settings': <Settings className="w-8 h-8 text-green-700" />,
   'database': <Database className="w-8 h-8 text-green-700" />,
   'code-2': <Code2 className="w-8 h-8 text-green-700" />,
+  'calculator': <Calculator className="w-8 h-8 text-green-700" />,
 };
 
 /**
