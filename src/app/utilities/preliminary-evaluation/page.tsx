@@ -14,11 +14,23 @@ export default function PreliminaryEvaluationPage() {
   const [selectedModel, setSelectedModel] = useState<'buy' | 'build' | 'openSource'>('buy');
   const [data, setData] = useState<PreliminaryEvaluationData>({
     initialAssessment: {
-      vendorStability: { notes: '', score: 0 },
-      implementationComplexity: { notes: '', score: 0 },
-      supportMaintenance: { notes: '', score: 0 },
-      costConsiderations: { notes: '', score: 0 },
-      riskAssessment: { notes: '', score: 0 },
+      businessValuePotential: { notes: '', score: 0 },
+      coreFeatureCompleteness: { notes: '', score: 0 },
+      usabilityUserExperience: { notes: '', score: 0 },
+      futureProofingScalability: { notes: '', score: 0 },
+      apiFirstDesign: { notes: '', score: 0 },
+      cloudNativeArchitecture: { notes: '', score: 0 },
+      integrationWithCoreSystems: { notes: '', score: 0 },
+      dataModelInteroperability: { notes: '', score: 0 },
+      popiaCompliance: { notes: '', score: 0 },
+      fscaJointStandardCompliance: { notes: '', score: 0 },
+      generalSecurityPosture: { notes: '', score: 0 },
+      vendorFinancialHealthMarketPosition: { notes: '', score: 0 },
+      productRoadmapVision: { notes: '', score: 0 },
+      supportModelSLA: { notes: '', score: 0 },
+      customerReferences: { notes: '', score: 0 },
+      initialAcquisitionSubscriptionCost: { notes: '', score: 0 },
+      pricingModelClarity: { notes: '', score: 0 },
     },
     sourcingModelSpecific: {
       buy: {
@@ -92,11 +104,23 @@ export default function PreliminaryEvaluationPage() {
       setData((prev) => ({
         ...prev,
         initialAssessment: {
-          vendorStability: { notes: '', score: 0 },
-          implementationComplexity: { notes: '', score: 0 },
-          supportMaintenance: { notes: '', score: 0 },
-          costConsiderations: { notes: '', score: 0 },
-          riskAssessment: { notes: '', score: 0 },
+          businessValuePotential: { notes: '', score: 0 },
+          coreFeatureCompleteness: { notes: '', score: 0 },
+          usabilityUserExperience: { notes: '', score: 0 },
+          futureProofingScalability: { notes: '', score: 0 },
+          apiFirstDesign: { notes: '', score: 0 },
+          cloudNativeArchitecture: { notes: '', score: 0 },
+          integrationWithCoreSystems: { notes: '', score: 0 },
+          dataModelInteroperability: { notes: '', score: 0 },
+          popiaCompliance: { notes: '', score: 0 },
+          fscaJointStandardCompliance: { notes: '', score: 0 },
+          generalSecurityPosture: { notes: '', score: 0 },
+          vendorFinancialHealthMarketPosition: { notes: '', score: 0 },
+          productRoadmapVision: { notes: '', score: 0 },
+          supportModelSLA: { notes: '', score: 0 },
+          customerReferences: { notes: '', score: 0 },
+          initialAcquisitionSubscriptionCost: { notes: '', score: 0 },
+          pricingModelClarity: { notes: '', score: 0 },
         },
       }));
     }

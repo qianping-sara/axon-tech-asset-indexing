@@ -5,11 +5,28 @@ export interface CriteriaScore {
 
 // Part 1: Initial Assessment
 export interface InitialAssessmentData {
-  vendorStability: CriteriaScore;
-  implementationComplexity: CriteriaScore;
-  supportMaintenance: CriteriaScore;
-  costConsiderations: CriteriaScore;
-  riskAssessment: CriteriaScore;
+  // 1.0 Strategic & Functional Alignment
+  businessValuePotential: CriteriaScore;
+  coreFeatureCompleteness: CriteriaScore;
+  usabilityUserExperience: CriteriaScore;
+  futureProofingScalability: CriteriaScore;
+  // 2.0 Architecture & Integration Fit
+  apiFirstDesign: CriteriaScore;
+  cloudNativeArchitecture: CriteriaScore;
+  integrationWithCoreSystems: CriteriaScore;
+  dataModelInteroperability: CriteriaScore;
+  // 3.0 Compliance & Governance
+  popiaCompliance: CriteriaScore;
+  fscaJointStandardCompliance: CriteriaScore;
+  generalSecurityPosture: CriteriaScore;
+  // 4.0 Vendor/Solution Viability
+  vendorFinancialHealthMarketPosition: CriteriaScore;
+  productRoadmapVision: CriteriaScore;
+  supportModelSLA: CriteriaScore;
+  customerReferences: CriteriaScore;
+  // 5.0 Preliminary Financial Assessment
+  initialAcquisitionSubscriptionCost: CriteriaScore;
+  pricingModelClarity: CriteriaScore;
 }
 
 // Part 2: Sourcing Model Specific - Buy (COTS)

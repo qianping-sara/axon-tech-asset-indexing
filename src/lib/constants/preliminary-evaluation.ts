@@ -5,42 +5,135 @@ export interface CriteriaDefinition {
   description: string;
 }
 
-// Part 1: Initial Assessment Criteria
+// Part 1: Initial Assessment Criteria (Generic Tool Selection Scorecard)
 export const INITIAL_ASSESSMENT_CRITERIA: CriteriaDefinition[] = [
+  // 1.0 Strategic & Functional Alignment (25%)
   {
-    id: 'vendorStability',
-    title: 'Vendor Stability & Support',
-    weight: 25,
+    id: 'businessValuePotential',
+    title: '1.1 Business Value Potential',
+    weight: 8,
     description:
-      'Evaluate the vendor\'s financial stability, market position, and commitment to product support. Consider company size, market share, and track record of supporting customers long-term.',
+      '1: Weak link to business case. 3: Solves the core pain point. 5: Solves pain point and opens new opportunities.',
   },
   {
-    id: 'implementationComplexity',
-    title: 'Implementation Complexity',
-    weight: 20,
+    id: 'coreFeatureCompleteness',
+    title: '1.2 Core Feature Completeness',
+    weight: 8,
     description:
-      'Assess the complexity of implementing the solution. Consider deployment time, configuration requirements, data migration needs, and integration with existing systems.',
+      '1: Missing "must-have" features. 3: Covers all "must-have" features. 5: Covers most "nice-to-have" features.',
   },
   {
-    id: 'supportMaintenance',
-    title: 'Support & Maintenance',
-    weight: 20,
+    id: 'usabilityUserExperience',
+    title: '1.3 Usability & User Experience',
+    weight: 5,
     description:
-      'Evaluate the quality and availability of support services. Consider SLA terms, support channels, response times, and availability of documentation and training.',
+      '1: Complex interface, counter-intuitive workflow. 3: Clear interface, usable after training. 5: Intuitive interface, usable without training.',
   },
   {
-    id: 'costConsiderations',
-    title: 'Cost Considerations',
-    weight: 20,
+    id: 'futureProofingScalability',
+    title: '1.4 Future-Proofing & Scalability',
+    weight: 4,
     description:
-      'Assess total cost of ownership including licensing, implementation, training, and ongoing maintenance. Consider budget constraints and cost predictability.',
+      '1: Rigid architecture, difficult to scale. 3: Can support foreseeable business growth. 5: Highly elastic architecture, can handle multiples of growth.',
+  },
+
+  // 2.0 Architecture & Integration Fit (30%)
+  {
+    id: 'apiFirstDesign',
+    title: '2.1 API-First Design',
+    weight: 10,
+    description:
+      '1: Almost no APIs. 3: Provides APIs for core functions. 5: Comprehensive, well-documented APIs.',
   },
   {
-    id: 'riskAssessment',
-    title: 'Risk Assessment',
-    weight: 15,
+    id: 'cloudNativeArchitecture',
+    title: '2.2 Cloud-Native Architecture',
+    weight: 7,
     description:
-      'Evaluate potential risks including technical risks, vendor risks, integration risks, and organizational change management risks. Consider mitigation strategies.',
+      '1: Traditional monolithic application. 3: "Cloud-friendly", can be deployed in the cloud. 5: Fully cloud-native, maximizes cloud value.',
+  },
+  {
+    id: 'integrationWithCoreSystems',
+    title: '2.3 Integration with Core Systems',
+    weight: 8,
+    description:
+      '1: Requires extensive custom development. 3: Provides standard APIs, requires self-development. 5: Offers pre-built connectors.',
+  },
+  {
+    id: 'dataModelInteroperability',
+    title: '2.4 Data Model & Interoperability',
+    weight: 5,
+    description:
+      '1: Closed, proprietary model, data lock-in. 3: Can import/export via standard formats. 5: Open model, supports real-time sync.',
+  },
+
+  // 3.0 Compliance & Governance (15%)
+  {
+    id: 'popiaCompliance',
+    title: '3.1 POPIA Compliance',
+    weight: 10,
+    description:
+      '1: Unclear on key issues, poses risk. 3: Provides compliance statement, has basic measures. 5: Has detailed documentation and third-party certification.',
+  },
+  {
+    id: 'fscaJointStandardCompliance',
+    title: '3.2 FSCA Joint Standard Compliance',
+    weight: 10,
+    description:
+      '1: Cannot provide evidence of meeting FSCA requirements. 3: Follows some standards, needs supplemental controls. 5: Design follows FSCA standards, has audit reports.',
+  },
+  {
+    id: 'generalSecurityPosture',
+    title: '3.3 General Security Posture',
+    weight: 5,
+    description:
+      '1: Lacks basic features like SSO, RBAC. 3: Supports IAM integration, basic RBAC. 5: Offers strong features like MFA, granular RBAC.',
+  },
+
+  // 4.0 Vendor/Solution Viability (15%)
+  {
+    id: 'vendorFinancialHealthMarketPosition',
+    title: '4.1 Vendor Financial Health & Market Position',
+    weight: 4,
+    description:
+      '1: Small scale, unclear financial status. 3: Financially stable, has a position in its niche. 5: Industry leader, financially robust.',
+  },
+  {
+    id: 'productRoadmapVision',
+    title: '4.2 Product Roadmap & Vision',
+    weight: 3,
+    description:
+      '1: Roadmap is stagnant or misaligned with OMs strategy. 3: Continuously evolving, partially aligned with OMs strategy. 5: Clear vision, highly aligned with OMs strategy.',
+  },
+  {
+    id: 'supportModelSLA',
+    title: '4.3 Support Model & SLA',
+    weight: 5,
+    description:
+      '1: Limited support channels, vague SLA. 3: Standard commercial support, SLA meets industry average. 5: Dedicated enterprise support, SLA exceeds industry standards.',
+  },
+  {
+    id: 'customerReferences',
+    title: '4.4 Customer References',
+    weight: 3,
+    description:
+      '1: No successful/local financial industry case studies. 3: Has relevant industry cases, but with scale differences. 5: Has highly similar local customer references.',
+  },
+
+  // 5.0 Preliminary Financial Assessment (8%)
+  {
+    id: 'initialAcquisitionSubscriptionCost',
+    title: '5.1 Initial Acquisition/Subscription Cost',
+    weight: 3,
+    description:
+      '1: Far exceeds preliminary budget. 3: Within preliminary budget. 5: Significantly below preliminary budget.',
+  },
+  {
+    id: 'pricingModelClarity',
+    title: '5.2 Pricing Model Clarity',
+    weight: 2,
+    description:
+      '1: Complex model, high risk. 3: Clear model, but with variable costs. 5: Simple, transparent, and fully predictable model.',
   },
 ];
 
