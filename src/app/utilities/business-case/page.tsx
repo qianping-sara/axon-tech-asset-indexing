@@ -64,7 +64,6 @@ export default function BusinessCasePage() {
 
         {/* Objective Section */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Objective</h2>
           <BusinessCaseObjective />
         </div>
 

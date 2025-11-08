@@ -34,7 +34,9 @@ export default function CriteriaRow({
         <div className="flex-1">
           <div className="flex items-baseline gap-2 mb-2">
             <h3 className="text-base font-semibold text-gray-900">{title}</h3>
-            <span className="text-xs text-gray-500 font-medium">{weight}%</span>
+            <span className="inline-block px-2 py-0.5 text-xs font-medium text-green-700 bg-green-50 rounded-full">
+              {weight}%
+            </span>
           </div>
           <p className="text-sm text-gray-600">{description}</p>
         </div>
