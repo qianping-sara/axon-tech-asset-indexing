@@ -95,7 +95,14 @@ export default function TCOChart({ solutions, visibleSolutions, onVisibilityTogg
           {/* Legend with Checkboxes */}
           <div className="mt-6 flex flex-wrap gap-4">
             {solutions.map((solution, index) => (
-              <label key={solution.id} className="flex items-center gap-2 cursor-pointer">
+              <label
+                key={solution.id}
+                className={`flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg transition-colors ${
+                  visibleSolutions.has(solution.id)
+                    ? 'bg-green-50 border border-green-200'
+                    : 'hover:bg-gray-50'
+                }`}
+              >
                 <input
                   type="checkbox"
                   checked={visibleSolutions.has(solution.id)}
@@ -106,7 +113,9 @@ export default function TCOChart({ solutions, visibleSolutions, onVisibilityTogg
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: SOLUTION_COLORS[index] || '#9ca3af' }}
                 ></span>
-                <span className="text-sm text-gray-700">{solution.name}</span>
+                <span className={`text-sm ${visibleSolutions.has(solution.id) ? 'text-green-700 font-medium' : 'text-gray-700'}`}>
+                  {solution.name}
+                </span>
               </label>
             ))}
           </div>

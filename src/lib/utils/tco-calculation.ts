@@ -137,3 +137,81 @@ export function formatCurrency(value: number): string {
   }).format(value);
 }
 
+/**
+ * Export solutions to CSV format
+ */
+export function exportToCSV(solutions: Solution[]): string {
+  if (solutions.length === 0) {
+    return '';
+  }
+
+  const lines: string[] = [];
+
+  // Header row
+  const headers = ['Cost Item', 'Category', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', '5-Year Total'];
+  lines.push(headers.join(','));
+
+  // For each solution
+  solutions.forEach((solution, solutionIndex) => {
+    // Add solution name as a section header
+    if (solutionIndex > 0) {
+      lines.push(''); // Empty line between solutions
+    }
+    lines.push(`${solution.name},,,,,,`);
+
+    // Direct Costs Section
+    lines.push('Direct Costs,,,,,,');
+    const directItems = getDirectCostItems();
+    directItems.forEach((item) => {
+      const costs = solution.costs[item.id];
+      const year1 = costs?.year1 || 0;
+      const year2 = costs?.year2 || 0;
+      const year3 = costs?.year3 || 0;
+      const year4 = costs?.year4 || 0;
+      const year5 = costs?.year5 || 0;
+      const total = year1 + year2 + year3 + year4 + year5;
+      lines.push(`${item.name},${item.category},${year1},${year2},${year3},${year4},${year5},${total}`);
+    });
+
+    // Indirect Costs Section
+    lines.push('Indirect Costs,,,,,,');
+    const indirectItems = getIndirectCostItems();
+    indirectItems.forEach((item) => {
+      const costs = solution.costs[item.id];
+      const year1 = costs?.year1 || 0;
+      const year2 = costs?.year2 || 0;
+      const year3 = costs?.year3 || 0;
+      const year4 = costs?.year4 || 0;
+      const year5 = costs?.year5 || 0;
+      const total = year1 + year2 + year3 + year4 + year5;
+      lines.push(`${item.name},${item.category},${year1},${year2},${year3},${year4},${year5},${total}`);
+    });
+
+    // Totals
+    const directTotal = calculateDirectCostsTotal(solution.costs);
+    const indirectTotal = calculateIndirectCostsTotal(solution.costs);
+    const fiveYearTotal = calculateFiveYearTotal(solution.costs);
+    lines.push(`Direct Costs Total,,${directTotal / 5},,,,${directTotal}`);
+    lines.push(`Indirect Costs Total,,${indirectTotal / 5},,,,${indirectTotal}`);
+    lines.push(`Total Cost of Ownership,,,,,,,${fiveYearTotal}`);
+  });
+
+  return lines.join('\n');
+}
+
+/**
+ * Download CSV file
+ */
+export function downloadCSV(solutions: Solution[]): void {
+  const csv = exportToCSV(solutions);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `tco-calculation-${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+

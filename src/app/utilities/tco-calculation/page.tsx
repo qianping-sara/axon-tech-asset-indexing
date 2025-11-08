@@ -1,16 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '@/components/layout/Header';
+import TCOObjective from '@/components/utilities/tco-calculation/TCOObjective';
 import TCOSolutionManager from '@/components/utilities/tco-calculation/TCOSolutionManager';
 import TCOChart from '@/components/utilities/tco-calculation/TCOChart';
 import { Solution } from '@/lib/types/tco-calculation';
+import { createNewSolution, downloadCSV } from '@/lib/utils/tco-calculation';
+import { ArrowLeft, Download } from 'lucide-react';
 
 export default function TCOCalculationPage() {
   const [solutions, setSolutions] = useState<Solution[]>([]);
   const [visibleSolutions, setVisibleSolutions] = useState<Set<string>>(new Set());
 
-  // Load solutions from localStorage on mount
+  // Load solutions from localStorage on mount, or create default Solution A
   useEffect(() => {
     const saved = localStorage.getItem('tco-solutions');
     if (saved) {
@@ -20,7 +24,16 @@ export default function TCOCalculationPage() {
         setVisibleSolutions(new Set(parsed.map((s: Solution) => s.id)));
       } catch (error) {
         console.error('Failed to load solutions:', error);
+        // Create default Solution A if loading fails
+        const defaultSolution = createNewSolution('Solution A');
+        setSolutions([defaultSolution]);
+        setVisibleSolutions(new Set([defaultSolution.id]));
       }
+    } else {
+      // Create default Solution A on first load
+      const defaultSolution = createNewSolution('Solution A');
+      setSolutions([defaultSolution]);
+      setVisibleSolutions(new Set([defaultSolution.id]));
     }
   }, []);
 
@@ -56,58 +69,64 @@ export default function TCOCalculationPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <Header />
 
-      {/* White Background Section - Header and Description */}
-      <div className="bg-white border-b border-gray-200">
-        <main className="max-w-7xl mx-auto px-6 py-12">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">TCO Calculation</h1>
-            <p className="text-gray-600 text-lg">
-              Calculate and compare the Total Cost of Ownership for different solutions over a 5-year period
-            </p>
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        {/* Back Button */}
+        <Link
+          href="/utilities"
+          className="inline-flex items-center gap-2 text-green-700 hover:text-green-800 text-sm mb-8 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to CoE Utilities
+        </Link>
+
+        {/* Page Title */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">TCO Calculation</h1>
+        </div>
+
+        {/* Objective Section */}
+        <div className="mb-8">
+          <TCOObjective />
+        </div>
+
+        {/* Download Button */}
+        {solutions.length > 0 && (
+          <div className="mb-8 flex justify-end">
+            <button
+              onClick={() => downloadCSV(solutions)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-medium text-sm"
+            >
+              <Download className="w-4 h-4" />
+              Download CSV
+            </button>
+          </div>
+        )}
+
+        {/* Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column: Solution Manager */}
+          <div className="lg:col-span-2">
+            <TCOSolutionManager
+              solutions={solutions}
+              onAddSolution={handleAddSolution}
+              onDeleteSolution={handleDeleteSolution}
+              onUpdateSolution={handleUpdateSolution}
+            />
           </div>
 
-          {/* Objective Description */}
-          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-3">Objective</h2>
-            <p className="text-gray-700 text-base leading-relaxed">
-              This tool helps you calculate and visualize the Total Cost of Ownership (TCO) for different solutions
-              across a 5-year period. By analyzing both direct costs (software licenses, implementation, hardware) and
-              indirect costs (maintenance, support, training), you can make informed decisions based on comprehensive
-              financial analysis. Compare multiple solutions side-by-side to identify the most cost-effective option for
-              your organization.
-            </p>
+          {/* Right Column: Chart */}
+          <div className="lg:col-span-1">
+            <TCOChart
+              solutions={solutions}
+              visibleSolutions={visibleSolutions}
+              onVisibilityToggle={handleVisibilityToggle}
+            />
           </div>
-        </main>
-      </div>
-
-      {/* Gray Background Section - Content */}
-      <div className="bg-gray-50">
-        <main className="max-w-7xl mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column: Solution Manager */}
-            <div className="lg:col-span-2">
-              <TCOSolutionManager
-                solutions={solutions}
-                onAddSolution={handleAddSolution}
-                onDeleteSolution={handleDeleteSolution}
-                onUpdateSolution={handleUpdateSolution}
-              />
-            </div>
-
-            {/* Right Column: Chart */}
-            <div className="lg:col-span-1">
-              <TCOChart
-                solutions={solutions}
-                visibleSolutions={visibleSolutions}
-                onVisibilityToggle={handleVisibilityToggle}
-              />
-            </div>
-          </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

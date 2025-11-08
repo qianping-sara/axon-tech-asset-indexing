@@ -23,12 +23,12 @@ export default function TCOCostTable({ solution, onCostChange }: TCOCostTablePro
         <td className="px-4 py-3 text-sm text-gray-900 font-medium">{item.name}</td>
         <td className="px-4 py-3 text-sm text-gray-600">{item.category}</td>
         {YEAR_KEYS.map((year) => (
-          <td key={year} className="px-4 py-3 text-sm">
+          <td key={year} className="px-2 py-3 text-sm">
             <input
               type="number"
               value={costs?.[year] || 0}
               onChange={(e) => onCostChange(item.id, year, parseFloat(e.target.value) || 0)}
-              className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded text-right text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
               placeholder="0"
             />
           </td>
@@ -56,11 +56,11 @@ export default function TCOCostTable({ solution, onCostChange }: TCOCostTablePro
           <tr className="bg-gray-50 border-b border-gray-200">
             <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Cost Item</th>
             <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Category</th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Year 1</th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Year 2</th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Year 3</th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Year 4</th>
-            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Year 5</th>
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-700">Year 1</th>
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-700">Year 2</th>
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-700">Year 3</th>
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-700">Year 4</th>
+            <th className="px-2 py-3 text-center text-xs font-semibold text-gray-700">Year 5</th>
             <th className="px-4 py-3 text-right text-xs font-semibold text-gray-700">5-Year Total</th>
           </tr>
         </thead>

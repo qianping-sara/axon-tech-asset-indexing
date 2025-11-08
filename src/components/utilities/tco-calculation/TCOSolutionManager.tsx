@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Solution, CostData } from '@/lib/types/tco-calculation';
 import { createNewSolution } from '@/lib/utils/tco-calculation';
-import { Trash2, Edit2, Check, X } from 'lucide-react';
+import { Trash2, Edit2, Check, X, ChevronDown, ChevronRight } from 'lucide-react';
 import TCOCostTable from './TCOCostTable';
 
 interface TCOSolutionManagerProps {
@@ -71,28 +71,7 @@ export default function TCOSolutionManager({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Add New Solution */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Solution</h3>
-        <div className="flex gap-3">
-          <input
-            type="text"
-            value={newSolutionName}
-            onChange={(e) => setNewSolutionName(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleAddSolution()}
-            placeholder="Enter solution name (e.g., Solution A, Vendor X)"
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 text-sm"
-          />
-          <button
-            onClick={handleAddSolution}
-            className="px-6 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-medium text-sm"
-          >
-            + Add Solution
-          </button>
-        </div>
-      </div>
-
+    <div className="space-y-4">
       {/* Solutions List */}
       {solutions.length === 0 ? (
         <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
@@ -107,7 +86,16 @@ export default function TCOSolutionManager({
                 className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors"
                 onClick={() => setExpandedId(expandedId === solution.id ? null : solution.id)}
               >
-                <div className="flex-1">
+                <div className="flex items-center gap-3 flex-1">
+                  {/* Collapse/Expand Icon */}
+                  <div className="text-gray-600">
+                    {expandedId === solution.id ? (
+                      <ChevronDown size={20} />
+                    ) : (
+                      <ChevronRight size={20} />
+                    )}
+                  </div>
+
                   {editingId === solution.id ? (
                     <div className="flex gap-2 items-center">
                       <input
@@ -178,6 +166,27 @@ export default function TCOSolutionManager({
           ))}
         </div>
       )}
+
+      {/* Add New Solution - At the bottom */}
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Solution</h3>
+        <div className="flex gap-3">
+          <input
+            type="text"
+            value={newSolutionName}
+            onChange={(e) => setNewSolutionName(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleAddSolution()}
+            placeholder="Enter solution name (e.g., Solution A, Vendor X)"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 text-sm"
+          />
+          <button
+            onClick={handleAddSolution}
+            className="px-6 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-medium text-sm"
+          >
+            + Add Solution
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
