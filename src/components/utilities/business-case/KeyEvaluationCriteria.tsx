@@ -16,16 +16,22 @@ export default function KeyEvaluationCriteria({
   onCriteriaChange,
   onClearAll,
 }: KeyEvaluationCriteriaProps) {
+  const hasInput = Object.values(criteriaData).some(
+    (c) => c.score > 0 || c.notes.trim() !== ''
+  );
+
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-gray-50 rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-semibold text-gray-900">Evaluation Criteria</h2>
-        <button
-          onClick={onClearAll}
-          className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
-        >
-          Clear
-        </button>
+        {hasInput && (
+          <button
+            onClick={onClearAll}
+            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+          >
+            Clear
+          </button>
+        )}
       </div>
 
       <div>

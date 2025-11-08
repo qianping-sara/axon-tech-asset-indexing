@@ -37,6 +37,10 @@ export default function BusinessCasePage() {
     }
   };
 
+  const hasInput = Object.values(criteriaData).some(
+    (c) => c.score > 0 || c.notes.trim() !== ''
+  );
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -45,14 +49,14 @@ export default function BusinessCasePage() {
         {/* Back Button */}
         <Link
           href="/utilities"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-green-700 hover:text-green-800 text-sm mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back
         </Link>
 
         {/* Page Title */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">
             Business Case and Strategic Alignment
           </h1>
@@ -60,6 +64,7 @@ export default function BusinessCasePage() {
 
         {/* Objective Section */}
         <div className="mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Objective</h2>
           <BusinessCaseObjective />
         </div>
 

@@ -28,7 +28,7 @@ export default function CriteriaRow({
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg p-5 mb-4">
+    <div className="bg-white border border-gray-200 rounded-lg p-5 mb-4">
       {/* Header: Title, Weight, and Score Selection */}
       <div className="flex items-start justify-between gap-6 mb-4">
         <div className="flex-1">

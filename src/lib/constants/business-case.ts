@@ -3,10 +3,10 @@ import { CriteriaDefinition } from '@/lib/types/business-case';
 export const BUSINESS_CASE_CRITERIA: CriteriaDefinition[] = [
   {
     id: 'clearProblemDefinition',
-    title: 'Clear Problem Definition',
+    title: 'Problem or Opportunity Definition',
     weight: 30,
     description:
-      'The business case must articulate the current business problem or the desired business opportunity in concrete, measurable terms. Avoid vague statements like "improve efficiency" - instead specify "reduce claims cycle time by 30%".',
+      'Articulate the current business problem or desired opportunity in concrete, measurable terms. For example, instead of "improve efficiency", specify "reduce claims cycle time by 30%". This clarity ensures everyone understands what needs to be solved.',
   },
   {
     id: 'explicitStrategicLink',
