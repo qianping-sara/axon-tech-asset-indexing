@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Solution, CostData } from '@/lib/types/tco-calculation';
 import { createNewSolution } from '@/lib/utils/tco-calculation';
 import { Trash2, Edit2, Check, X, ChevronDown, ChevronRight } from 'lucide-react';
@@ -22,7 +22,14 @@ export default function TCOSolutionManager({
   const [newSolutionName, setNewSolutionName] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
-  const [expandedId, setExpandedId] = useState<string | null>(solutions[0]?.id || null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  // Set the first solution as expanded when solutions change
+  useEffect(() => {
+    if (solutions.length > 0 && !expandedId) {
+      setExpandedId(solutions[0].id);
+    }
+  }, [solutions, expandedId]);
 
   const handleAddSolution = () => {
     if (newSolutionName.trim()) {
