@@ -11,6 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 import { PreliminaryEvaluationData } from '@/lib/types/preliminary-evaluation';
 
 export default function PreliminaryEvaluationPage() {
+  const [activeSection, setActiveSection] = useState<'part1' | 'part2'>('part1');
   const [selectedModel, setSelectedModel] = useState<'buy' | 'build' | 'openSource'>('buy');
   const [data, setData] = useState<PreliminaryEvaluationData>({
     initialAssessment: {
@@ -215,20 +216,48 @@ export default function PreliminaryEvaluationPage() {
           <PreliminaryObjective />
         </div>
 
+        {/* Section Navigation */}
+        <div className="flex gap-8 border-b border-gray-200 mb-8">
+          <button
+            onClick={() => setActiveSection('part1')}
+            className={`pb-3 font-semibold transition-colors ${
+              activeSection === 'part1'
+                ? 'text-gray-900 border-b-2 border-green-700'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Part 1: Initial Assessment
+          </button>
+          <button
+            onClick={() => setActiveSection('part2')}
+            className={`pb-3 font-semibold transition-colors ${
+              activeSection === 'part2'
+                ? 'text-gray-900 border-b-2 border-green-700'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Part 2: Sourcing Model Specific
+          </button>
+        </div>
+
         {/* Part 1: Initial Assessment */}
-        <InitialAssessmentCriteria
-          data={data.initialAssessment}
-          onDataChange={handleInitialAssessmentChange}
-          onClearAll={handleInitialAssessmentClearAll}
-        />
+        {activeSection === 'part1' && (
+          <InitialAssessmentCriteria
+            data={data.initialAssessment}
+            onDataChange={handleInitialAssessmentChange}
+            onClearAll={handleInitialAssessmentClearAll}
+          />
+        )}
 
         {/* Part 2: Sourcing Model Specific */}
-        <SourcingModelSpecificCriteria
-          data={data.sourcingModelSpecific}
-          selectedModel={selectedModel}
-          onDataChange={handleSourcingModelChange}
-          onClearAll={handleSourcingModelClearAll}
-        />
+        {activeSection === 'part2' && (
+          <SourcingModelSpecificCriteria
+            data={data.sourcingModelSpecific}
+            selectedModel={selectedModel}
+            onDataChange={handleSourcingModelChange}
+            onClearAll={handleSourcingModelClearAll}
+          />
+        )}
 
         {/* Part 3: Comprehensive Conclusion */}
         <PreliminaryEvaluationSummary data={data} selectedModel={selectedModel} />

@@ -62,125 +62,145 @@ export default function InitialAssessmentCriteria({
   };
 
   return (
-    <div className="mb-8">
+    <div className="mb-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Part 1: Initial Assessment</h2>
         {hasInput && (
           <button
             onClick={onClearAll}
-            className="px-4 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors font-medium"
+            className="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
           >
             Clear All
           </button>
         )}
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {INITIAL_ASSESSMENT_CRITERIA_GROUPS.map((group) => {
           const isExpanded = expandedGroups.has(group.id);
           const groupScore = getGroupScore(group.id);
 
           return (
-            <div key={group.id} className="border rounded-lg overflow-hidden bg-white shadow-sm">
-              {/* Group Header */}
+            <div key={group.id} className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+              {/* Group Header - Minimalist Black/White/Gray */}
               <button
                 onClick={() => toggleGroup(group.id)}
-                className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 transition-colors flex items-center justify-between"
+                className="w-full px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors flex items-center justify-between border-b border-gray-200"
               >
                 <div className="flex items-center gap-3 flex-1 text-left">
                   <ChevronDown
                     size={20}
-                    className={`transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`transition-transform flex-shrink-0 text-gray-600 ${isExpanded ? 'rotate-180' : ''}`}
                   />
                   <div>
-                    <h3 className="font-semibold text-lg">{group.title}</h3>
-                    <p className="text-sm text-orange-100">{group.description}</p>
+                    <h3 className="font-semibold text-gray-900">{group.title}</h3>
+                    <p className="text-sm text-gray-600">{group.description}</p>
                   </div>
                 </div>
-                <div className="text-right flex-shrink-0 ml-4">
-                  <div className="text-sm font-medium">Weight: {group.totalWeight}%</div>
-                  <div className="text-sm">Score: {groupScore.toFixed(1)}/5</div>
+                <div className="text-right flex-shrink-0 ml-4 text-sm text-gray-700">
+                  <div className="font-medium">Weight: {group.totalWeight}%</div>
+                  <div className="text-gray-600">Score: {groupScore.toFixed(1)}/5</div>
                 </div>
               </button>
 
-              {/* Group Content */}
+              {/* Group Content - Table Layout */}
               {isExpanded && (
-                <div className="bg-white p-6 space-y-6 border-t">
-                  {group.criteria.map((criterion) => {
-                    const criterionData = (data as any)[criterion.id] || {
-                      score: 0,
-                      notes: '',
-                    };
-                    const isTooltipVisible = hoveredTooltip === criterion.id;
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200 bg-gray-50">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700">
+                          Dimension
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 w-32">
+                          Score
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 w-48">
+                          Notes
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.criteria.map((criterion, idx) => {
+                        const criterionData = (data as any)[criterion.id] || {
+                          score: 0,
+                          notes: '',
+                        };
+                        const isTooltipVisible = hoveredTooltip === criterion.id;
 
-                    return (
-                      <div key={criterion.id} className="border-b last:border-b-0 pb-6 last:pb-0">
-                        {/* Criterion Header */}
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-semibold text-gray-900">{criterion.title}</h4>
-                              <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
-                                {criterion.weight}%
-                              </span>
-                              {/* Tooltip Icon */}
-                              <div className="relative">
-                                <button
-                                  onMouseEnter={() => setHoveredTooltip(criterion.id)}
-                                  onMouseLeave={() => setHoveredTooltip(null)}
-                                  className="text-gray-400 hover:text-gray-600 transition-colors"
-                                >
-                                  <Info size={16} />
-                                </button>
-                                {isTooltipVisible && (
-                                  <div className="absolute left-0 top-full mt-2 w-72 bg-gray-900 text-white text-xs rounded-lg p-3 z-10 shadow-lg">
-                                    <p className="font-semibold mb-2">Scoring Guide:</p>
-                                    <p>{criterion.scoringGuide}</p>
-                                    <div className="absolute left-2 -top-1 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                        return (
+                          <tr
+                            key={criterion.id}
+                            className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
+                              idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                            }`}
+                          >
+                            {/* Dimension Column */}
+                            <td className="px-6 py-4">
+                              <div className="flex items-start gap-2">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h4 className="font-medium text-gray-900 text-sm">{criterion.title}</h4>
+                                    <span className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded">
+                                      {criterion.weight}%
+                                    </span>
+                                    {/* Tooltip Icon */}
+                                    <div className="relative">
+                                      <button
+                                        onMouseEnter={() => setHoveredTooltip(criterion.id)}
+                                        onMouseLeave={() => setHoveredTooltip(null)}
+                                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                                      >
+                                        <Info size={14} />
+                                      </button>
+                                      {isTooltipVisible && (
+                                        <div className="absolute left-0 top-full mt-2 w-80 bg-gray-900 text-white text-xs rounded-lg p-3 z-10 shadow-lg">
+                                          <p className="font-semibold mb-2">Scoring Guide:</p>
+                                          <p>{criterion.scoringGuide}</p>
+                                          <div className="absolute left-2 -top-1 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
-                                )}
+                                  <p className="text-xs text-gray-600">{criterion.description}</p>
+                                </div>
                               </div>
-                            </div>
-                            <p className="text-sm text-gray-600 mt-1">{criterion.description}</p>
-                          </div>
-                        </div>
+                            </td>
 
-                        {/* Score Selection */}
-                        <div className="flex items-center gap-3 mb-3">
-                          <span className="text-sm font-medium text-gray-700 min-w-fit">Score:</span>
-                          <div className="flex gap-2">
-                            {[1, 2, 3, 4, 5].map((score) => (
-                              <button
-                                key={score}
-                                onClick={() => handleScoreChange(criterion.id, score)}
-                                className={`w-10 h-10 rounded-lg font-semibold transition-all ${
-                                  criterionData.score === score
-                                    ? 'bg-orange-500 text-white shadow-md'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
-                              >
-                                {score}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
+                            {/* Score Column */}
+                            <td className="px-6 py-4">
+                              <div className="flex gap-1 justify-center">
+                                {[1, 2, 3, 4, 5].map((score) => (
+                                  <button
+                                    key={score}
+                                    onClick={() => handleScoreChange(criterion.id, score)}
+                                    className={`w-8 h-8 rounded font-semibold text-xs transition-all ${
+                                      criterionData.score === score
+                                        ? 'bg-green-700 text-white shadow-md'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
+                                  >
+                                    {score}
+                                  </button>
+                                ))}
+                              </div>
+                            </td>
 
-                        {/* Notes */}
-                        <div>
-                          <label className="text-sm font-medium text-gray-700 block mb-2">
-                            Notes:
-                          </label>
-                          <textarea
-                            value={criterionData.notes}
-                            onChange={(e) => handleNotesChange(criterion.id, e.target.value)}
-                            placeholder="Add notes or evidence for this criterion..."
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
-                            rows={2}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+                            {/* Notes Column */}
+                            <td className="px-6 py-4">
+                              <textarea
+                                value={criterionData.notes}
+                                onChange={(e) => handleNotesChange(criterion.id, e.target.value)}
+                                placeholder="Add notes..."
+                                className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-green-700 focus:border-transparent resize-none"
+                                rows={2}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>
