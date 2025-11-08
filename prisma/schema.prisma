@@ -93,6 +93,27 @@ model axon_tag {
   @@index([category])
 }
 
+model axon_utility {
+  id          String   @id
+  name        String   @db.VarChar(255)
+  description String
+  category    String   @db.VarChar(100)
+  icon        String   @db.VarChar(100) // lucide-react icon name
+  url         String   @db.VarChar(500)
+  version     String   @db.VarChar(50)
+  status      Status   @default(PUBLISHED)
+  owner       String?  @db.VarChar(255)
+  tags        String[] @default([]) // JSON array of tags
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  publishedAt DateTime?
+
+  @@index([category])
+  @@index([status])
+  @@index([owner])
+  @@map("axon_utility")
+}
+
 enum BizDomain {
   // Core Servicing Domains (5)
   CLAIM

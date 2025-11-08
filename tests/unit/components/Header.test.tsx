@@ -19,6 +19,7 @@ describe('Header Component', () => {
   it('renders navigation links', () => {
     render(<Header />);
     expect(screen.getByText('Discover')).toBeInTheDocument();
+    expect(screen.getByText('CoE Utilities')).toBeInTheDocument();
     expect(screen.getByText('Docs')).toBeInTheDocument();
   });
 
@@ -31,7 +32,13 @@ describe('Header Component', () => {
   it('renders discover link', () => {
     render(<Header />);
     const discoverLink = screen.getByText('Discover').closest('a');
-    expect(discoverLink).toHaveAttribute('href', '/search');
+    expect(discoverLink).toHaveAttribute('href', '/discover');
+  });
+
+  it('renders CoE Utilities link', () => {
+    render(<Header />);
+    const utilitiesLink = screen.getByText('CoE Utilities').closest('a');
+    expect(utilitiesLink).toHaveAttribute('href', '/utilities');
   });
 
   it('has sticky positioning', () => {
