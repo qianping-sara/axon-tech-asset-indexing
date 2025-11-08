@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronDown, Info } from 'lucide-react';
 import { InitialAssessmentData } from '@/lib/types/preliminary-evaluation';
-import { INITIAL_ASSESSMENT_CRITERIA } from '@/lib/constants/preliminary-evaluation';
-import PreliminaryCriteriaRow from './PreliminaryCriteriaRow';
+import { INITIAL_ASSESSMENT_CRITERIA_GROUPS } from '@/lib/constants/preliminary-evaluation';
 
 interface InitialAssessmentCriteriaProps {
   data: InitialAssessmentData;
@@ -16,33 +16,176 @@ export default function InitialAssessmentCriteria({
   onDataChange,
   onClearAll,
 }: InitialAssessmentCriteriaProps) {
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [hoveredTooltip, setHoveredTooltip] = useState<string | null>(null);
+
   const hasInput = Object.values(data).some((c) => c.score > 0 || c.notes.trim() !== '');
 
+  const toggleGroup = (groupId: string) => {
+    const newExpanded = new Set(expandedGroups);
+    if (newExpanded.has(groupId)) {
+      newExpanded.delete(groupId);
+    } else {
+      newExpanded.add(groupId);
+    }
+    setExpandedGroups(newExpanded);
+  };
+
+  const getGroupScore = (groupId: string): number => {
+    const group = INITIAL_ASSESSMENT_CRITERIA_GROUPS.find((g) => g.id === groupId);
+    if (!group) return 0;
+
+    let totalScore = 0;
+    let totalWeight = 0;
+    group.criteria.forEach((criterion) => {
+      const score = (data as any)[criterion.id]?.score || 0;
+      totalScore += score * criterion.weight;
+      totalWeight += criterion.weight;
+    });
+    return totalWeight > 0 ? totalScore / totalWeight : 0;
+  };
+
+  const handleScoreChange = (criteriaId: string, score: number) => {
+    const currentData = (data as any)[criteriaId] || { score: 0, notes: '' };
+    onDataChange(criteriaId as keyof InitialAssessmentData, {
+      ...currentData,
+      score,
+    });
+  };
+
+  const handleNotesChange = (criteriaId: string, notes: string) => {
+    const currentData = (data as any)[criteriaId] || { score: 0, notes: '' };
+    onDataChange(criteriaId as keyof InitialAssessmentData, {
+      ...currentData,
+      notes,
+    });
+  };
+
   return (
-    <div className="bg-gray-50 rounded-lg p-6 mb-8">
+    <div className="mb-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Part 1: Initial Assessment</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Part 1: Initial Assessment</h2>
         {hasInput && (
           <button
             onClick={onClearAll}
-            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+            className="px-4 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors font-medium"
           >
-            Clear
+            Clear All
           </button>
         )}
       </div>
 
-      <div>
-        {INITIAL_ASSESSMENT_CRITERIA.map((criteria) => (
-          <PreliminaryCriteriaRow
-            key={criteria.id}
-            title={criteria.title}
-            weight={criteria.weight}
-            description={criteria.description}
-            data={data[criteria.id as keyof InitialAssessmentData]}
-            onChange={(value) => onDataChange(criteria.id as keyof InitialAssessmentData, value)}
-          />
-        ))}
+      <div className="space-y-4">
+        {INITIAL_ASSESSMENT_CRITERIA_GROUPS.map((group) => {
+          const isExpanded = expandedGroups.has(group.id);
+          const groupScore = getGroupScore(group.id);
+
+          return (
+            <div key={group.id} className="border rounded-lg overflow-hidden bg-white shadow-sm">
+              {/* Group Header */}
+              <button
+                onClick={() => toggleGroup(group.id)}
+                className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 transition-colors flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3 flex-1 text-left">
+                  <ChevronDown
+                    size={20}
+                    className={`transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-lg">{group.title}</h3>
+                    <p className="text-sm text-orange-100">{group.description}</p>
+                  </div>
+                </div>
+                <div className="text-right flex-shrink-0 ml-4">
+                  <div className="text-sm font-medium">Weight: {group.totalWeight}%</div>
+                  <div className="text-sm">Score: {groupScore.toFixed(1)}/5</div>
+                </div>
+              </button>
+
+              {/* Group Content */}
+              {isExpanded && (
+                <div className="bg-white p-6 space-y-6 border-t">
+                  {group.criteria.map((criterion) => {
+                    const criterionData = (data as any)[criterion.id] || {
+                      score: 0,
+                      notes: '',
+                    };
+                    const isTooltipVisible = hoveredTooltip === criterion.id;
+
+                    return (
+                      <div key={criterion.id} className="border-b last:border-b-0 pb-6 last:pb-0">
+                        {/* Criterion Header */}
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-semibold text-gray-900">{criterion.title}</h4>
+                              <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                                {criterion.weight}%
+                              </span>
+                              {/* Tooltip Icon */}
+                              <div className="relative">
+                                <button
+                                  onMouseEnter={() => setHoveredTooltip(criterion.id)}
+                                  onMouseLeave={() => setHoveredTooltip(null)}
+                                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                                >
+                                  <Info size={16} />
+                                </button>
+                                {isTooltipVisible && (
+                                  <div className="absolute left-0 top-full mt-2 w-72 bg-gray-900 text-white text-xs rounded-lg p-3 z-10 shadow-lg">
+                                    <p className="font-semibold mb-2">Scoring Guide:</p>
+                                    <p>{criterion.scoringGuide}</p>
+                                    <div className="absolute left-2 -top-1 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <p className="text-sm text-gray-600 mt-1">{criterion.description}</p>
+                          </div>
+                        </div>
+
+                        {/* Score Selection */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="text-sm font-medium text-gray-700 min-w-fit">Score:</span>
+                          <div className="flex gap-2">
+                            {[1, 2, 3, 4, 5].map((score) => (
+                              <button
+                                key={score}
+                                onClick={() => handleScoreChange(criterion.id, score)}
+                                className={`w-10 h-10 rounded-lg font-semibold transition-all ${
+                                  criterionData.score === score
+                                    ? 'bg-orange-500 text-white shadow-md'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                }`}
+                              >
+                                {score}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Notes */}
+                        <div>
+                          <label className="text-sm font-medium text-gray-700 block mb-2">
+                            Notes:
+                          </label>
+                          <textarea
+                            value={criterionData.notes}
+                            onChange={(e) => handleNotesChange(criterion.id, e.target.value)}
+                            placeholder="Add notes or evidence for this criterion..."
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                            rows={2}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

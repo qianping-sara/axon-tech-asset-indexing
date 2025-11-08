@@ -7,7 +7,7 @@ import {
   OSSEvaluationData,
 } from '@/lib/types/preliminary-evaluation';
 import {
-  INITIAL_ASSESSMENT_CRITERIA,
+  INITIAL_ASSESSMENT_CRITERIA_GROUPS,
   COTS_EVALUATION_CRITERIA,
   CUSTOM_DEVELOPMENT_CRITERIA,
   OSS_EVALUATION_CRITERIA,
@@ -17,12 +17,14 @@ export function calculateInitialAssessmentScore(data: InitialAssessmentData): nu
   let totalScore = 0;
   let totalWeight = 0;
 
-  INITIAL_ASSESSMENT_CRITERIA.forEach((criteria) => {
-    const score = data[criteria.id as keyof InitialAssessmentData].score;
-    if (score > 0) {
-      totalScore += (score / 5) * criteria.weight;
-      totalWeight += criteria.weight;
-    }
+  INITIAL_ASSESSMENT_CRITERIA_GROUPS.forEach((group) => {
+    group.criteria.forEach((criteria) => {
+      const score = (data as any)[criteria.id]?.score || 0;
+      if (score > 0) {
+        totalScore += (score / 5) * criteria.weight;
+        totalWeight += criteria.weight;
+      }
+    });
   });
 
   return totalWeight > 0 ? totalScore / totalWeight : 0;
@@ -109,17 +111,20 @@ export function downloadPreliminaryEvaluationReport(
 
   // Part 1: Initial Assessment
   rows.push(['PART 1: INITIAL ASSESSMENT', '', '', '', '', '']);
-  INITIAL_ASSESSMENT_CRITERIA.forEach((criteria) => {
-    const score = data.initialAssessment[criteria.id as keyof InitialAssessmentData].score;
-    const notes = data.initialAssessment[criteria.id as keyof InitialAssessmentData].notes;
-    rows.push([
-      '',
-      criteria.title,
-      criteria.weight.toString(),
-      score > 0 ? score.toString() : '',
-      notes,
-      score > 0 ? ((score / 5) * criteria.weight).toFixed(2) : '',
-    ]);
+  INITIAL_ASSESSMENT_CRITERIA_GROUPS.forEach((group) => {
+    rows.push([group.title, '', group.totalWeight.toString(), '', '', '']);
+    group.criteria.forEach((criteria) => {
+      const score = (data.initialAssessment as any)[criteria.id]?.score || 0;
+      const notes = (data.initialAssessment as any)[criteria.id]?.notes || '';
+      rows.push([
+        '',
+        criteria.title,
+        criteria.weight.toString(),
+        score > 0 ? score.toString() : '',
+        notes,
+        score > 0 ? ((score / 5) * criteria.weight).toFixed(2) : '',
+      ]);
+    });
   });
   rows.push(['', 'Initial Assessment Score', '', '', '', result.initialAssessmentScore.toFixed(2)]);
 
