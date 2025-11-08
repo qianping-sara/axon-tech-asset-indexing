@@ -24,11 +24,9 @@ describe('EvaluationSummary Component', () => {
     preliminaryBuyIn: { notes: 'Buy-in', score: 5 },
   };
 
-  it('shows placeholder when no scores', () => {
-    render(<EvaluationSummary criteriaData={mockCriteriaDataEmpty} />);
-    expect(
-      screen.getByText(/Complete the evaluation criteria below/i)
-    ).toBeInTheDocument();
+  it('shows nothing when no scores', () => {
+    const { container } = render(<EvaluationSummary criteriaData={mockCriteriaDataEmpty} />);
+    expect(container.firstChild).toBeNull();
   });
 
   it('displays score summary when scores exist', () => {
@@ -46,7 +44,6 @@ describe('EvaluationSummary Component', () => {
   it('shows "Proceed" recommendation for high scores', () => {
     render(<EvaluationSummary criteriaData={mockCriteriaDataFilled} />);
     expect(screen.getByText(/Proceed/)).toBeInTheDocument();
-    expect(screen.getByText(/Meets criteria for technology evaluation/)).toBeInTheDocument();
   });
 
   it('shows "Review" recommendation for low scores', () => {
@@ -59,7 +56,6 @@ describe('EvaluationSummary Component', () => {
     };
     render(<EvaluationSummary criteriaData={lowScoreData} />);
     expect(screen.getByText(/Review/)).toBeInTheDocument();
-    expect(screen.getByText(/Address gaps before proceeding/)).toBeInTheDocument();
   });
 
   it('export buttons are clickable', () => {

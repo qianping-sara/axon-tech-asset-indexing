@@ -9,11 +9,22 @@ interface UtilityCardProps {
   utility: Utility;
 }
 
+// Map utility names to their tool URLs
+const getToolUrl = (name: string): string => {
+  if (name === 'Business Case and Strategic Alignment') {
+    return '/utilities/business-case';
+  }
+  // Default fallback
+  return '/utilities';
+};
+
 export default function UtilityCard({ utility }: UtilityCardProps) {
+  const toolUrl = getToolUrl(utility.name);
+
   return (
     <Link
-      href={`/utilities/${utility.id}`}
-      className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg hover:border-green-300 transition-all duration-200 h-full flex flex-col"
+      href={toolUrl}
+      className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-200 h-full flex flex-col"
     >
       {/* Icon */}
       <div className="mb-4 flex-shrink-0">
@@ -27,7 +38,7 @@ export default function UtilityCard({ utility }: UtilityCardProps) {
 
       {/* Category Badge */}
       <div className="mb-3 flex-shrink-0">
-        <span className="inline-block px-2.5 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full">
+        <span className="inline-block px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
           {utility.category}
         </span>
       </div>
@@ -38,8 +49,8 @@ export default function UtilityCard({ utility }: UtilityCardProps) {
       </p>
 
       {/* Open Tool Button */}
-      <div className="flex items-center gap-2 text-green-700 font-medium text-sm hover:gap-3 transition-all">
-        <span>View Details</span>
+      <div className="flex items-center gap-2 text-gray-700 font-medium text-sm hover:gap-3 transition-all">
+        <span>Open</span>
         <span>→</span>
       </div>
     </Link>

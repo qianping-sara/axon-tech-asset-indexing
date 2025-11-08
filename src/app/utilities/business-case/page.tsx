@@ -26,7 +26,7 @@ export default function BusinessCasePage() {
   };
 
   const handleClearAll = () => {
-    if (window.confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+    if (window.confirm('Clear all data?')) {
       setCriteriaData({
         clearProblemDefinition: { notes: '', score: 0 },
         explicitStrategicLink: { notes: '', score: 0 },
@@ -38,52 +38,48 @@ export default function BusinessCasePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-4xl mx-auto px-6 py-12">
         {/* Back Button */}
         <Link
           href="/utilities"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Utilities
+          Back
         </Link>
 
         {/* Page Title */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">
             Business Case and Strategic Alignment
           </h1>
-          <p className="text-gray-600">
-            Validate business needs and ensure strategic alignment before technology decisions
-          </p>
         </div>
 
-        {/* Main Content */}
-        <div className="space-y-12">
-          {/* Objective Section */}
+        {/* Objective Section */}
+        <div className="mb-8">
           <BusinessCaseObjective />
+        </div>
 
-          {/* Evaluation Summary */}
-          <EvaluationSummary criteriaData={criteriaData} />
+        {/* Evaluation Summary */}
+        <EvaluationSummary criteriaData={criteriaData} />
 
-          {/* Key Evaluation Criteria */}
-          <KeyEvaluationCriteria
-            criteriaData={criteriaData}
-            onCriteriaChange={handleCriteriaChange}
-          />
+        {/* Key Evaluation Criteria */}
+        <KeyEvaluationCriteria
+          criteriaData={criteriaData}
+          onCriteriaChange={handleCriteriaChange}
+        />
 
-          {/* Action Buttons */}
-          <div className="flex gap-4 pt-8 border-t border-gray-200">
-            <button
-              onClick={handleClearAll}
-              className="px-6 py-3 bg-red-50 text-red-700 font-medium rounded-lg hover:bg-red-100 transition-colors"
-            >
-              Clear All
-            </button>
-          </div>
+        {/* Action Buttons */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <button
+            onClick={handleClearAll}
+            className="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded hover:bg-gray-200 transition-colors"
+          >
+            Clear All
+          </button>
         </div>
       </main>
     </div>

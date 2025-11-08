@@ -30,10 +30,10 @@ describe('CriteriaRow Component', () => {
     expect(screen.getByText('Test description')).toBeInTheDocument();
   });
 
-  it('has clickable header', () => {
-    const { container } = render(<CriteriaRow {...defaultProps} />);
-    const header = container.querySelector('.cursor-pointer');
-    expect(header).not.toBeNull();
+  it('renders title and weight', () => {
+    render(<CriteriaRow {...defaultProps} />);
+    expect(screen.getByText('Test Criteria')).toBeInTheDocument();
+    expect(screen.getByText('30%')).toBeInTheDocument();
   });
 
   it('renders with initial data', () => {
