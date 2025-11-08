@@ -17,6 +17,9 @@ const getToolUrl = (name: string): string => {
   if (name === 'Sourcing Model Analysis') {
     return '/utilities/sourcing-model';
   }
+  if (name === 'Preliminary Evaluation and Shortlisting') {
+    return '/utilities/preliminary-evaluation';
+  }
   // Default fallback
   return '/utilities';
 };
