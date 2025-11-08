@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import UtilitySearch from '@/components/utilities/UtilitySearch';
@@ -9,7 +9,7 @@ import UtilityGrid from '@/components/utilities/UtilityGrid';
 import { Utility, UtilityCategory } from '@/lib/types/utility';
 import { UTILITY_CATEGORIES } from '@/lib/constants/utilities';
 
-export default function UtilitiesPage() {
+function UtilitiesPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -140,3 +140,10 @@ export default function UtilitiesPage() {
   );
 }
 
+export default function UtilitiesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>
+      <UtilitiesPageContent />
+    </Suspense>
+  );
+}
