@@ -57,6 +57,18 @@ export const DECISION_SUPPORT_TOOLS = [
     owner: 'AutomationCoE Team',
     tags: ['decision-support', 'evaluation', 'shortlisting'],
   },
+  {
+    id: 'tool-tco-calculation',
+    name: 'TCO Calculation',
+    description: 'Calculate and compare the Total Cost of Ownership for different solutions over a 5-year period',
+    category: 'decision-support',
+    icon: 'calculator', // lucide-react icon
+    url: '/utilities/tco-calculation',
+    version: '1.0.0',
+    status: 'PUBLISHED' as const,
+    owner: 'AutomationCoE Team',
+    tags: ['decision-support', 'tco', 'financial-analysis', 'cost-comparison'],
+  },
 ];
 
 /**

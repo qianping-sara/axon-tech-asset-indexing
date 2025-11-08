@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import { Utility } from '@/lib/types/utility';
 import { getUtilityIconComponent } from '@/lib/constants/utilityIcons';
@@ -19,6 +18,9 @@ const getToolUrl = (name: string): string => {
   }
   if (name === 'Preliminary Evaluation and Shortlisting') {
     return '/utilities/preliminary-evaluation';
+  }
+  if (name === 'TCO Calculation') {
+    return '/utilities/tco-calculation';
   }
   // Default fallback
   return '/utilities';
