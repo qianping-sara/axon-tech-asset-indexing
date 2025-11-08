@@ -196,7 +196,7 @@ export default function SourcingModelSpecificCriteria({
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-1">
                                     <h4 className="font-medium text-gray-900 text-sm">{criterion.title}</h4>
-                                    <span className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded">
+                                    <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">
                                       {criterion.weight}%
                                     </span>
                                     {/* Tooltip Icon */}
