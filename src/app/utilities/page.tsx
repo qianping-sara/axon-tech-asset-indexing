@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import UtilitySearch from '@/components/utilities/UtilitySearch';
 import UtilityCategoryFilter from '@/components/utilities/UtilityCategoryFilter';
 import UtilityGrid from '@/components/utilities/UtilityGrid';
-import { Utility, UtilityCategory } from '@/lib/types/utility';
+import { Utility } from '@/lib/types/utility';
 import { UTILITY_CATEGORIES } from '@/lib/constants/utilities';
 
 function UtilitiesPageContent() {
@@ -97,45 +97,53 @@ function UtilitiesPageContent() {
   }, [utilities, searchQuery, selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        {/* Page Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">CoE Utilities</h1>
-          <p className="text-gray-600 text-lg">
-            Discover and manage all tools available in the Center of Excellence ecosystem
-          </p>
-        </div>
-
-        {/* Search and Filter Section */}
-        <div className="mb-8 space-y-6">
-          {/* Search */}
-          <UtilitySearch
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Search utilities by name or description..."
-          />
-
-          {/* Category Filter */}
-          <UtilityCategoryFilter
-            categories={UTILITY_CATEGORIES}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-          />
-        </div>
-
-        {/* Error State */}
-        {error && (
-          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-            {error}
+      {/* White Background Section - Header and Search */}
+      <div className="bg-white border-b border-gray-200">
+        <main className="max-w-7xl mx-auto px-6 py-12">
+          {/* Page Header */}
+          <div className="mb-12">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">CoE Utilities</h1>
+            <p className="text-gray-600 text-lg">
+              Discover and manage all tools available in the Center of Excellence ecosystem
+            </p>
           </div>
-        )}
 
-        {/* Utilities Grid */}
-        <UtilityGrid utilities={filteredUtilities} isLoading={isLoading} />
-      </main>
+          {/* Search and Filter Section */}
+          <div className="space-y-6">
+            {/* Search */}
+            <UtilitySearch
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search utilities by name or description..."
+            />
+
+            {/* Category Filter */}
+            <UtilityCategoryFilter
+              categories={UTILITY_CATEGORIES}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+            />
+          </div>
+        </main>
+      </div>
+
+      {/* Gray Background Section - Content */}
+      <div className="bg-gray-50">
+        <main className="max-w-7xl mx-auto px-6 py-12">
+          {/* Error State */}
+          {error && (
+            <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+              {error}
+            </div>
+          )}
+
+          {/* Utilities Grid */}
+          <UtilityGrid utilities={filteredUtilities} isLoading={isLoading} />
+        </main>
+      </div>
     </div>
   );
 }
