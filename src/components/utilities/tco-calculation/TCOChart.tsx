@@ -97,23 +97,23 @@ export default function TCOChart({ solutions, visibleSolutions, onVisibilityTogg
             {solutions.map((solution, index) => (
               <label
                 key={solution.id}
-                className={`flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg transition-colors ${
-                  visibleSolutions.has(solution.id)
-                    ? 'bg-green-50 border border-green-200'
-                    : 'hover:bg-gray-50'
-                }`}
+                className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
               >
                 <input
                   type="checkbox"
                   checked={visibleSolutions.has(solution.id)}
                   onChange={() => onVisibilityToggle(solution.id)}
-                  className="w-4 h-4 rounded border-gray-300 text-green-700 focus:ring-green-600"
+                  className={`w-4 h-4 rounded border-2 transition-colors ${
+                    visibleSolutions.has(solution.id)
+                      ? 'border-green-700 bg-green-700 text-white'
+                      : 'border-gray-300 bg-white'
+                  }`}
                 />
                 <span
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: SOLUTION_COLORS[index] || '#9ca3af' }}
                 ></span>
-                <span className={`text-sm ${visibleSolutions.has(solution.id) ? 'text-green-700 font-medium' : 'text-gray-700'}`}>
+                <span className="text-sm text-gray-700">
                   {solution.name}
                 </span>
               </label>
