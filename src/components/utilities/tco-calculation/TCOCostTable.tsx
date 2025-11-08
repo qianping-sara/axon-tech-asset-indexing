@@ -1,19 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Solution, CostData } from '@/lib/types/tco-calculation';
 import { TCO_COST_ITEMS, getDirectCostItems, getIndirectCostItems, YEAR_KEYS } from '@/lib/constants/tco-calculation';
-import { calculateYearlyTotal, calculateFiveYearTotal, calculateDirectCostsTotal, calculateIndirectCostsTotal, formatCurrency, createEmptyCostData } from '@/lib/utils/tco-calculation';
-import { Trash2 } from 'lucide-react';
+import { calculateYearlyTotal, calculateFiveYearTotal, calculateDirectCostsTotal, calculateIndirectCostsTotal, formatCurrency } from '@/lib/utils/tco-calculation';
 
 interface TCOCostTableProps {
   solution: Solution;
   onCostChange: (costItemId: string, year: 'year1' | 'year2' | 'year3' | 'year4' | 'year5', value: number) => void;
-  onClearAll?: () => void;
 }
 
-export default function TCOCostTable({ solution, onCostChange, onClearAll }: TCOCostTableProps) {
-  const [showClearConfirm, setShowClearConfirm] = useState(false);
+export default function TCOCostTable({ solution, onCostChange }: TCOCostTableProps) {
   const directItems = getDirectCostItems();
   const indirectItems = getIndirectCostItems();
 
@@ -52,47 +49,8 @@ export default function TCOCostTable({ solution, onCostChange, onClearAll }: TCO
   const directTotal = calculateDirectCostsTotal(solution.costs);
   const indirectTotal = calculateIndirectCostsTotal(solution.costs);
 
-  const handleClearAll = () => {
-    if (onClearAll) {
-      onClearAll();
-      setShowClearConfirm(false);
-    }
-  };
-
   return (
-    <div className="space-y-4">
-      {/* Clear Button */}
-      <div className="flex justify-end">
-        {!showClearConfirm ? (
-          <button
-            onClick={() => setShowClearConfirm(true)}
-            className="inline-flex items-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm font-medium"
-            title="Clear all data in this table"
-          >
-            <Trash2 size={16} />
-            Clear All
-          </button>
-        ) : (
-          <div className="flex gap-2">
-            <span className="text-sm text-gray-600 py-2">Clear all data?</span>
-            <button
-              onClick={handleClearAll}
-              className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
-            >
-              Confirm
-            </button>
-            <button
-              onClick={() => setShowClearConfirm(false)}
-              className="px-3 py-2 bg-gray-300 text-gray-900 rounded-lg hover:bg-gray-400 transition-colors text-sm font-medium"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <table className="w-full">
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
@@ -155,7 +113,6 @@ export default function TCOCostTable({ solution, onCostChange, onClearAll }: TCO
           </tr>
         </tbody>
       </table>
-      </div>
     </div>
   );
 }

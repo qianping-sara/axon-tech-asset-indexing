@@ -23,13 +23,14 @@ export default function TCOSolutionManager({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showClearConfirm, setShowClearConfirm] = useState<string | null>(null);
 
   // Set the first solution as expanded when solutions change
   useEffect(() => {
-    if (solutions.length > 0 && !expandedId) {
+    if (solutions.length > 0 && expandedId === null) {
       setExpandedId(solutions[0].id);
     }
-  }, [solutions, expandedId]);
+  }, [solutions]);
 
   const handleAddSolution = () => {
     if (newSolutionName.trim()) {
@@ -169,6 +170,13 @@ export default function TCOSolutionManager({
                         <Edit2 size={18} />
                       </button>
                       <button
+                        onClick={() => setShowClearConfirm(showClearConfirm === solution.id ? null : solution.id)}
+                        className="p-2 text-orange-600 hover:bg-orange-50 rounded transition-colors"
+                        title="Clear all data"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                      <button
                         onClick={() => onDeleteSolution(solution.id)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
                         title="Delete solution"
@@ -180,6 +188,30 @@ export default function TCOSolutionManager({
                 </div>
               </div>
 
+              {/* Clear Confirmation */}
+              {showClearConfirm === solution.id && (
+                <div className="px-6 py-3 bg-orange-50 border-b border-orange-200 flex items-center justify-between">
+                  <span className="text-sm text-orange-900">Clear all data in this table?</span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        handleClearAllCosts(solution.id);
+                        setShowClearConfirm(null);
+                      }}
+                      className="px-3 py-1 bg-orange-600 text-white rounded text-sm hover:bg-orange-700 transition-colors"
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      onClick={() => setShowClearConfirm(null)}
+                      className="px-3 py-1 bg-gray-300 text-gray-900 rounded text-sm hover:bg-gray-400 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Solution Content - Cost Table */}
               {expandedId === solution.id && (
                 <div className="p-6 border-t border-gray-200">
@@ -188,7 +220,6 @@ export default function TCOSolutionManager({
                     onCostChange={(costItemId, year, value) =>
                       handleCostChange(solution.id, costItemId, year, value)
                     }
-                    onClearAll={() => handleClearAllCosts(solution.id)}
                   />
                 </div>
               )}
