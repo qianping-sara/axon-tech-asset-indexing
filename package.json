@@ -56,5 +56,8 @@
   },
   "prisma": {
     "seed": "node --loader ts-node/esm prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }

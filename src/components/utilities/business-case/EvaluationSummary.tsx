@@ -50,15 +50,8 @@ export default function EvaluationSummary({ criteriaData }: EvaluationSummaryPro
         </div>
       </div>
 
-      {/* Export Buttons */}
-      <div className="flex gap-3 border-t border-gray-200 pt-4">
-        <button
-          onClick={() => downloadReport(criteriaData, 'json')}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors"
-        >
-          <Download className="w-4 h-4" />
-          Export JSON
-        </button>
+      {/* Export Button */}
+      <div className="border-t border-gray-200 pt-4">
         <button
           onClick={() => downloadReport(criteriaData, 'csv')}
           className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors"

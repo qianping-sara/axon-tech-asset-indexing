@@ -41,7 +41,7 @@ export default function BusinessCasePage() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Back Button */}
         <Link
           href="/utilities"
@@ -63,24 +63,17 @@ export default function BusinessCasePage() {
           <BusinessCaseObjective />
         </div>
 
+        {/* Key Evaluation Criteria */}
+        <div className="mb-8">
+          <KeyEvaluationCriteria
+            criteriaData={criteriaData}
+            onCriteriaChange={handleCriteriaChange}
+            onClearAll={handleClearAll}
+          />
+        </div>
+
         {/* Evaluation Summary */}
         <EvaluationSummary criteriaData={criteriaData} />
-
-        {/* Key Evaluation Criteria */}
-        <KeyEvaluationCriteria
-          criteriaData={criteriaData}
-          onCriteriaChange={handleCriteriaChange}
-        />
-
-        {/* Action Buttons */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <button
-            onClick={handleClearAll}
-            className="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded hover:bg-gray-200 transition-colors"
-          >
-            Clear All
-          </button>
-        </div>
       </main>
     </div>
   );

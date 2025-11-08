@@ -30,10 +30,11 @@ describe('CriteriaRow Component', () => {
     expect(screen.getByText('Test description')).toBeInTheDocument();
   });
 
-  it('renders title and weight', () => {
+  it('renders title, weight, and description', () => {
     render(<CriteriaRow {...defaultProps} />);
     expect(screen.getByText('Test Criteria')).toBeInTheDocument();
     expect(screen.getByText('30%')).toBeInTheDocument();
+    expect(screen.getByText('Test description')).toBeInTheDocument();
   });
 
   it('renders with initial data', () => {

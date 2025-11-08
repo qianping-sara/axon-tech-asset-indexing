@@ -35,9 +35,8 @@ describe('EvaluationSummary Component', () => {
     expect(screen.getByText(/Overall Score/)).toBeInTheDocument();
   });
 
-  it('displays export buttons when scores exist', () => {
+  it('displays export button when scores exist', () => {
     render(<EvaluationSummary criteriaData={mockCriteriaDataFilled} />);
-    expect(screen.getByText(/Export JSON/)).toBeInTheDocument();
     expect(screen.getByText(/Export CSV/)).toBeInTheDocument();
   });
 
@@ -58,10 +57,10 @@ describe('EvaluationSummary Component', () => {
     expect(screen.getByText(/Review/)).toBeInTheDocument();
   });
 
-  it('export buttons are clickable', () => {
+  it('export button is clickable', () => {
     render(<EvaluationSummary criteriaData={mockCriteriaDataFilled} />);
-    const exportJsonButton = screen.getByText(/Export JSON/);
-    expect(exportJsonButton).toBeEnabled();
+    const exportCsvButton = screen.getByText(/Export CSV/);
+    expect(exportCsvButton).toBeEnabled();
   });
 });
 
