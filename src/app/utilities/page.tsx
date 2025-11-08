@@ -12,7 +12,7 @@ import { UTILITY_CATEGORIES } from '@/lib/constants/utilities';
 export default function UtilitiesPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [utilities, setUtilities] = useState<Utility[]>([]);
   const [filteredUtilities, setFilteredUtilities] = useState<Utility[]>([]);
