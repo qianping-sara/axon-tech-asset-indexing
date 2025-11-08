@@ -105,7 +105,7 @@ export default function SourcingModelSpecificCriteria({
     <div className="mb-12">
       <div className="mb-6">
         <p className="text-sm text-orange-600 font-medium">
-          ⚠️ Fill only the section corresponding to your selected sourcing model: <span className="font-semibold">{selectedModel.toUpperCase()}</span>
+          ⚠️ Fill only the section corresponding to your sourcing model evaluation result
         </p>
       </div>
 
