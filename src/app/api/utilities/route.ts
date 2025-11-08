@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
       where,
       orderBy: [
         { category: 'asc' },
-        { name: 'asc' },
+        { createdAt: 'asc' },
       ],
     });
 
