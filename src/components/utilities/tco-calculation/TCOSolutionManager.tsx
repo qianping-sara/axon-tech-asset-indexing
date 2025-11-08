@@ -70,6 +70,28 @@ export default function TCOSolutionManager({
     }
   };
 
+  const handleClearAllCosts = (solutionId: string) => {
+    const solution = solutions.find((s) => s.id === solutionId);
+    if (solution) {
+      // Create empty cost data
+      const emptyCosts: CostData = {};
+      Object.keys(solution.costs).forEach((costItemId) => {
+        emptyCosts[costItemId] = {
+          year1: 0,
+          year2: 0,
+          year3: 0,
+          year4: 0,
+          year5: 0,
+        };
+      });
+      onUpdateSolution({
+        ...solution,
+        costs: emptyCosts,
+        updatedAt: new Date(),
+      });
+    }
+  };
+
   return (
     <div className="space-y-4">
       {/* Solutions List */}
@@ -159,6 +181,7 @@ export default function TCOSolutionManager({
                     onCostChange={(costItemId, year, value) =>
                       handleCostChange(solution.id, costItemId, year, value)
                     }
+                    onClearAll={() => handleClearAllCosts(solution.id)}
                   />
                 </div>
               )}
