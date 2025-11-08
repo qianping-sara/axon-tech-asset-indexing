@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import UtilitySearch from '@/components/utilities/UtilitySearch';
 import UtilityCategoryFilter from '@/components/utilities/UtilityCategoryFilter';
@@ -9,12 +10,18 @@ import { Utility, UtilityCategory } from '@/lib/types/utility';
 import { UTILITY_CATEGORIES } from '@/lib/constants/utilities';
 
 export default function UtilitiesPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const debounceTimerRef = useRef<NodeJS.Timeout>();
+
   const [utilities, setUtilities] = useState<Utility[]>([]);
   const [filteredUtilities, setFilteredUtilities] = useState<Utility[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    searchParams.get('category') || null
+  );
 
   // Fetch utilities on mount
   useEffect(() => {
@@ -39,6 +46,33 @@ export default function UtilitiesPage() {
 
     fetchUtilities();
   }, []);
+
+  // Update URL parameters when search or category changes (with debounce)
+  useEffect(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      const params = new URLSearchParams();
+      if (searchQuery.trim()) {
+        params.set('search', searchQuery);
+      }
+      if (selectedCategory) {
+        params.set('category', selectedCategory);
+      }
+
+      const queryString = params.toString();
+      const newUrl = queryString ? `/utilities?${queryString}` : '/utilities';
+      router.push(newUrl, { scroll: false });
+    }, 500); // 500ms debounce
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [searchQuery, selectedCategory, router]);
 
   // Filter utilities based on search and category
   useEffect(() => {

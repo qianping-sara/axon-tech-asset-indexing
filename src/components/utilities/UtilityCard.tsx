@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Utility } from '@/lib/types/utility';
 import { getUtilityIconComponent } from '@/lib/constants/utilityIcons';
 
@@ -10,10 +11,8 @@ interface UtilityCardProps {
 
 export default function UtilityCard({ utility }: UtilityCardProps) {
   return (
-    <a
-      href={utility.url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={`/utilities/${utility.id}`}
       className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg hover:border-green-300 transition-all duration-200 h-full flex flex-col"
     >
       {/* Icon */}
@@ -40,10 +39,10 @@ export default function UtilityCard({ utility }: UtilityCardProps) {
 
       {/* Open Tool Button */}
       <div className="flex items-center gap-2 text-green-700 font-medium text-sm hover:gap-3 transition-all">
-        <span>Open Tool</span>
+        <span>View Details</span>
         <span>→</span>
       </div>
-    </a>
+    </Link>
   );
 }
 
