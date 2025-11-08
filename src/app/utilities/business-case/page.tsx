@@ -52,7 +52,7 @@ export default function BusinessCasePage() {
           className="inline-flex items-center gap-2 text-green-700 hover:text-green-800 text-sm mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          Back to CoE Utilities
         </Link>
 
         {/* Page Title */}

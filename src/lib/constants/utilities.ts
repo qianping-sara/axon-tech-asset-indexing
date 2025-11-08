@@ -33,7 +33,18 @@ export const DECISION_SUPPORT_TOOLS = [
     owner: 'AutomationCoE Team',
     tags: ['decision-support', 'business-case', 'strategy'],
   },
-  // Additional tools will be added here in the future
+  {
+    id: 'tool-sourcing-model',
+    name: 'Sourcing Model Analysis',
+    description: 'Making a strategic decision on the sourcing model: Build, Buy, or Open Source',
+    category: 'decision-support',
+    icon: 'bar-chart-3', // lucide-react icon
+    url: '/utilities/sourcing-model',
+    version: '1.0.0',
+    status: 'PUBLISHED' as const,
+    owner: 'AutomationCoE Team',
+    tags: ['decision-support', 'sourcing-model', 'build-buy-oss'],
+  },
 ];
 
 /**

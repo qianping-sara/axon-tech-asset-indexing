@@ -14,6 +14,9 @@ const getToolUrl = (name: string): string => {
   if (name === 'Business Case and Strategic Alignment') {
     return '/utilities/business-case';
   }
+  if (name === 'Sourcing Model Analysis') {
+    return '/utilities/sourcing-model';
+  }
   // Default fallback
   return '/utilities';
 };
