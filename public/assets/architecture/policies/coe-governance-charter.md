@@ -7,8 +7,8 @@ assetType: Policies
 version: 1.0.0
 status: DRAFT
 owner: AutomationCoE
-sourceSystem: Internal
-sourceLink: https://internal.company.com/coe-governance
+sourceSystem: Axon
+sourceLink: https://axon-tech-asset-indexing.vercel.app/assets/asset-coe-governance-charter-001
 ---
 
 # CoE Governance Charter

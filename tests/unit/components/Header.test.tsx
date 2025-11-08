@@ -43,7 +43,7 @@ describe('Header Component', () => {
   it('has proper styling classes', () => {
     const { container } = render(<Header />);
     const header = container.querySelector('header');
-    expect(header).toHaveClass('bg-white', 'border-b', 'border-gray-200');
+    expect(header).toHaveClass('backdrop-blur-md', 'border-b');
   });
 });
 
