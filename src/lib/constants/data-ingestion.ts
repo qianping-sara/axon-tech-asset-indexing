@@ -19,13 +19,11 @@ export const QUESTION_Q1_1: Question = {
       value: 'yes',
       label: 'Yes, we can modify the source channel',
       description: 'We have the ability to implement structured input at the source (e.g., digital form, API)',
-      hint: '✓ Highest priority - Eliminates downstream complexity',
     },
     {
       value: 'no',
       label: 'No, we must accept data as-is',
       description: 'The source channel cannot be modified; we must process existing data formats',
-      hint: 'Continue to tactical assessment',
     },
   ],
 };
@@ -44,13 +42,11 @@ export const QUESTION_Q1_2: Question = {
       value: 'structured',
       label: 'Structured Data',
       description: 'Fixed-template Excel, digital PDF forms, or other standardized formats',
-      hint: '→ Use template-based extraction (RPA/Script)',
     },
     {
       value: 'unstructured',
       label: 'Unstructured or Non-Text Data',
       description: 'Scans, emails, images, voice, or other variable formats',
-      hint: '→ Assess AI capability level',
     },
   ],
 };
@@ -71,21 +67,18 @@ export const QUESTION_Q1_3: Question = {
       label: 'Level 1: Common Scenario',
       description:
         'General use case (e.g., standard OCR, general invoice processing) with no AI development capability',
-      hint: '→ Use platform General Model API',
     },
     {
       value: 'level2',
       label: 'Level 2: Differentiated Scenario',
       description:
         'Specific use case (e.g., custom form, domain-specific jargon) with business team (no-code) capability',
-      hint: '→ Use platform AutoML / No-code training',
     },
     {
       value: 'level3',
       label: 'Level 3: Highly Specific Scenario',
       description:
         'Highly specialized use case (e.g., VLLM, custom CV algorithm) with professional AI development team',
-      hint: '→ Build/Buy model, integrate via API Gateway',
     },
   ],
 };

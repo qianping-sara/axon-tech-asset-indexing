@@ -49,28 +49,19 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
   };
 
   const currentQuestion = getCurrentQuestion(currentStep);
-  const progress = getProgressPercentage(currentStep);
   const recommendation = currentStep === 'result' ? getRecommendation(answers.q1_1, answers.q1_2, answers.q1_3) : null;
+
+  // Calculate current step number (1-3 for questions, 4 for result)
+  const stepMap: Record<DataIngestionStep, number> = {
+    'q1.1': 1,
+    'q1.2': 2,
+    'q1.3': 3,
+    'result': 4,
+  };
+  const currentStepNumber = stepMap[currentStep];
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb / Summary */}
-      {Object.keys(answers).length > 0 && (
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <p className="text-sm font-medium text-gray-600 mb-2">Your Selections:</p>
-          <div className="flex flex-wrap gap-2">
-            {generateAnswersSummary(answers).map((summary, index) => (
-              <span
-                key={index}
-                className="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
-              >
-                {summary}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Question or Result */}
       {currentStep === 'result' && recommendation ? (
         <ResultCard recommendation={recommendation} answers={answers} onRestart={handleRestart} />
@@ -78,7 +69,8 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
         <QuestionCard
           question={currentQuestion}
           onSelectOption={handleSelectOption}
-          progress={progress}
+          currentStep={currentStepNumber}
+          totalSteps={3}
         />
       ) : null}
     </div>

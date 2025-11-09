@@ -26,7 +26,6 @@ export interface QuestionOption {
   value: string;
   label: string;
   description: string;
-  hint?: string;
 }
 
 export interface Question {

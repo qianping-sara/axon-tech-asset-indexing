@@ -2,28 +2,44 @@
 
 import React from 'react';
 import { Question } from '@/lib/types/data-ingestion';
-import { AlertCircle } from 'lucide-react';
 
 interface QuestionCardProps {
   question: Question;
   onSelectOption: (value: string) => void;
-  progress: number;
+  currentStep: number;
+  totalSteps: number;
 }
 
-export default function QuestionCard({ question, onSelectOption, progress }: QuestionCardProps) {
+export default function QuestionCard({ question, onSelectOption, currentStep, totalSteps }: QuestionCardProps) {
+  const stepLabels = ['Strategic Choice', 'Data Characteristics', 'AI Capability'];
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-8">
-      {/* Progress Bar */}
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-600">Progress</span>
-          <span className="text-sm font-medium text-gray-600">{progress}%</span>
+      {/* Progress Bar with Steps */}
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-sm font-medium text-gray-600">
+            Step {currentStep} of {totalSteps}
+          </span>
+          <span className="text-sm font-medium text-gray-600">{Math.round((currentStep / totalSteps) * 100)}%</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
             className="bg-green-700 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${progress}%` }}
+            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
           />
+        </div>
+        <div className="flex justify-between mt-3">
+          {stepLabels.map((label, index) => (
+            <span
+              key={index}
+              className={`text-xs font-medium ${
+                index < currentStep ? 'text-green-700' : index === currentStep - 1 ? 'text-gray-900' : 'text-gray-400'
+              }`}
+            >
+              {label}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -33,12 +49,9 @@ export default function QuestionCard({ question, onSelectOption, progress }: Que
       {/* Question Description */}
       <p className="text-gray-700 mb-6 leading-relaxed">{question.description}</p>
 
-      {/* Help Text */}
+      {/* Help Text - styled as guidance, not alert */}
       {question.helpText && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex gap-3">
-          <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-blue-800">{question.helpText}</p>
-        </div>
+        <p className="text-gray-600 text-sm mb-6 leading-relaxed italic">{question.helpText}</p>
       )}
 
       {/* Options */}
@@ -47,7 +60,7 @@ export default function QuestionCard({ question, onSelectOption, progress }: Que
           <button
             key={option.value}
             onClick={() => onSelectOption(option.value)}
-            className="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-green-700 hover:bg-green-50 transition-all group"
+            className="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-green-700 hover:bg-gray-50 transition-all group"
           >
             <div className="flex items-start gap-3">
               <div className="w-5 h-5 rounded border-2 border-gray-300 group-hover:border-green-700 flex-shrink-0 mt-0.5" />
@@ -56,9 +69,6 @@ export default function QuestionCard({ question, onSelectOption, progress }: Que
                   {option.label}
                 </h3>
                 <p className="text-sm text-gray-600 mt-1">{option.description}</p>
-                {option.hint && (
-                  <p className="text-xs text-green-700 font-medium mt-2">{option.hint}</p>
-                )}
               </div>
             </div>
           </button>
