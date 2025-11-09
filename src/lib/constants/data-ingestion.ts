@@ -52,33 +52,101 @@ export const QUESTION_Q1_2: Question = {
 };
 
 /**
- * Q1.3 - AI Capability Assessment: Pyramid Model
+ * Q1.3a - Reusable Capability Check
  */
-export const QUESTION_Q1_3: Question = {
-  id: 'q1.3',
-  title: 'AI Capability Assessment: Pyramid Model',
-  description:
-    'Select the level that best matches your scenario specificity and team AI capability:',
+export const QUESTION_Q1_3a: Question = {
+  id: 'q1.3a',
+  title: 'Reusable Capability Check',
+  description: 'Is there an existing general capability that could handle your use case?',
   helpText:
-    'The pyramid model has three levels: Level 1 (Common/General), Level 2 (Scenario/AutoML), Level 3 (Custom/Specialized). Choose based on your use case complexity and team expertise.',
+    'Examples of existing general capabilities: standard OCR, general invoice recognition, common form extraction, general document classification. If you\'re unsure, answer "No" to explore custom solutions.',
   options: [
     {
-      value: 'level1',
-      label: 'Level 1: Common Scenario',
-      description:
-        'General use case (e.g., standard OCR, general invoice processing) with no AI development capability',
+      value: 'yes',
+      label: 'Yes, there is an existing general capability',
+      description: 'We can leverage existing platform capabilities (e.g., standard OCR, general invoice processing)',
     },
     {
-      value: 'level2',
-      label: 'Level 2: Differentiated Scenario',
-      description:
-        'Specific use case (e.g., custom form, domain-specific jargon) with business team (no-code) capability',
+      value: 'no',
+      label: 'No, we need a custom or specialized solution',
+      description: 'Our use case is unique or requires specialized handling',
+    },
+  ],
+};
+
+/**
+ * Q1.3b - Precision Check
+ */
+export const QUESTION_Q1_3b: Question = {
+  id: 'q1.3b',
+  title: 'Precision Check',
+  description: 'Does the existing capability meet your precision/accuracy requirements?',
+  helpText:
+    'Consider your business tolerance for errors. If the existing capability achieves 95% accuracy but you need 99%, you may need to improve it.',
+  options: [
+    {
+      value: 'yes',
+      label: 'Yes, the precision is acceptable',
+      description: 'The existing capability meets our accuracy requirements',
     },
     {
-      value: 'level3',
-      label: 'Level 3: Highly Specific Scenario',
+      value: 'no',
+      label: 'No, we need better precision',
+      description: 'We need to improve or customize the capability',
+    },
+  ],
+};
+
+/**
+ * Q1.3c - Build/Improve Approach
+ */
+export const QUESTION_Q1_3c: Question = {
+  id: 'q1.3c',
+  title: 'Build/Improve Approach',
+  description: 'What approach is needed to build or improve the capability?',
+  helpText:
+    'Consider your team\'s capabilities and resources. Simple configuration can be done by business teams; model training requires data and tools; specialized scenarios need expert teams.',
+  options: [
+    {
+      value: 'config',
+      label: 'Simple Configuration',
       description:
-        'Highly specialized use case (e.g., VLLM, custom CV algorithm) with professional AI development team',
+        'Parameter tuning, rule adjustments, or template configuration that our team can handle without AI expertise',
+    },
+    {
+      value: 'training',
+      label: 'Model Training',
+      description:
+        'We have sufficient training data and want to use platform AutoML/no-code tools to train a custom model',
+    },
+    {
+      value: 'specialized',
+      label: 'Specialized Development',
+      description:
+        'The scenario is too complex or unique; we need a professional AI/ML team to build a custom solution',
+    },
+  ],
+};
+
+/**
+ * Q1.3d - Data & Tools Availability
+ */
+export const QUESTION_Q1_3d: Question = {
+  id: 'q1.3d',
+  title: 'Data & Tools Availability',
+  description: 'Do you have sufficient data and access to no-code training tools?',
+  helpText:
+    'For model training: typically need 100-1000+ labeled samples depending on complexity. Platform provides AutoML, AutoOCR, and other no-code tools. If you lack either, professional help is recommended.',
+  options: [
+    {
+      value: 'yes',
+      label: 'Yes, we have data and tools',
+      description: 'We have sufficient labeled training data and access to platform no-code training tools',
+    },
+    {
+      value: 'no',
+      label: 'No, we lack data or tools',
+      description: 'We don\'t have enough training data or lack access to no-code training capabilities',
     },
   ],
 };
@@ -121,63 +189,84 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
       'Set up validation and error handling',
     ],
   },
-  'level1-general': {
-    strategy: 'Level 1: General Model API',
+  'use-existing': {
+    strategy: 'Use Existing General Capability',
     technology: 'Platform General Model API',
     description:
-      'Use the platform\'s pre-built general model for common scenarios. No training or customization needed.',
+      'Leverage the existing general capability that already meets your precision requirements. No customization needed.',
     details: [
       'Platform provides ready-to-use General Model API',
-      'Suitable for standard OCR, general invoice processing, etc.',
-      'No AI development capability required',
+      'Existing capability already meets your accuracy requirements',
+      'No AI development or training needed',
       'Fast deployment, immediate results',
-      'Accuracy may vary for domain-specific cases',
+      'Cost-effective solution',
     ],
     nextSteps: [
       'Integrate platform General Model API',
-      'Test with sample data',
-      'Proceed to Phase 3 if accuracy is acceptable',
-      'Consider Level 2 if accuracy is insufficient',
+      'Configure for your specific use case',
+      'Proceed to Phase 3: Process Orchestration',
     ],
   },
-  'level2-scenario': {
-    strategy: 'Level 2: Scenario Model (AutoML)',
-    technology: 'Platform AutoML / No-code Training',
+  'config-improve': {
+    strategy: 'Configuration-based Improvement',
+    technology: 'Parameter Tuning / Rule Configuration',
     description:
-      'Use the platform\'s AutoML capability to train a custom model for your specific scenario. Business teams can train without coding.',
+      'Improve the existing capability through simple configuration, parameter tuning, or rule adjustments. Your team can handle this without AI expertise.',
     details: [
-      'Platform provides AutoML / No-code training capability',
-      'Business team trains model on the platform using differentiated data',
-      'Suitable for specific forms, custom jargon, domain-specific patterns',
-      'Requires labeled training data (typically 100-1000 samples)',
-      'Better accuracy than Level 1 for specific scenarios',
+      'Adjust model parameters or extraction rules',
+      'Add domain-specific rules or templates',
+      'Configure platform settings for your use case',
+      'No model training or coding required',
+      'Quick implementation by business team',
     ],
     nextSteps: [
-      'Prepare labeled training data',
+      'Access platform configuration interface',
+      'Adjust parameters based on your requirements',
+      'Test with sample data',
+      'Deploy and monitor results',
+      'Proceed to Phase 3: Process Orchestration',
+    ],
+  },
+  'automl-training': {
+    strategy: 'AutoML Model Training',
+    technology: 'Platform AutoML / No-code Training Tools',
+    description:
+      'Train a custom model using platform AutoML tools. Your team can do this with sufficient training data and no coding required.',
+    details: [
+      'Platform provides AutoML and no-code training interface',
+      'Your team trains model using labeled training data',
+      'Suitable for domain-specific patterns and custom scenarios',
+      'Typically requires 100-1000+ labeled samples',
+      'Better accuracy than general models for your specific use case',
+    ],
+    nextSteps: [
+      'Prepare and label training data (100-1000+ samples)',
       'Use platform AutoML interface to train model',
       'Validate model accuracy on test data',
       'Deploy trained model',
-      'Proceed to Phase 3',
+      'Monitor performance and retrain as needed',
+      'Proceed to Phase 3: Process Orchestration',
     ],
   },
-  'level3-custom': {
-    strategy: 'Level 3: Custom Model (Specialized)',
-    technology: 'Custom Model Integration via API Gateway',
+  'custom-specialist': {
+    strategy: 'Custom Model Development',
+    technology: 'Professional AI/ML Team + API Integration',
     description:
-      'Build or buy a specialized model for highly specific scenarios. Requires professional AI development team.',
+      'Build or procure a specialized model with professional AI/ML team support. Required for complex scenarios or when data/tools are insufficient.',
     details: [
-      'Platform provides Custom Model ingestion capability (e.g., API Gateway)',
-      'Dev team builds or buys specialized model (VLLM, custom CV algorithm, etc.)',
-      'Integrates with platform via API',
+      'Professional AI/ML team designs and builds custom model',
+      'May use advanced techniques (VLLM, custom CV algorithms, etc.)',
+      'Integrates with platform via API Gateway',
       'Highest accuracy and flexibility',
       'Requires significant development effort and expertise',
     ],
     nextSteps: [
       'Assess build vs. buy decision',
+      'Engage professional AI/ML team',
       'Develop or procure specialized model',
       'Implement API integration with platform',
       'Conduct thorough testing and validation',
-      'Proceed to Phase 3',
+      'Deploy and proceed to Phase 3: Process Orchestration',
     ],
   },
 };
@@ -188,7 +277,10 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
 export function getRecommendation(
   q1_1?: string,
   q1_2?: string,
-  q1_3?: string
+  q1_3a?: string,
+  q1_3b?: string,
+  q1_3c?: string,
+  q1_3d?: string
 ): RecommendationResult | null {
   if (q1_1 === 'yes') {
     return RECOMMENDATIONS['shift-left'];
@@ -198,16 +290,25 @@ export function getRecommendation(
     return RECOMMENDATIONS['template-based'];
   }
 
-  if (q1_3 === 'level1') {
-    return RECOMMENDATIONS['level1-general'];
+  // Q1.3 logic for unstructured data
+  if (q1_3a === 'yes' && q1_3b === 'yes') {
+    return RECOMMENDATIONS['use-existing'];
   }
 
-  if (q1_3 === 'level2') {
-    return RECOMMENDATIONS['level2-scenario'];
+  if (q1_3c === 'config') {
+    return RECOMMENDATIONS['config-improve'];
   }
 
-  if (q1_3 === 'level3') {
-    return RECOMMENDATIONS['level3-custom'];
+  if (q1_3c === 'training' && q1_3d === 'yes') {
+    return RECOMMENDATIONS['automl-training'];
+  }
+
+  if (q1_3c === 'training' && q1_3d === 'no') {
+    return RECOMMENDATIONS['custom-specialist'];
+  }
+
+  if (q1_3c === 'specialized') {
+    return RECOMMENDATIONS['custom-specialist'];
   }
 
   return null;

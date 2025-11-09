@@ -5,8 +5,7 @@ import { DataIngestionAnswers, DataIngestionStep } from '@/lib/types/data-ingest
 import {
   getNextStep,
   getCurrentQuestion,
-  getProgressPercentage,
-  generateAnswersSummary,
+  getProgressInfo,
 } from '@/lib/utils/data-ingestion';
 import { getRecommendation } from '@/lib/constants/data-ingestion';
 import QuestionCard from './QuestionCard';
@@ -31,8 +30,17 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
       case 'q1.2':
         newAnswers.q1_2 = value as any;
         break;
-      case 'q1.3':
-        newAnswers.q1_3 = value as any;
+      case 'q1.3a':
+        newAnswers.q1_3a = value as any;
+        break;
+      case 'q1.3b':
+        newAnswers.q1_3b = value as any;
+        break;
+      case 'q1.3c':
+        newAnswers.q1_3c = value as any;
+        break;
+      case 'q1.3d':
+        newAnswers.q1_3d = value as any;
         break;
     }
 
@@ -49,16 +57,8 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
   };
 
   const currentQuestion = getCurrentQuestion(currentStep);
-  const recommendation = currentStep === 'result' ? getRecommendation(answers.q1_1, answers.q1_2, answers.q1_3) : null;
-
-  // Calculate current step number (1-3 for questions, 4 for result)
-  const stepMap: Record<DataIngestionStep, number> = {
-    'q1.1': 1,
-    'q1.2': 2,
-    'q1.3': 3,
-    'result': 4,
-  };
-  const currentStepNumber = stepMap[currentStep];
+  const recommendation = currentStep === 'result' ? getRecommendation(answers.q1_1, answers.q1_2, answers.q1_3a, answers.q1_3b, answers.q1_3c, answers.q1_3d) : null;
+  const progressInfo = getProgressInfo(currentStep);
 
   return (
     <div className="space-y-6">
@@ -69,8 +69,8 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
         <QuestionCard
           question={currentQuestion}
           onSelectOption={handleSelectOption}
-          currentStep={currentStepNumber}
-          totalSteps={3}
+          currentStep={progressInfo.stepNumber}
+          totalSteps={progressInfo.totalSteps}
         />
       ) : null}
     </div>

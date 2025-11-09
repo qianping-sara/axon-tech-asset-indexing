@@ -3,7 +3,7 @@
  */
 
 import { DataIngestionStep, DataIngestionAnswers } from '@/lib/types/data-ingestion';
-import { QUESTION_Q1_1, QUESTION_Q1_2, QUESTION_Q1_3, getRecommendation } from '@/lib/constants/data-ingestion';
+import { QUESTION_Q1_1, QUESTION_Q1_2, QUESTION_Q1_3a, QUESTION_Q1_3b, QUESTION_Q1_3c, QUESTION_Q1_3d } from '@/lib/constants/data-ingestion';
 
 /**
  * Determine the next step based on current answers
@@ -21,13 +21,54 @@ export function getNextStep(answers: DataIngestionAnswers): DataIngestionStep {
         // Template-based extraction - go to result
         return 'result';
       }
-      // If Q1.2 is 'unstructured', continue to Q1.3
-      if (answers.q1_3) {
-        // Q1.3 answered - go to result
-        return 'result';
+      // If Q1.2 is 'unstructured', continue to Q1.3a
+      if (answers.q1_3a) {
+        if (answers.q1_3a === 'yes') {
+          // Has existing capability - check precision (Q1.3b)
+          if (answers.q1_3b) {
+            if (answers.q1_3b === 'yes') {
+              // Precision is acceptable - go to result
+              return 'result';
+            }
+            // Precision not acceptable - continue to Q1.3c
+            if (answers.q1_3c) {
+              if (answers.q1_3c === 'training') {
+                // Training approach - check data & tools (Q1.3d)
+                if (answers.q1_3d) {
+                  // Q1.3d answered - go to result
+                  return 'result';
+                }
+                // Q1.3d not answered yet
+                return 'q1.3d';
+              }
+              // Config or specialized - go to result
+              return 'result';
+            }
+            // Q1.3c not answered yet
+            return 'q1.3c';
+          }
+          // Q1.3b not answered yet
+          return 'q1.3b';
+        }
+        // No existing capability - continue to Q1.3c
+        if (answers.q1_3c) {
+          if (answers.q1_3c === 'training') {
+            // Training approach - check data & tools (Q1.3d)
+            if (answers.q1_3d) {
+              // Q1.3d answered - go to result
+              return 'result';
+            }
+            // Q1.3d not answered yet
+            return 'q1.3d';
+          }
+          // Config or specialized - go to result
+          return 'result';
+        }
+        // Q1.3c not answered yet
+        return 'q1.3c';
       }
-      // Q1.3 not answered yet
-      return 'q1.3';
+      // Q1.3a not answered yet
+      return 'q1.3a';
     }
     // Q1.2 not answered yet
     return 'q1.2';
@@ -46,29 +87,39 @@ export function getCurrentQuestion(step: DataIngestionStep) {
       return QUESTION_Q1_1;
     case 'q1.2':
       return QUESTION_Q1_2;
-    case 'q1.3':
-      return QUESTION_Q1_3;
+    case 'q1.3a':
+      return QUESTION_Q1_3a;
+    case 'q1.3b':
+      return QUESTION_Q1_3b;
+    case 'q1.3c':
+      return QUESTION_Q1_3c;
+    case 'q1.3d':
+      return QUESTION_Q1_3d;
     default:
       return null;
   }
 }
 
 /**
- * Calculate progress percentage
+ * Calculate progress percentage and get step info
  */
-export function getProgressPercentage(step: DataIngestionStep): number {
-  switch (step) {
-    case 'q1.1':
-      return 25;
-    case 'q1.2':
-      return 50;
-    case 'q1.3':
-      return 75;
-    case 'result':
-      return 100;
-    default:
-      return 0;
-  }
+export function getProgressInfo(step: DataIngestionStep): { percentage: number; stepNumber: number; totalSteps: number } {
+  const stepMap: Record<DataIngestionStep, { percentage: number; stepNumber: number }> = {
+    'q1.1': { percentage: 20, stepNumber: 1 },
+    'q1.2': { percentage: 40, stepNumber: 2 },
+    'q1.3a': { percentage: 50, stepNumber: 3 },
+    'q1.3b': { percentage: 60, stepNumber: 3 },
+    'q1.3c': { percentage: 70, stepNumber: 3 },
+    'q1.3d': { percentage: 80, stepNumber: 3 },
+    'result': { percentage: 100, stepNumber: 4 },
+  };
+
+  const info = stepMap[step] || { percentage: 0, stepNumber: 0 };
+  return {
+    percentage: info.percentage,
+    stepNumber: info.stepNumber,
+    totalSteps: 3,
+  };
 }
 
 /**
@@ -87,13 +138,28 @@ export function generateAnswersSummary(answers: DataIngestionAnswers): string[] 
     summary.push(`Q1.2 Data Characteristics: ${q1_2Label}`);
   }
 
-  if (answers.q1_3) {
-    const q1_3Map: Record<string, string> = {
-      level1: 'Level 1: Common Scenario',
-      level2: 'Level 2: Differentiated Scenario',
-      level3: 'Level 3: Highly Specific Scenario',
+  if (answers.q1_3a) {
+    const q1_3aLabel = answers.q1_3a === 'yes' ? 'Yes' : 'No';
+    summary.push(`Q1.3a Reusable Capability: ${q1_3aLabel}`);
+  }
+
+  if (answers.q1_3b) {
+    const q1_3bLabel = answers.q1_3b === 'yes' ? 'Acceptable' : 'Needs Improvement';
+    summary.push(`Q1.3b Precision Check: ${q1_3bLabel}`);
+  }
+
+  if (answers.q1_3c) {
+    const q1_3cMap: Record<string, string> = {
+      config: 'Simple Configuration',
+      training: 'Model Training',
+      specialized: 'Specialized Development',
     };
-    summary.push(`Q1.3 AI Capability: ${q1_3Map[answers.q1_3]}`);
+    summary.push(`Q1.3c Build/Improve: ${q1_3cMap[answers.q1_3c]}`);
+  }
+
+  if (answers.q1_3d) {
+    const q1_3dLabel = answers.q1_3d === 'yes' ? 'Yes' : 'No';
+    summary.push(`Q1.3d Data & Tools: ${q1_3dLabel}`);
   }
 
   return summary;
