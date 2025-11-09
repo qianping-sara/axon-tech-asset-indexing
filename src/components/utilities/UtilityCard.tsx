@@ -22,6 +22,9 @@ const getToolUrl = (name: string): string => {
   if (name === 'TCO Calculation') {
     return '/utilities/tco-calculation';
   }
+  if (name === 'Automation Solution Designer') {
+    return '/utilities/automation-solution-designer';
+  }
   // Default fallback
   return '/utilities';
 };
