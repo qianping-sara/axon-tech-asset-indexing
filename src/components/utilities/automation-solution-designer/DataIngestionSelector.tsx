@@ -8,8 +8,10 @@ import {
   getProgressInfo,
 } from '@/lib/utils/data-ingestion';
 import { getRecommendation } from '@/lib/constants/data-ingestion';
+import { DATA_INGESTION_OVERVIEW, DATA_INGESTION_MERMAID_DIAGRAM } from '@/lib/constants/data-ingestion-overview';
 import QuestionCard from './QuestionCard';
 import ResultCard from './ResultCard';
+import DimensionOverview from './DimensionOverview';
 
 interface DataIngestionSelectorProps {
   // Props will be defined when implementing the actual content
@@ -62,6 +64,16 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
 
   return (
     <div className="space-y-6">
+      {/* Dimension Overview - shown at the start */}
+      {currentStep === 'q1.1' && (
+        <DimensionOverview
+          title={DATA_INGESTION_OVERVIEW.title}
+          description={DATA_INGESTION_OVERVIEW.description}
+          whenToUse={DATA_INGESTION_OVERVIEW.whenToUse}
+          mermaidDiagram={DATA_INGESTION_MERMAID_DIAGRAM}
+        />
+      )}
+
       {/* Question or Result */}
       {currentStep === 'result' && recommendation ? (
         <ResultCard recommendation={recommendation} answers={answers} onRestart={handleRestart} />
