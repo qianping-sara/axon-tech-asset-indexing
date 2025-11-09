@@ -69,6 +69,18 @@ export const DECISION_SUPPORT_TOOLS = [
     owner: 'AutomationCoE Team',
     tags: ['decision-support', 'tco', 'financial-analysis', 'cost-comparison'],
   },
+  {
+    id: 'tool-automation-solution-designer',
+    name: 'Automation Solution Designer',
+    description: 'Design a standardized, architecturally sound, and cost-effective technology stack for automation use cases through a structured assessment process',
+    category: 'decision-support',
+    icon: 'zap', // lucide-react icon
+    url: '/utilities/automation-solution-designer',
+    version: '1.0.0',
+    status: 'PUBLISHED' as const,
+    owner: 'AutomationCoE Team',
+    tags: ['decision-support', 'automation', 'solution-design', 'technology-stack', 'architecture'],
+  },
 ];
 
 /**
