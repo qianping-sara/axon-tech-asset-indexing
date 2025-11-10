@@ -1,40 +1,41 @@
 /**
- * Data Ingestion Selector Utilities
+ * Data Ingestion Advisor Utilities (Redesigned)
  */
 
 import { DataIngestionStep, DataIngestionAnswers } from '@/lib/types/data-ingestion';
-import { QUESTION_Q1_1, QUESTION_Q1_2, QUESTION_Q1_3a, QUESTION_Q1_3b, QUESTION_Q1_3c, QUESTION_Q1_3d } from '@/lib/constants/data-ingestion';
+import { QUESTION_Q1, QUESTION_Q2, QUESTION_Q3_1, QUESTION_Q3_2, QUESTION_Q3_3 } from '@/lib/constants/data-ingestion';
 
 /**
  * Determine the next step based on current answers
  */
 export function getNextStep(answers: DataIngestionAnswers): DataIngestionStep {
-  // If Q1.1 is answered
-  if (answers.q1_1) {
-    if (answers.q1_1 === 'yes') {
-      // Shift-Left strategy - go to result
-      return 'result';
-    }
-    // If Q1.1 is 'no', continue to Q1.2
-    if (answers.q1_2) {
-      if (answers.q1_2 === 'structured') {
-        // Template-based extraction - go to result
-        return 'result';
-      }
-      // If Q1.2 is 'unstructured', continue to Q1.3 (comprehensive assessment)
-      if (answers.q1_3a && answers.q1_3c) {
-        // All Q1.3 answers collected - go to result
-        return 'result';
-      }
-      // Q1.3 not fully answered yet
-      return 'q1.3a';
-    }
-    // Q1.2 not answered yet
-    return 'q1.2';
+  // Step 1: Strategic Choice
+  if (!answers.q1) {
+    return 'q1';
   }
 
-  // Q1.1 not answered yet
-  return 'q1.1';
+  // If Q1 = 'yes' (can modify source), go to recommendation
+  if (answers.q1 === 'yes') {
+    return 'recommendation';
+  }
+
+  // Step 2: Tactical Diagnosis
+  if (!answers.q2) {
+    return 'q2';
+  }
+
+  // If Q2 = 'mapping' (structured data), go to recommendation
+  if (answers.q2 === 'mapping') {
+    return 'recommendation';
+  }
+
+  // Step 3: AI Capability & Resource Diagnosis (only if Q2 = 'interpretation')
+  if (!answers.q3_1 || !answers.q3_2 || !answers.q3_3) {
+    return 'q3';
+  }
+
+  // All answers collected, go to recommendation
+  return 'recommendation';
 }
 
 /**
@@ -42,18 +43,14 @@ export function getNextStep(answers: DataIngestionAnswers): DataIngestionStep {
  */
 export function getCurrentQuestion(step: DataIngestionStep) {
   switch (step) {
-    case 'q1.1':
-      return QUESTION_Q1_1;
-    case 'q1.2':
-      return QUESTION_Q1_2;
-    case 'q1.3a':
-      return QUESTION_Q1_3a;
-    case 'q1.3b':
-      return QUESTION_Q1_3b;
-    case 'q1.3c':
-      return QUESTION_Q1_3c;
-    case 'q1.3d':
-      return QUESTION_Q1_3d;
+    case 'q1':
+      return QUESTION_Q1;
+    case 'q2':
+      return QUESTION_Q2;
+    case 'q3':
+      // Q3 is a multi-part form, return null here
+      // The Q3DiagnosisForm component will handle all three sub-questions
+      return null;
     default:
       return null;
   }
@@ -64,13 +61,10 @@ export function getCurrentQuestion(step: DataIngestionStep) {
  */
 export function getProgressInfo(step: DataIngestionStep): { percentage: number; stepNumber: number; totalSteps: number } {
   const stepMap: Record<DataIngestionStep, { percentage: number; stepNumber: number }> = {
-    'q1.1': { percentage: 33, stepNumber: 1 },
-    'q1.2': { percentage: 66, stepNumber: 2 },
-    'q1.3a': { percentage: 100, stepNumber: 3 },
-    'q1.3b': { percentage: 100, stepNumber: 3 },
-    'q1.3c': { percentage: 100, stepNumber: 3 },
-    'q1.3d': { percentage: 100, stepNumber: 3 },
-    'result': { percentage: 100, stepNumber: 3 },
+    'q1': { percentage: 33, stepNumber: 1 },
+    'q2': { percentage: 66, stepNumber: 2 },
+    'q3': { percentage: 100, stepNumber: 3 },
+    'recommendation': { percentage: 100, stepNumber: 3 },
   };
 
   const info = stepMap[step] || { percentage: 0, stepNumber: 0 };
@@ -87,38 +81,38 @@ export function getProgressInfo(step: DataIngestionStep): { percentage: number; 
 export function generateAnswersSummary(answers: DataIngestionAnswers): string[] {
   const summary: string[] = [];
 
-  if (answers.q1_1) {
-    const q1_1Label = answers.q1_1 === 'yes' ? 'Yes' : 'No';
-    summary.push(`Q1.1 Strategic Choice: ${q1_1Label}`);
+  if (answers.q1) {
+    const q1Label = answers.q1 === 'yes' ? 'Can modify source' : 'Must accept as-is';
+    summary.push(`Q1 Strategic Choice: ${q1Label}`);
   }
 
-  if (answers.q1_2) {
-    const q1_2Label = answers.q1_2 === 'structured' ? 'Structured Data' : 'Unstructured Data';
-    summary.push(`Q1.2 Data Characteristics: ${q1_2Label}`);
+  if (answers.q2) {
+    const q2Label = answers.q2 === 'mapping' ? 'Mapping (Structured)' : 'Interpretation (Unstructured)';
+    summary.push(`Q2 Tactical Diagnosis: ${q2Label}`);
   }
 
-  if (answers.q1_3a) {
-    const q1_3aLabel = answers.q1_3a === 'yes' ? 'Yes' : 'No';
-    summary.push(`Q1.3a Reusable Capability: ${q1_3aLabel}`);
-  }
-
-  if (answers.q1_3b) {
-    const q1_3bLabel = answers.q1_3b === 'yes' ? 'Acceptable' : 'Needs Improvement';
-    summary.push(`Q1.3b Precision Check: ${q1_3bLabel}`);
-  }
-
-  if (answers.q1_3c) {
-    const q1_3cMap: Record<string, string> = {
-      config: 'Simple Configuration',
-      training: 'Model Training',
-      specialized: 'Specialized Development',
+  if (answers.q3_1) {
+    const q3_1Map: Record<string, string> = {
+      common: 'Common Task',
+      new_pattern: 'New Data Pattern',
+      new_cognitive: 'New Cognitive Task',
     };
-    summary.push(`Q1.3c Build/Improve: ${q1_3cMap[answers.q1_3c]}`);
+    summary.push(`Q3.1 Problem Type: ${q3_1Map[answers.q3_1]}`);
   }
 
-  if (answers.q1_3d) {
-    const q1_3dLabel = answers.q1_3d === 'yes' ? 'Yes' : 'No';
-    summary.push(`Q1.3d Data & Tools: ${q1_3dLabel}`);
+  if (answers.q3_2) {
+    const q3_2Map: Record<string, string> = {
+      level1: 'Level 1: Business/Rule Expert',
+      level2: 'Level 2: Citizen Developer + AutoML',
+      level3: 'Level 3: Professional AI Team',
+      none: 'No clear capability',
+    };
+    summary.push(`Q3.2 Capability Match: ${q3_2Map[answers.q3_2]}`);
+  }
+
+  if (answers.q3_3) {
+    const q3_3Label = answers.q3_3 === 'efficiency' ? 'Efficiency Gain' : 'Business Critical';
+    summary.push(`Q3.3 Business Criticality: ${q3_3Label}`);
   }
 
   return summary;

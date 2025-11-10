@@ -1,19 +1,19 @@
 /**
- * Data Ingestion Selector Constants
+ * Data Ingestion Advisor Constants (Redesigned)
  */
 
-import { Question, RecommendationResult } from '@/lib/types/data-ingestion';
+import { Question, RecommendationResult, DataIngestionAnswers } from '@/lib/types/data-ingestion';
 
 /**
- * Q1.1 - Strategic Choice: Shift-Left
+ * Q1 - Strategic Choice: Can we eliminate the problem at the source?
  */
-export const QUESTION_Q1_1: Question = {
-  id: 'q1.1',
+export const QUESTION_Q1: Question = {
+  id: 'q1',
   title: 'Strategic Choice: Shift-Left',
   description:
-    'Can the input be fully digitized at the source channel (e.g., UAW-T1 workbench) to eliminate unstructured data at the origin?',
+    'Can the input data be fully digitized at the source channel (e.g., UAW-T1 workbench) to eliminate unstructured data at the origin?',
   helpText:
-    'This is the highest priority option. If you can modify the source channel to provide structured, digital input, you eliminate the need for complex data extraction downstream.',
+    'This is the highest priority strategy. If you can modify the source channel to provide structured, digital input, you eliminate the need for complex data extraction downstream.',
   options: [
     {
       value: 'yes',
@@ -29,133 +29,129 @@ export const QUESTION_Q1_1: Question = {
 };
 
 /**
- * Q1.2 - Tactical Filter: Data Characteristics
+ * Q2 - Tactical Diagnosis: What is the main challenge?
  */
-export const QUESTION_Q1_2: Question = {
-  id: 'q1.2',
-  title: 'Tactical Filter: Data Characteristics',
-  description: 'What is the primary characteristic of the data you need to process?',
+export const QUESTION_Q2: Question = {
+  id: 'q2',
+  title: 'Tactical Diagnosis: Mapping vs. Interpretation',
+  description:
+    'What is the main challenge you face when processing this data?',
   helpText:
-    'Understanding your data type helps determine the right extraction approach. Structured data can use simple templates; unstructured data requires AI capabilities.',
+    'This diagnosis determines whether you need a simple template or a complex AI solution. "Mapping" means the data is clean and predictable; "Interpretation" means the data is messy and requires intelligence.',
   options: [
     {
-      value: 'structured',
-      label: 'Structured Data',
-      description: 'Fixed-template Excel, digital PDF forms, or other standardized formats',
-    },
-    {
-      value: 'unstructured',
-      label: 'Unstructured or Non-Text Data',
-      description: 'Scans, emails, images, voice, or other variable formats',
-    },
-  ],
-};
-
-/**
- * Q1.3a - Reusable Capability Check
- */
-export const QUESTION_Q1_3a: Question = {
-  id: 'q1.3a',
-  title: 'Reusable Capability Check',
-  description: 'Is there an existing general capability that could handle your use case?',
-  helpText:
-    'Examples of existing general capabilities: standard OCR, general invoice recognition, common form extraction, general document classification. If you\'re unsure, answer "No" to explore custom solutions.',
-  options: [
-    {
-      value: 'yes',
-      label: 'Yes, there is an existing general capability',
-      description: 'We can leverage existing platform capabilities (e.g., standard OCR, general invoice processing)',
-    },
-    {
-      value: 'no',
-      label: 'No, we need a custom or specialized solution',
-      description: 'Our use case is unique or requires specialized handling',
-    },
-  ],
-};
-
-/**
- * Q1.3b - Precision Check
- */
-export const QUESTION_Q1_3b: Question = {
-  id: 'q1.3b',
-  title: 'Precision Check',
-  description: 'Does the existing capability meet your precision/accuracy requirements?',
-  helpText:
-    'Consider your business tolerance for errors. If the existing capability achieves 95% accuracy but you need 99%, you may need to improve it.',
-  options: [
-    {
-      value: 'yes',
-      label: 'Yes, the precision is acceptable',
-      description: 'The existing capability meets our accuracy requirements',
-    },
-    {
-      value: 'no',
-      label: 'No, we need better precision',
-      description: 'We need to improve or customize the capability',
-    },
-  ],
-};
-
-/**
- * Q1.3c - Build/Improve Approach
- */
-export const QUESTION_Q1_3c: Question = {
-  id: 'q1.3c',
-  title: 'Build/Improve Approach',
-  description: 'What approach is needed to build or improve the capability?',
-  helpText:
-    'Consider your team\'s capabilities and resources. Simple configuration can be done by business teams; model training requires data and tools; specialized scenarios need expert teams.',
-  options: [
-    {
-      value: 'config',
-      label: 'Simple Configuration',
+      value: 'mapping',
+      label: 'Challenge is "Mapping"',
       description:
-        'Parameter tuning, rule adjustments, or template configuration that our team can handle without AI expertise',
+        'The data is clean, predictable, and machine-readable. My main work is telling the system where each field goes (e.g., "field A to column B").',
     },
     {
-      value: 'training',
-      label: 'Model Training',
+      value: 'interpretation',
+      label: 'Challenge is "Interpretation"',
       description:
-        'We have sufficient training data and want to use platform AutoML/no-code tools to train a custom model',
-    },
-    {
-      value: 'specialized',
-      label: 'Specialized Development',
-      description:
-        'The scenario is too complex or unique; we need a professional AI/ML team to build a custom solution',
+        'The data is messy, variable, or non-standard. The system needs intelligence to understand what the data means.',
     },
   ],
 };
 
 /**
- * Q1.3d - Data & Tools Availability
+ * Q3.1 - Problem Type Diagnosis
  */
-export const QUESTION_Q1_3d: Question = {
-  id: 'q1.3d',
-  title: 'Data & Tools Availability',
-  description: 'Do you have sufficient data and access to no-code training tools?',
+export const QUESTION_Q3_1: Question = {
+  id: 'q3.1',
+  title: 'Problem Type Diagnosis',
+  description: 'Which type of AI challenge does your use case most resemble?',
   helpText:
-    'For model training: typically need 100-1000+ labeled samples depending on complexity. Platform provides AutoML, AutoOCR, and other no-code tools. If you lack either, professional help is recommended.',
+    'This helps us understand the complexity and maturity of your problem. Common tasks have existing solutions; new patterns need custom training; new cognitive tasks need specialized expertise.',
   options: [
     {
-      value: 'yes',
-      label: 'Yes, we have data and tools',
-      description: 'We have sufficient labeled training data and access to platform no-code training tools',
+      value: 'common',
+      label: 'Common Task',
+      description:
+        'This is a well-known, common industry problem with existing off-the-shelf capabilities (e.g., standard OCR, general invoice processing).',
     },
     {
-      value: 'no',
-      label: 'No, we lack data or tools',
-      description: 'We don\'t have enough training data or lack access to no-code training capabilities',
+      value: 'new_pattern',
+      label: 'New Data Pattern',
+      description:
+        'The task type is known (e.g., extraction, classification), but the data is new, unique to our business, or existing models cannot handle it.',
+    },
+    {
+      value: 'new_cognitive',
+      label: 'New Cognitive Task',
+      description:
+        'The task itself is new and complex, beyond simple extraction/classification (e.g., contract summarization, personalized response generation).',
     },
   ],
 };
+
+/**
+ * Q3.2 - Capability-Platform-Operations Match
+ */
+export const QUESTION_Q3_2: Question = {
+  id: 'q3.2',
+  title: 'Capability-Platform-Operations Match',
+  description: 'Which description best matches your team, platform, and operational commitment?',
+  helpText:
+    'This is critical. We match your problem type with your actual capabilities. A Level 2 problem requires Level 2 resources; mismatches will fail.',
+  options: [
+    {
+      value: 'level1',
+      label: 'Level 1: Business/Rule Expert',
+      description:
+        'Team: BA or SME. Platform: Business systems or configuration tools. Commitment: Low - we can only maintain business rules or configurations, not AI models.',
+    },
+    {
+      value: 'level2',
+      label: 'Level 2: Citizen Developer + AutoML',
+      description:
+        'Team: Technical BA or citizen developer. Platform: Confirmed access to AutoML/no-code training platform. Commitment: Medium - our team will self-manage model monitoring and retraining.',
+    },
+    {
+      value: 'level3',
+      label: 'Level 3: Professional AI Team',
+      description:
+        'Team: Professional AI/ML engineers. Platform: Professional tools (Python, VLLM). Commitment: High - dedicated MLOps team manages full model lifecycle.',
+    },
+    {
+      value: 'none',
+      label: 'None of the above',
+      description: 'We don\'t have a clear capability-platform-operations combination yet.',
+    },
+  ],
+};
+
+/**
+ * Q3.3 - Business Criticality
+ */
+export const QUESTION_Q3_3: Question = {
+  id: 'q3.3',
+  title: 'Business Criticality',
+  description: 'What is your true business requirement for accuracy?',
+  helpText:
+    'This determines whether you can tolerate manual corrections or need near-perfect automation.',
+  options: [
+    {
+      value: 'efficiency',
+      label: 'Efficiency Gain',
+      description: 'Higher accuracy is better, but we can tolerate some manual corrections (e.g., <95% accuracy is acceptable).',
+    },
+    {
+      value: 'critical',
+      label: 'Business Critical',
+      description: 'We need >99% accuracy. We cannot tolerate errors.',
+    },
+  ],
+};
+
+
 
 /**
  * Recommendation Results Mapping
  */
 export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
   'shift-left': {
+    type: 'matched',
     strategy: 'Shift-Left (Channel-side Transformation)',
     technology: 'Platform LCAP / Front-end Components',
     description:
@@ -173,6 +169,7 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
     ],
   },
   'template-based': {
+    type: 'matched',
     strategy: 'Template-based Extraction',
     technology: 'RPA / LCAP Data Mapping / Script',
     description:
@@ -190,6 +187,7 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
     ],
   },
   'use-existing': {
+    type: 'matched',
     strategy: 'Use Existing General Capability',
     technology: 'Platform General Model API',
     description:
@@ -208,6 +206,7 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
     ],
   },
   'config-improve': {
+    type: 'matched',
     strategy: 'Configuration-based Improvement',
     technology: 'Parameter Tuning / Rule Configuration',
     description:
@@ -228,6 +227,7 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
     ],
   },
   'automl-training': {
+    type: 'matched',
     strategy: 'AutoML Model Training',
     technology: 'Platform AutoML / No-code Training Tools',
     description:
@@ -249,6 +249,7 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
     ],
   },
   'custom-specialist': {
+    type: 'matched',
     strategy: 'Custom Model Development',
     technology: 'Professional AI/ML Team + API Integration',
     description:
@@ -272,45 +273,235 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
 };
 
 /**
- * Get recommendation based on answers
+ * Generate recommendation based on Q3 diagnosis answers
+ * This implements the "profile matching" logic described in the design
  */
-export function getRecommendation(
-  q1_1?: string,
-  q1_2?: string,
-  q1_3a?: string,
-  q1_3b?: string,
-  q1_3c?: string,
-  q1_3d?: string
+export function generateAIRecommendation(
+  q3_1?: string,  // Problem type: common | new_pattern | new_cognitive
+  q3_2?: string,  // Capability level: level1 | level2 | level3 | none
+  q3_3?: string   // Business criticality: efficiency | critical
 ): RecommendationResult | null {
-  if (q1_1 === 'yes') {
-    return RECOMMENDATIONS['shift-left'];
+  // Validate inputs
+  if (!q3_1 || !q3_2 || !q3_3) {
+    return null;
   }
 
-  if (q1_2 === 'structured') {
-    return RECOMMENDATIONS['template-based'];
+  // Scenario 1: Common Task + Any Level
+  // Recommendation: Use existing general capability (Level 1)
+  if (q3_1 === 'common') {
+    return {
+      type: 'downgrade',
+      strategy: 'Use Existing General Capability',
+      technology: 'Platform General Model API',
+      description:
+        'Your need is a "common task" with existing off-the-shelf capabilities. Using AutoML or custom development would be over-engineering.',
+      details: [
+        'Platform provides ready-to-use General Model API for common tasks',
+        'Existing capability already meets typical accuracy requirements',
+        'No AI development or training needed',
+        'Fast deployment, immediate results',
+        'Cost-effective solution',
+      ],
+      warning: 'Over-design detected',
+      suggestions: [
+        'First, try the platform\'s general model API',
+        'Only upgrade to Level 2/3 if the general model\'s accuracy cannot meet your "Business Critical" (>99%) requirement',
+      ],
+      nextSteps: [
+        'Integrate platform General Model API',
+        'Test with your data',
+        'If accuracy is insufficient, consider custom training',
+      ],
+    };
   }
 
-  // Q1.3 logic for unstructured data
-  if (q1_3a === 'yes' && q1_3b === 'yes') {
-    return RECOMMENDATIONS['use-existing'];
+  // Scenario 2: New Data Pattern + Level 1
+  // Warning: Capability mismatch
+  if (q3_1 === 'new_pattern' && q3_2 === 'level1') {
+    return {
+      type: 'warning',
+      strategy: 'Capability Mismatch - Cannot Proceed',
+      technology: 'N/A',
+      description:
+        'You have a "new data pattern" problem (Level 2 complexity) but only Level 1 resources (BA/SME). This combination will fail.',
+      details: [
+        'Level 2 problems require Level 2 resources (citizen developers + AutoML)',
+        'Your team can only maintain business rules, not AI models',
+        'Without proper tools and training, custom model development will fail',
+        'Risk of project failure and wasted resources',
+      ],
+      warning: 'Capability-Problem Mismatch',
+      suggestions: [
+        'Option 1: Upgrade your team capability to Level 2 (get citizen developers + AutoML platform access)',
+        'Option 2: Escalate to professional AI team (Level 3)',
+        'Option 3: Simplify the problem to use template-based extraction instead',
+      ],
+      nextSteps: [
+        'Assess which option is feasible for your organization',
+        'If choosing Option 1, plan training and platform setup',
+        'If choosing Option 2, engage professional AI team',
+      ],
+    };
   }
 
-  if (q1_3c === 'config') {
-    return RECOMMENDATIONS['config-improve'];
+  // Scenario 3: New Data Pattern + Level 2 + Efficiency
+  // Recommendation: AutoML Training (matched)
+  if (q3_1 === 'new_pattern' && q3_2 === 'level2' && q3_3 === 'efficiency') {
+    return {
+      type: 'matched',
+      strategy: 'AutoML Model Training',
+      technology: 'Platform AutoML / No-code Training Tools',
+      description:
+        'Perfect match! Your "new data pattern" problem aligns with Level 2 resources. Your citizen developers can train a custom model using AutoML.',
+      details: [
+        'Platform provides AutoML and no-code training interface',
+        'Your team trains model using labeled training data',
+        'Suitable for domain-specific patterns and custom scenarios',
+        'Typically requires 100-1000+ labeled samples',
+        'Better accuracy than general models for your specific use case',
+        'Your team maintains and retrains the model as needed',
+      ],
+      nextSteps: [
+        'Prepare and label training data (100-1000+ samples)',
+        'Use platform AutoML interface to train model',
+        'Validate model accuracy on test data',
+        'Deploy trained model',
+        'Monitor performance and retrain as needed',
+        'Proceed to Phase 3: Process Orchestration',
+      ],
+    };
   }
 
-  if (q1_3c === 'training' && q1_3d === 'yes') {
-    return RECOMMENDATIONS['automl-training'];
+  // Scenario 4: New Data Pattern + Level 2 + Critical
+  // Warning: May need Level 3
+  if (q3_1 === 'new_pattern' && q3_2 === 'level2' && q3_3 === 'critical') {
+    return {
+      type: 'warning',
+      strategy: 'AutoML Training (with caution)',
+      technology: 'Platform AutoML / No-code Training Tools',
+      description:
+        'Your "new data pattern" + Level 2 resources can work, but your "business critical" (>99%) requirement is challenging for citizen developers.',
+      details: [
+        'AutoML can achieve high accuracy, but requires careful tuning',
+        'Business critical scenarios need rigorous testing and validation',
+        'Your team must be committed to continuous monitoring and retraining',
+        'May need professional support for optimization',
+      ],
+      warning: 'High accuracy requirement with Level 2 resources',
+      suggestions: [
+        'Proceed with AutoML but plan for professional support during optimization',
+        'Invest in thorough testing and validation',
+        'Consider hybrid approach: Level 2 for initial training, Level 3 for optimization',
+      ],
+      nextSteps: [
+        'Prepare comprehensive training data',
+        'Use platform AutoML with professional guidance',
+        'Conduct extensive testing to achieve >99% accuracy',
+        'Plan for ongoing professional support',
+      ],
+    };
   }
 
-  if (q1_3c === 'training' && q1_3d === 'no') {
-    return RECOMMENDATIONS['custom-specialist'];
+  // Scenario 5: New Cognitive Task + Level 3
+  // Recommendation: Custom Development (matched)
+  if (q3_1 === 'new_cognitive' && q3_2 === 'level3') {
+    return {
+      type: 'matched',
+      strategy: 'Custom Model Development',
+      technology: 'Professional AI/ML Team + Advanced Tools',
+      description:
+        'Perfect match! Your "new cognitive task" requires Level 3 professional expertise. Your AI team can build a specialized solution.',
+      details: [
+        'Professional AI/ML team designs and builds custom model',
+        'May use advanced techniques (VLLM, custom algorithms, etc.)',
+        'Integrates with platform via API Gateway',
+        'Highest accuracy and flexibility',
+        'Suitable for complex, novel problems',
+      ],
+      nextSteps: [
+        'Engage professional AI/ML team',
+        'Define problem scope and success criteria',
+        'Develop or procure specialized model',
+        'Implement API integration with platform',
+        'Conduct thorough testing and validation',
+        'Deploy and proceed to Phase 3: Process Orchestration',
+      ],
+    };
   }
 
-  if (q1_3c === 'specialized') {
-    return RECOMMENDATIONS['custom-specialist'];
+  // Scenario 6: New Cognitive Task + Level 1 or 2
+  // Warning: Insufficient resources
+  if (q3_1 === 'new_cognitive' && (q3_2 === 'level1' || q3_2 === 'level2')) {
+    return {
+      type: 'warning',
+      strategy: 'Insufficient Resources',
+      technology: 'N/A',
+      description:
+        'Your "new cognitive task" is too complex for Level 1 or 2 resources. You need professional AI expertise.',
+      details: [
+        'New cognitive tasks require specialized AI/ML knowledge',
+        'Level 1 (BA/SME) cannot handle this complexity',
+        'Level 2 (citizen developers) lacks the expertise for novel problems',
+        'Risk of project failure without professional support',
+      ],
+      warning: 'Problem complexity exceeds team capability',
+      suggestions: [
+        'Escalate to professional AI team (Level 3)',
+        'Consider simplifying the problem scope',
+        'Partner with external AI/ML specialists',
+      ],
+      nextSteps: [
+        'Engage professional AI/ML team',
+        'Reassess problem scope and feasibility',
+        'Plan for professional development and support',
+      ],
+    };
   }
 
-  return null;
+  // Scenario 7: Any problem + Level "none"
+  // Warning: No clear capability
+  if (q3_2 === 'none') {
+    return {
+      type: 'warning',
+      strategy: 'Capability Assessment Required',
+      technology: 'N/A',
+      description:
+        'You don\'t have a clear capability-platform-operations combination yet. You need to assess your resources before proceeding.',
+      details: [
+        'Identify which level (1, 2, or 3) your organization can support',
+        'Secure necessary tools and platform access',
+        'Ensure team commitment and training',
+        'Align with organizational AI strategy',
+      ],
+      suggestions: [
+        'Assess your team\'s AI/ML expertise',
+        'Evaluate available platforms and tools',
+        'Determine operational commitment level',
+        'Plan for capability building if needed',
+      ],
+      nextSteps: [
+        'Conduct capability assessment',
+        'Identify gaps and plan improvements',
+        'Revisit this assessment after capability building',
+      ],
+    };
+  }
+
+  // Default: Other combinations
+  return {
+    type: 'matched',
+    strategy: 'Custom Solution Required',
+    technology: 'Professional AI/ML Team',
+    description: 'Your specific combination requires a tailored approach. Please consult with your AI team.',
+    details: [
+      'Your problem type and resources require custom assessment',
+      'Professional AI team can provide detailed guidance',
+    ],
+    nextSteps: [
+      'Engage professional AI/ML team',
+      'Conduct detailed assessment',
+      'Develop customized solution plan',
+    ],
+  };
 }
 
