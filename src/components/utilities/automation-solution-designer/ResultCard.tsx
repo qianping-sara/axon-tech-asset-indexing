@@ -117,14 +117,14 @@ export default function ResultCard({ recommendation, answers, onRestart }: Resul
           className={`flex items-center gap-2 px-4 py-2 ${buttonColor} text-white font-medium rounded transition-colors`}
         >
           <Download className="w-4 h-4" />
-          下载报告
+          Download report
         </button>
         <button
           onClick={onRestart}
           className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded hover:bg-gray-200 transition-colors"
         >
           <RotateCcw className="w-4 h-4" />
-          重新开始
+          Restart accessment
         </button>
       </div>
     </div>
