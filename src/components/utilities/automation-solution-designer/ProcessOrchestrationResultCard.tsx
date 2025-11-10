@@ -21,13 +21,13 @@ export function ProcessOrchestrationResultCard({
   const getIcon = () => {
     switch (recommendation.type) {
       case 'matched':
-        return <CheckCircle className="w-8 h-8 text-green-600" />;
+        return <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />;
       case 'warning':
-        return <AlertTriangle className="w-8 h-8 text-yellow-600" />;
+        return <AlertTriangle className="w-6 h-6 text-orange-600 flex-shrink-0" />;
       case 'blocked':
-        return <AlertCircle className="w-8 h-8 text-red-600" />;
+        return <AlertCircle className="w-6 h-6 text-gray-600 flex-shrink-0" />;
       case 'redirect':
-        return <AlertCircle className="w-8 h-8 text-blue-600" />;
+        return <AlertCircle className="w-6 h-6 text-gray-600 flex-shrink-0" />;
       default:
         return null;
     }
@@ -36,15 +36,15 @@ export function ProcessOrchestrationResultCard({
   const getHeaderColor = () => {
     switch (recommendation.type) {
       case 'matched':
-        return 'bg-green-50 border-green-200';
+        return 'bg-white border-l-4 border-l-green-600';
       case 'warning':
-        return 'bg-yellow-50 border-yellow-200';
+        return 'bg-white border-l-4 border-l-orange-600';
       case 'blocked':
-        return 'bg-red-50 border-red-200';
+        return 'bg-white border-l-4 border-l-gray-600';
       case 'redirect':
-        return 'bg-blue-50 border-blue-200';
+        return 'bg-white border-l-4 border-l-gray-600';
       default:
-        return 'bg-gray-50 border-gray-200';
+        return 'bg-white border-l-4 border-l-gray-300';
     }
   };
 
@@ -61,117 +61,123 @@ export function ProcessOrchestrationResultCard({
   };
 
   return (
-    <div className="space-y-6">
-      <div className={`border-2 rounded-lg p-6 ${getHeaderColor()}`}>
-        <div className="flex items-start gap-4">
-          <div className="flex-shrink-0">{getIcon()}</div>
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-black mb-2">
+    <div className="space-y-4">
+      {/* Header */}
+      <div className={`border rounded-lg p-4 ${getHeaderColor()}`}>
+        <div className="flex items-start gap-3">
+          <div>{getIcon()}</div>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl font-bold text-black">
               {recommendation.strategy}
             </h2>
-            <p className="text-gray-700">{recommendation.description}</p>
+            <p className="text-sm text-gray-700 mt-1">{recommendation.description}</p>
           </div>
         </div>
       </div>
 
+      {/* Primary Brain/Platform */}
       {recommendation.primaryBrain && (
-        <div className="border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-bold text-black mb-4">Primary Brain/Platform</h3>
-          <div className="space-y-2">
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold text-black">Technology:</span>{' '}
-              {recommendation.technology || recommendation.primaryBrain}
-            </p>
-            {recommendation.additionalComponents && recommendation.additionalComponents.length > 0 && (
-              <div>
-                <p className="text-sm font-semibold text-black mb-2">Additional Components:</p>
-                <ul className="list-disc list-inside space-y-1">
-                  {recommendation.additionalComponents.map((component) => (
-                    <li key={component} className="text-sm text-gray-600">
-                      {component === 'L1_RPA' && 'L1 RPA (BluePrism) - Legacy System Integration'}
-                      {component === 'L1_IPAAS' && 'L1 iPaaS (Gravitee) - Modern API Integration'}
-                      {component === 'L3_CUSTOM' && 'L3 Custom Microservice - Complex Logic'}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h3 className="text-sm font-bold text-black mb-2">Primary Brain/Platform</h3>
+          <p className="text-sm text-gray-600 mb-2">
+            <span className="font-semibold text-black">Technology:</span>{' '}
+            {recommendation.technology || recommendation.primaryBrain}
+          </p>
+          {recommendation.additionalComponents && recommendation.additionalComponents.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-black mb-1">Additional Components:</p>
+              <ul className="space-y-1">
+                {recommendation.additionalComponents.map((component) => (
+                  <li key={component} className="text-xs text-gray-600 ml-4">
+                    • {component === 'L1_RPA' && 'L1 RPA (BluePrism) - Legacy System Integration'}
+                    {component === 'L1_IPAAS' && 'L1 iPaaS (Gravitee) - Modern API Integration'}
+                    {component === 'L3_CUSTOM' && 'L3 Custom Microservice - Complex Logic'}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 
-      <div className="border border-gray-200 rounded-lg p-6">
-        <h3 className="text-lg font-bold text-black mb-4">Details</h3>
-        <ul className="list-disc list-inside space-y-2">
+      {/* Details */}
+      <div className="border border-gray-200 rounded-lg p-4">
+        <h3 className="text-sm font-bold text-black mb-2">Details</h3>
+        <ul className="space-y-1">
           {recommendation.details.map((detail, index) => (
-            <li key={index} className="text-sm text-gray-600">
-              {detail}
+            <li key={index} className="text-xs text-gray-600 ml-4">
+              • {detail}
             </li>
           ))}
         </ul>
       </div>
 
+      {/* Warnings */}
       {recommendation.warnings && recommendation.warnings.length > 0 && (
-        <div className="border-2 border-yellow-200 bg-yellow-50 rounded-lg p-6">
-          <h3 className="text-lg font-bold text-yellow-900 mb-4 flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5" />
+        <div className="border-l-4 border-l-orange-600 bg-white rounded-lg p-4">
+          <h3 className="text-sm font-bold text-black mb-2 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-orange-600" />
             Warnings
           </h3>
-          <ul className="list-disc list-inside space-y-2">
+          <ul className="space-y-1">
             {recommendation.warnings.map((warning, index) => (
-              <li key={index} className="text-sm text-yellow-800">
-                {warning}
+              <li key={index} className="text-xs text-gray-700 ml-6">
+                • {warning}
               </li>
             ))}
           </ul>
         </div>
       )}
 
+      {/* Suggestions */}
       {recommendation.suggestions && recommendation.suggestions.length > 0 && (
-        <div className="border-2 border-blue-200 bg-blue-50 rounded-lg p-6">
-          <h3 className="text-lg font-bold text-blue-900 mb-4">Suggestions</h3>
-          <ul className="list-disc list-inside space-y-2">
+        <div className="border-l-4 border-l-green-600 bg-white rounded-lg p-4">
+          <h3 className="text-sm font-bold text-black mb-2">Suggestions</h3>
+          <ul className="space-y-1">
             {recommendation.suggestions.map((suggestion, index) => (
-              <li key={index} className="text-sm text-blue-800">
-                {suggestion}
+              <li key={index} className="text-xs text-gray-700 ml-4">
+                • {suggestion}
               </li>
             ))}
           </ul>
         </div>
       )}
 
-      <div className="border border-gray-200 rounded-lg p-6">
-        <h3 className="text-lg font-bold text-black mb-4">Next Steps</h3>
-        <ol className="list-decimal list-inside space-y-2">
+      {/* Next Steps */}
+      <div className="border border-gray-200 rounded-lg p-4">
+        <h3 className="text-sm font-bold text-black mb-2">Next Steps</h3>
+        <ol className="space-y-1">
           {recommendation.nextSteps.map((step, index) => (
-            <li key={index} className="text-sm text-gray-600">
-              {step}
+            <li key={index} className="text-xs text-gray-600 ml-4">
+              {index + 1}. {step}
             </li>
           ))}
         </ol>
       </div>
 
+      {/* Governance */}
       {recommendation.governance && (
-        <div className="border border-gray-300 bg-gray-50 rounded-lg p-6">
-          <h3 className="text-lg font-bold text-black mb-4">Governance</h3>
-          <p className="text-sm text-gray-600">{recommendation.governance}</p>
+        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+          <h3 className="text-sm font-bold text-black mb-2">Governance</h3>
+          <p className="text-xs text-gray-600">{recommendation.governance}</p>
         </div>
       )}
 
-      <div className="flex justify-between gap-3 pt-6">
+      {/* Actions */}
+      <div className="flex justify-between gap-3 pt-2">
         <button
           onClick={() => handleExport('json')}
-          className="px-6 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg font-semibold flex items-center gap-2"
+          className="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg text-sm font-semibold flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
-          Export as JSON
+          Export
         </button>
         <button
           onClick={onRestart}
-          className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold flex items-center gap-2"
+          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold flex items-center gap-2"
         >
           <RotateCcw className="w-4 h-4" />
-          Restart Assessment
+          Restart
         </button>
       </div>
     </div>

@@ -104,15 +104,15 @@ export const PROCESS_ORCHESTRATION_QUESTIONS = {
         id: 'modern_only',
         label: 'Modern Systems Only',
         description:
-          'My process only needs to call REST APIs from modern systems (e.g., OCS, BarCIS).',
+          'My process only needs to call REST APIs from modern systems (e.g., CMOS/Bizagi/ServicingAPI).',
         example:
-          'Insurance Servicing: My process only needs to call OCS (Customer Master Data) and BarCIS (Policy Core) REST APIs.',
+          'Insurance Servicing: My process only needs to call CMOS and Servicing APIs.',
       },
       {
         id: 'legacy_involved',
         label: 'Legacy Systems Involved',
         description:
-          'I must interact with legacy systems that have no API (e.g., green-screen terminals, mainframes).',
+          'I must interact with legacy systems that have no API (e.g., mainframes).',
         example:
           'Insurance Servicing: I must query customer payment history from a legacy "green-screen" mainframe terminal.',
       },
@@ -122,7 +122,7 @@ export const PROCESS_ORCHESTRATION_QUESTIONS = {
         description:
           'My process needs to interact with both modern systems and legacy systems.',
         example:
-          'Insurance Servicing: I need to call modern APIs (OCS, BarCIS) AND query legacy mainframe terminals.',
+          'Insurance Servicing: I need to call modern APIs (CMOS, ServicingAPI) AND query legacy mainframe terminals.',
       },
     ],
   } as Question,
@@ -137,9 +137,9 @@ export const PROCESS_ORCHESTRATION_QUESTIONS = {
         id: 'standard_rules',
         label: 'Standard Business Rules',
         description:
-          'The logic is configurable business rules (e.g., "if claim amount < $5000 AND policy type = Gold, then auto-approve").',
+          'The logic is configurable business rules (e.g., "if claim amount < $5000 AND product = OMP , then auto-approve").',
         example:
-          'Insurance Servicing: The approval logic is simple rules like "if amount < $5000 AND policy type = Gold, then auto-approve".',
+          'Insurance Servicing: The approval logic is simple rules like "if amount < $5000 AND product = OMP, then auto-approve".',
       },
       {
         id: 'high_performance',
