@@ -21,18 +21,19 @@ export default function FlowDiagramModal({
   useEffect(() => {
     if (isOpen && typeof window !== 'undefined') {
       // Load mermaid script if not already loaded
-      if (!window.mermaid) {
+      const mermaidWindow = window as any;
+      if (!mermaidWindow.mermaid) {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js';
         script.async = true;
         script.onload = () => {
-          if (window.mermaid) {
-            window.mermaid.contentLoaded();
+          if (mermaidWindow.mermaid && mermaidWindow.mermaid.contentLoaded) {
+            mermaidWindow.mermaid.contentLoaded();
           }
         };
         document.body.appendChild(script);
-      } else if (window.mermaid && window.mermaid.contentLoaded) {
-        window.mermaid.contentLoaded();
+      } else if (mermaidWindow.mermaid && mermaidWindow.mermaid.contentLoaded) {
+        mermaidWindow.mermaid.contentLoaded();
       }
     }
   }, [isOpen]);
