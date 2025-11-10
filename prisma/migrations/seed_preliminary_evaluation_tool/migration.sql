@@ -18,7 +18,7 @@ INSERT INTO "axon_utility" (
   'Preliminary Evaluation and Shortlisting',
   'Conducting preliminary evaluation of potential solutions and creating a shortlist of viable candidates',
   'decision-support',
-  'zap',
+  'filter',
   '/utilities/preliminary-evaluation',
   '1.0.0',
   'PUBLISHED',

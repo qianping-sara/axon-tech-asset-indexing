@@ -62,7 +62,7 @@ export function ProcessOrchestrationResultCard({
 
   return (
     <div className="space-y-4">
-      {/* Header */}
+      {/* Header with Details */}
       <div className={`border rounded-lg p-4 ${getHeaderColor()}`}>
         <div className="flex items-start gap-3">
           <div>{getIcon()}</div>
@@ -71,6 +71,19 @@ export function ProcessOrchestrationResultCard({
               {recommendation.strategy}
             </h2>
             <p className="text-sm text-gray-700 mt-1">{recommendation.description}</p>
+
+            {/* Details integrated into header */}
+            {recommendation.details && recommendation.details.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-300">
+                <ul className="space-y-1">
+                  {recommendation.details.map((detail, index) => (
+                    <li key={index} className="text-xs text-gray-600 ml-4">
+                      • {detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -100,21 +113,9 @@ export function ProcessOrchestrationResultCard({
         </div>
       )}
 
-      {/* Details */}
-      <div className="border border-gray-200 rounded-lg p-4">
-        <h3 className="text-sm font-bold text-black mb-2">Details</h3>
-        <ul className="space-y-1">
-          {recommendation.details.map((detail, index) => (
-            <li key={index} className="text-xs text-gray-600 ml-4">
-              • {detail}
-            </li>
-          ))}
-        </ul>
-      </div>
-
       {/* Warnings */}
       {recommendation.warnings && recommendation.warnings.length > 0 && (
-        <div className="border-l-4 border-l-orange-600 bg-white rounded-lg p-4">
+        <div className="border border-orange-300 rounded-lg p-4">
           <h3 className="text-sm font-bold text-black mb-2 flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-orange-600" />
             Warnings
@@ -131,11 +132,14 @@ export function ProcessOrchestrationResultCard({
 
       {/* Suggestions */}
       {recommendation.suggestions && recommendation.suggestions.length > 0 && (
-        <div className="border-l-4 border-l-green-600 bg-white rounded-lg p-4">
-          <h3 className="text-sm font-bold text-black mb-2">Suggestions</h3>
+        <div className="border border-green-300 rounded-lg p-4">
+          <h3 className="text-sm font-bold text-black mb-2 flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-green-600" />
+            Suggestions
+          </h3>
           <ul className="space-y-1">
             {recommendation.suggestions.map((suggestion, index) => (
-              <li key={index} className="text-xs text-gray-700 ml-4">
+              <li key={index} className="text-xs text-gray-700 ml-6">
                 • {suggestion}
               </li>
             ))}

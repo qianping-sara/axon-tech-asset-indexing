@@ -67,7 +67,7 @@ export const PROCESS_ORCHESTRATION_QUESTIONS = {
         description:
           'The workbench needs a new "button" or "function" to automatically execute a single, repeatable task.',
         example:
-          'Insurance Servicing: I need a callable "task" that automatically logs into the legacy AS/400 system and retrieves the customer\'s payment history based on policy number.',
+          'Insurance Servicing: I need a callable "task" that automatically logs into the money system and retrieves the customer\'s payment history based on policy number.',
       },
       {
         id: 'workbench_enhancement',

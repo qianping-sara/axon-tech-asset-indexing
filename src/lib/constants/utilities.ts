@@ -50,7 +50,7 @@ export const DECISION_SUPPORT_TOOLS = [
     name: 'Preliminary Evaluation and Shortlisting',
     description: 'Conducting preliminary evaluation of potential solutions and creating a shortlist of viable candidates',
     category: 'decision-support',
-    icon: 'zap', // lucide-react icon
+    icon: 'filter', // lucide-react icon
     url: '/utilities/preliminary-evaluation',
     version: '1.0.0',
     status: 'PUBLISHED' as const,
