@@ -11,7 +11,7 @@ export const QUESTION_Q1: Question = {
   id: 'q1',
   title: 'Strategic Choice: Shift-Left',
   description:
-    'Can the input data be fully digitized at the source channel (e.g., UAW-T1 workbench) to eliminate unstructured data at the origin?',
+    'Can the input data be fully digitized at the source channel to eliminate unstructured data at the origin?',
   helpText:
     'This is the highest priority strategy. If you can modify the source channel to provide structured, digital input, you eliminate the need for complex data extraction downstream.',
   options: [
@@ -19,11 +19,21 @@ export const QUESTION_Q1: Question = {
       value: 'yes',
       label: 'Yes, we can modify the source channel',
       description: 'We have the ability to implement structured input at the source (e.g., digital form, API)',
+      examples: [
+        'Insurance Servicing: Require customers to submit claims through a structured digital form instead of email/PDF',
+        'Insurance Servicing: Implement a mobile app for policy updates instead of accepting handwritten forms',
+        'Insurance Servicing: Use API integration with partner systems to receive structured policy data',
+      ],
     },
     {
       value: 'no',
       label: 'No, we must accept data as-is',
       description: 'The source channel cannot be modified; we must process existing data formats',
+      examples: [
+        'Insurance Servicing: Customers submit claims via email with scanned documents (legacy process)',
+        'Insurance Servicing: Processing handwritten claim forms from field agents',
+        'Insurance Servicing: Receiving unstructured policy documents from external partners',
+      ],
     },
   ],
 };
@@ -43,13 +53,24 @@ export const QUESTION_Q2: Question = {
       value: 'mapping',
       label: 'Challenge is "Mapping"',
       description:
-        'The data is clean, predictable, and machine-readable. My main work is telling the system where each field goes (e.g., "field A to column B").',
+        'The data is clean, predictable, and machine-readable. My main work is telling the system where each field goes.',
+      examples: [
+        'Insurance Servicing: Structured claim forms with fixed fields (claim amount, date, type)',
+        'Insurance Servicing: Policy documents with consistent layout and field positions',
+        'Insurance Servicing: Standardized customer information from CRM systems',
+      ],
     },
     {
       value: 'interpretation',
       label: 'Challenge is "Interpretation"',
       description:
         'The data is messy, variable, or non-standard. The system needs intelligence to understand what the data means.',
+      examples: [
+        'Insurance Servicing: Handwritten claim notes with varying formats and abbreviations',
+        'Insurance Servicing: Customer emails describing policy issues in natural language',
+        'Insurance Servicing: Scanned documents with different layouts, fonts, and quality levels',
+        'Insurance Servicing: Determining claim eligibility from complex policy language and customer context',
+      ],
     },
   ],
 };
@@ -68,19 +89,34 @@ export const QUESTION_Q3_1: Question = {
       value: 'common',
       label: 'Common Task',
       description:
-        'This is a well-known, common industry problem with existing off-the-shelf capabilities (e.g., standard OCR, general invoice processing).',
+        'This is a well-known, common industry problem with existing off-the-shelf capabilities.',
+      examples: [
+        'Insurance Servicing: Standard document OCR for claim forms',
+        'Insurance Servicing: General invoice/receipt extraction',
+        'Insurance Servicing: Basic text classification (claim type, urgency level)',
+      ],
     },
     {
       value: 'new_pattern',
       label: 'New Data Pattern',
       description:
         'The task type is known (e.g., extraction, classification), but the data is new, unique to our business, or existing models cannot handle it.',
+      examples: [
+        'Insurance Servicing: Extracting policy details from company-specific policy documents with unique formats',
+        'Insurance Servicing: Classifying claim types based on company-specific claim categories and terminology',
+        'Insurance Servicing: Processing handwritten claim forms with company-specific abbreviations and formats',
+      ],
     },
     {
       value: 'new_cognitive',
       label: 'New Cognitive Task',
       description:
-        'The task itself is new and complex, beyond simple extraction/classification (e.g., contract summarization, personalized response generation).',
+        'The task itself is new and complex, beyond simple extraction/classification.',
+      examples: [
+        'Insurance Servicing: Determining claim eligibility by reasoning over policy terms, customer history, and claim details',
+        'Insurance Servicing: Generating personalized claim response letters based on policy and customer context',
+        'Insurance Servicing: Predicting customer churn risk and recommending retention actions',
+      ],
     },
   ],
 };
@@ -100,18 +136,33 @@ export const QUESTION_Q3_2: Question = {
       label: 'Level 1: Business/Rule Expert',
       description:
         'Team: BA or SME. Platform: Business systems or configuration tools. Commitment: Low - we can only maintain business rules or configurations, not AI models.',
+      examples: [
+        'Insurance Servicing: Claims team with Excel/SQL skills, using company CRM',
+        'Insurance Servicing: Policy experts who can define rules but cannot code',
+        'Insurance Servicing: No dedicated data science team',
+      ],
     },
     {
       value: 'level2',
       label: 'Level 2: Citizen Developer + AutoML',
       description:
         'Team: Technical BA or citizen developer. Platform: Confirmed access to AutoML/no-code training platform. Commitment: Medium - our team will self-manage model monitoring and retraining.',
+      examples: [
+        'Insurance Servicing: Technical BA with Python basics, using AutoML platform',
+        'Insurance Servicing: 1-2 citizen developers who can manage model training and monitoring',
+        'Insurance Servicing: Access to cloud AutoML services (Azure ML, AWS SageMaker)',
+      ],
     },
     {
       value: 'level3',
       label: 'Level 3: Professional AI Team',
       description:
         'Team: Professional AI/ML engineers. Platform: Professional tools (Python, VLLM). Commitment: High - dedicated MLOps team manages full model lifecycle.',
+      examples: [
+        'Insurance Servicing: Dedicated ML engineering team with 2+ years experience',
+        'Insurance Servicing: In-house MLOps infrastructure and model deployment pipeline',
+        'Insurance Servicing: Ability to fine-tune LLMs and manage production models',
+      ],
     },
     {
       value: 'none',
@@ -135,11 +186,21 @@ export const QUESTION_Q3_3: Question = {
       value: 'efficiency',
       label: 'Efficiency Gain',
       description: 'Higher accuracy is better, but we can tolerate some manual corrections (e.g., <95% accuracy is acceptable).',
+      examples: [
+        'Insurance Servicing: Extracting claim amounts - 90% accuracy is acceptable, manual review for edge cases',
+        'Insurance Servicing: Categorizing claim types - 85% accuracy is fine, claims team reviews misclassifications',
+        'Insurance Servicing: Routing claims to departments - 92% accuracy acceptable, manual routing for uncertain cases',
+      ],
     },
     {
       value: 'critical',
       label: 'Business Critical',
       description: 'We need >99% accuracy. We cannot tolerate errors.',
+      examples: [
+        'Insurance Servicing: Determining claim eligibility - errors directly impact customer satisfaction and legal compliance',
+        'Insurance Servicing: Calculating claim payouts - errors result in financial loss or customer disputes',
+        'Insurance Servicing: Fraud detection - false positives damage customer relationships, false negatives cause losses',
+      ],
     },
   ],
 };

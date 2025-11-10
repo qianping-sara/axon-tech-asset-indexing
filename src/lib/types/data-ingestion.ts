@@ -50,6 +50,7 @@ export interface QuestionOption {
   value: string;
   label: string;
   description: string;
+  examples?: string[];  // Domain-specific examples to help users understand
 }
 
 export interface Question {

@@ -69,6 +69,20 @@ export default function QuestionCard({ question, onSelectOption, currentStep, to
                   {option.label}
                 </h3>
                 <p className="text-sm text-gray-600 mt-1">{option.description}</p>
+
+                {/* Examples - Insurance domain specific */}
+                {option.examples && option.examples.length > 0 && (
+                  <div className="mt-3 pl-3 border-l-2 border-gray-300 group-hover:border-green-700 transition-colors">
+                    <p className="text-xs font-medium text-gray-500 mb-1">Examples:</p>
+                    <ul className="space-y-1">
+                      {option.examples.map((example, idx) => (
+                        <li key={idx} className="text-xs text-gray-600">
+                          • {example}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </button>
