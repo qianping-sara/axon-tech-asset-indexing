@@ -501,3 +501,31 @@ function applyAttachmentRules(
   }
 }
 
+// ============================================================================
+// Progress Information
+// ============================================================================
+
+export const PROCESS_ORCHESTRATION_PROGRESS = {
+  stepLabels: [
+    'Strategic Intent',
+    'Integration Strategy',
+    'Confirmation',
+    'Integration Footprint',
+    'Logic Complexity',
+    'Capability Match',
+  ],
+  totalSteps: 6,
+  getStepNumber: (step: string): number => {
+    const stepMap: Record<string, number> = {
+      q1: 1,
+      q2: 2,
+      q3: 3,
+      q4: 4,
+      q5: 5,
+      q6: 6,
+      recommendation: 6,
+    };
+    return stepMap[step] || 1;
+  },
+};
+

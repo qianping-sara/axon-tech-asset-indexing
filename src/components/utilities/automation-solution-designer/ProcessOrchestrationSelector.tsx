@@ -8,8 +8,10 @@ import { Q4IntegrationFootprintForm } from './Q4IntegrationFootprintForm';
 import { Q5LogicComplexityForm } from './Q5LogicComplexityForm';
 import { Q6CapabilityMatchForm } from './Q6CapabilityMatchForm';
 import { ProcessOrchestrationResultCard } from './ProcessOrchestrationResultCard';
+import DimensionOverview from './DimensionOverview';
 import { ProcessOrchestrationState } from '@/lib/types/process-orchestration';
-import { generateProcessOrchestrationRecommendation } from '@/lib/constants/process-orchestration';
+import { generateProcessOrchestrationRecommendation, PROCESS_ORCHESTRATION_PROGRESS } from '@/lib/constants/process-orchestration';
+import { PROCESS_ORCHESTRATION_OVERVIEW, PROCESS_ORCHESTRATION_MERMAID_DIAGRAM } from '@/lib/constants/process-orchestration-overview';
 
 interface ProcessOrchestrationSelectorProps {
   // Props will be defined when implementing the actual content
@@ -158,11 +160,21 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
 
   return (
     <div className="space-y-6">
-      {/* Progress Bar */}
-      <div className="space-y-2">
+      {/* Dimension Overview - shown at the start */}
+      {state.currentStep === 1 && !state.recommendation && (
+        <DimensionOverview
+          title={PROCESS_ORCHESTRATION_OVERVIEW.title}
+          description={PROCESS_ORCHESTRATION_OVERVIEW.description}
+          whenToUse={PROCESS_ORCHESTRATION_OVERVIEW.whenToUse}
+          mermaidDiagram={PROCESS_ORCHESTRATION_MERMAID_DIAGRAM}
+        />
+      )}
+
+      {/* Progress Bar with Step Labels */}
+      <div className="space-y-3">
         <div className="flex justify-between items-center">
           <span className="text-sm font-semibold text-gray-700">
-            {state.recommendation ? 'Complete' : `Step ${state.currentStep} of 6`}
+            {state.recommendation ? 'Complete' : `Step ${state.currentStep} of ${PROCESS_ORCHESTRATION_PROGRESS.totalSteps}`}
           </span>
           <span className="text-sm text-gray-600">{Math.round(getProgressPercentage())}%</span>
         </div>
@@ -171,6 +183,23 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
             className="bg-green-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${getProgressPercentage()}%` }}
           />
+        </div>
+        {/* Step Labels */}
+        <div className="flex justify-between">
+          {PROCESS_ORCHESTRATION_PROGRESS.stepLabels.map((label, index) => (
+            <span
+              key={index}
+              className={`text-xs font-medium ${
+                index < state.currentStep - 1
+                  ? 'text-green-600'
+                  : index === state.currentStep - 1
+                    ? 'text-gray-900'
+                    : 'text-gray-400'
+              }`}
+            >
+              {label}
+            </span>
+          ))}
         </div>
       </div>
 
