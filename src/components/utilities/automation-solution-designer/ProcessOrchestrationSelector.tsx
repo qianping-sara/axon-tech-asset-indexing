@@ -141,10 +141,35 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
 
   // Handle previous step
   const handlePrevious = () => {
-    setState((prev) => ({
-      ...prev,
-      currentStep: Math.max(1, prev.currentStep - 1) as any,
-    }));
+    setState((prev) => {
+      let newStep = Math.max(1, prev.currentStep - 1);
+
+      // Special handling for step transitions
+      // If going back from Q4 (step 4) and Q1 is 'new_strategic' or 'new_tactical', go to Q3 (step 3)
+      // If going back from Q4 (step 4) and Q1 is 'integrate', go to Q2 (step 2)
+      if (prev.currentStep === 4) {
+        if (prev.answers.q1 === 'new_strategic' || prev.answers.q1 === 'new_tactical') {
+          newStep = 3;
+        } else if (prev.answers.q1 === 'integrate') {
+          newStep = 2;
+        }
+      }
+
+      // If going back from Q3 (step 3), go to Q1 (step 1)
+      if (prev.currentStep === 3) {
+        newStep = 1;
+      }
+
+      // If going back from Q2 (step 2), go to Q1 (step 1)
+      if (prev.currentStep === 2) {
+        newStep = 1;
+      }
+
+      return {
+        ...prev,
+        currentStep: newStep as any,
+      };
+    });
   };
 
   // Handle restart
@@ -221,7 +246,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
             )}
 
             {/* Q2: Integration Strategy (only if Q1='integrate') */}
-            {state.currentStep === 2 && state.answers.q1 === 'integrate' && (
+            {(state.currentStep === 2 || state.currentStep === 3) && state.answers.q1 === 'integrate' && (
               <Q2IntegrationStrategyForm
                 onNext={handleQ2Answer}
                 onPrevious={handlePrevious}
@@ -230,7 +255,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
             )}
 
             {/* Q3: Confirmation (only if Q1='new_strategic' or 'new_tactical') */}
-            {state.currentStep === 2 &&
+            {(state.currentStep === 2 || state.currentStep === 3) &&
               (state.answers.q1 === 'new_strategic' || state.answers.q1 === 'new_tactical') && (
                 <Q3ConfirmationStep
                   onNext={handleQ3Answer}
