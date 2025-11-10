@@ -35,12 +35,17 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
 
   // Handle Q1 answer
   const handleQ1Answer = (answer: string) => {
+    const q1Answer = answer as any;
+    // If Q1='new', go to Q2 (Business Nature)
+    // If Q1='modify' or 'replace', skip Q2 and go to Q3 (Integration Requirement)
+    const nextStep = q1Answer === 'new' ? 2 : 3;
+
     setState((prev) => ({
       ...prev,
-      currentStep: 2,
+      currentStep: nextStep,
       answers: {
         ...prev.answers,
-        q1: answer as any,
+        q1: q1Answer,
         q2: undefined,
         q3: undefined,
         q3_5: undefined,

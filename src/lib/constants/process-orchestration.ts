@@ -365,18 +365,125 @@ export function generateProcessOrchestrationRecommendation(
     return recommendation;
   }
 
+  // Rule 4.5: Modify/Replace + Integrate to Workbench + Backend Engine + Level 2 → BPA (Bizagi)
+  if (
+    (input.q1 === 'modify' || input.q1 === 'replace') &&
+    input.q3 === 'integrate_to_workbench' &&
+    input.q3_5 === 'backend_engine' &&
+    input.q6 === 'level2'
+  ) {
+    const recommendation: ProcessOrchestrationRecommendation = {
+      type: 'matched',
+      strategy: 'Backend Process Engine (BPA)',
+      primaryBrain: 'BPA',
+      technology: 'Bizagi',
+      description:
+        input.q1 === 'modify'
+          ? 'Your L2 team should use Bizagi to enhance the backend process and integrate with your existing workbench.'
+          : 'Your L2 team should use Bizagi to replace the legacy process with a modern backend engine integrated with your existing workbench.',
+      details: [
+        'Bizagi manages backend process flow, SLA, and approvals',
+        'Your existing workbench remains the UI',
+        'Bidirectional integration: workbench → Bizagi → workbench',
+        'Your L2 citizen developers can configure and maintain the process',
+      ],
+      nextSteps: [
+        'Assess current process and integration points',
+        'Design improved backend process flow in Bizagi',
+        'Configure API integration between workbench and Bizagi',
+        'Test end-to-end flow',
+        'Deploy and monitor',
+      ],
+    };
+
+    applyAttachmentRules(recommendation, input);
+    return recommendation;
+  }
+
+  // Rule 4.6: Modify/Replace + Integrate to Workbench + Atomic Task → L1 Task API
+  if (
+    (input.q1 === 'modify' || input.q1 === 'replace') &&
+    input.q3 === 'integrate_to_workbench' &&
+    input.q3_5 === 'atomic_task'
+  ) {
+    const recommendation: ProcessOrchestrationRecommendation = {
+      type: 'matched',
+      strategy: 'Atomic Task Automation (L1)',
+      primaryBrain: 'L1_TASK',
+      technology: 'L1 Task API',
+      description:
+        input.q1 === 'modify'
+          ? 'Your requirement is an L1 "atomic task" to enhance your existing workbench. This should be built by CoE team as a reusable L1 API.'
+          : 'Your requirement is an L1 "atomic task" to replace a legacy capability. This should be built by CoE team as a reusable L1 API.',
+      details: [
+        'L1 task is a single, repeatable automation',
+        'CoE team builds and maintains as a generic API',
+        'Your workbench calls this API when needed',
+        'No custom development needed for your team',
+      ],
+      nextSteps: [
+        'Submit L1 task requirement to CoE',
+        'CoE team builds the task automation',
+        'Integrate task API into your workbench',
+        'Test and validate',
+        'Deploy',
+      ],
+    };
+
+    applyAttachmentRules(recommendation, input);
+    return recommendation;
+  }
+
+  // Rule 4.7: Modify/Replace + Standalone + Level 2 → BPA or LCAP
+  if (
+    (input.q1 === 'modify' || input.q1 === 'replace') &&
+    input.q3 === 'standalone' &&
+    input.q6 === 'level2'
+  ) {
+    const recommendation: ProcessOrchestrationRecommendation = {
+      type: 'matched',
+      strategy: 'Backend Process Architecture (BPA)',
+      primaryBrain: 'BPA',
+      technology: 'Bizagi',
+      description:
+        input.q1 === 'modify'
+          ? 'Your L2 team should use Bizagi to enhance this standalone process.'
+          : 'Your L2 team should use Bizagi to replace this legacy standalone process with a modern solution.',
+      details: [
+        'Bizagi is suitable for both new and replacement processes',
+        'Includes built-in work portal for end users',
+        'Your L2 citizen developers design and configure the process',
+        'Supports complex workflows, SLA management, and reporting',
+      ],
+      nextSteps: [
+        'Assess current process and pain points',
+        'Define improved process flow',
+        'Model process in Bizagi',
+        'Configure business rules and SLA',
+        'Set up work portal and user roles',
+        'Test and validate',
+        'Deploy and establish governance',
+      ],
+    };
+
+    applyAttachmentRules(recommendation, input);
+    return recommendation;
+  }
+
   // Rule 5: Severe Capability Mismatch (L2 problem + L1 resources)
   if (
     ((input.q3 === 'integrate_to_workbench' && input.q3_5 === 'backend_engine') ||
       (input.q1 === 'new' && input.q2 === 'strategic') ||
-      (input.q1 === 'new' && input.q2 === 'tactical')) &&
+      (input.q1 === 'new' && input.q2 === 'tactical') ||
+      (input.q1 === 'modify' && input.q3 === 'integrate_to_workbench') ||
+      (input.q1 === 'replace' && input.q3 === 'integrate_to_workbench')) &&
     input.q6 === 'level1'
   ) {
     return {
       type: 'warning',
       strategy: 'Severe Capability Mismatch - Seek CoE Help',
       description:
-        'You have an L2 problem (new process/application or integration) but only L1 resources (business experts). Your team cannot build or operate this solution.',
+        'You have an L2 problem (new process/application, modification, or integration) but only L1 resources (business experts). Your team cannot build or operate this solution.',
       details: [
         'L2 problems require L2 resources (citizen developers + LCAP/BPA)',
         'Your team can only define rules, not build or maintain processes',
@@ -385,7 +492,7 @@ export function generateProcessOrchestrationRecommendation(
       warnings: ['Problem complexity exceeds team capability'],
       suggestions: [
         'Option 1: Upgrade to Level 2 (get citizen developers and LCAP/BPA platform)',
-        'Option 2: Submit to CoE (corporate AI team, requires queuing)',
+        'Option 2: Submit to CoE (or corespondent platform team, requires queuing)',
         'Option 3: Simplify problem scope to fit L1 capability',
       ],
       nextSteps: [
@@ -510,7 +617,7 @@ function applyAttachmentRules(
   if (input.q4 === 'modern_only' || input.q4 === 'mix') {
     recommendation.additionalComponents.push('L1_IPAAS');
     recommendation.description +=
-      '\nYour process needs to interact with modern systems (e.g., OCS/BarCIS APIs). Your L2 "brain" (Bizagi/PP) should call a generic L1 iPaaS service.';
+      '\nYour process needs to interact with modern systems (e.g., ECCM/Servicing APIs). Your L2 "brain" (Bizagi/PP) should call a generic L1 iPaaS service.';
     recommendation.details?.push('L1 iPaaS (Gravitee) handles modern API integration');
   }
 
