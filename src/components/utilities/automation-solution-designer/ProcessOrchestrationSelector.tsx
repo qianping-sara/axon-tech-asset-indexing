@@ -102,7 +102,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
   const handleQ4Answer = (answer: string) => {
     setState((prev) => ({
       ...prev,
-      currentStep: 5,
+      currentStep: 5, // Q4 is step 5 (System Interaction)
       answers: {
         ...prev.answers,
         q4: answer as any,
@@ -114,7 +114,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
   const handleQ5Answer = (answer: string) => {
     setState((prev) => ({
       ...prev,
-      currentStep: 6,
+      currentStep: 6, // Q5 is step 6 (Logic Complexity)
       answers: {
         ...prev.answers,
         q5: answer as any,
@@ -126,6 +126,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
   const handleQ6Answer = (answer: string) => {
     setState((prev) => ({
       ...prev,
+      currentStep: 7, // Q6 is step 7 (Capability Match)
       isLoading: true,
       answers: {
         ...prev.answers,
@@ -227,20 +228,38 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
         </div>
         {/* Step Labels */}
         <div className="flex justify-between">
-          {PROCESS_ORCHESTRATION_PROGRESS.stepLabels.map((label, index) => (
-            <span
-              key={index}
-              className={`text-xs font-medium ${
-                index < state.currentStep - 1
-                  ? 'text-green-600'
-                  : index === state.currentStep - 1
-                    ? 'text-gray-900'
-                    : 'text-gray-400'
-              }`}
-            >
-              {label}
-            </span>
-          ))}
+          {PROCESS_ORCHESTRATION_PROGRESS.stepLabels.map((label, index) => {
+            // Map index to step number (index 0 = step 1, index 1 = step 2, etc.)
+            const stepNumber = index + 1;
+
+            // Determine if this step is completed, current, or future
+            let isCompleted = false;
+            let isCurrent = false;
+
+            if (state.recommendation) {
+              // All steps are completed when recommendation is shown
+              isCompleted = true;
+            } else {
+              // Compare step number with current step
+              isCompleted = stepNumber < state.currentStep;
+              isCurrent = stepNumber === state.currentStep;
+            }
+
+            return (
+              <span
+                key={index}
+                className={`text-xs font-medium ${
+                  isCompleted
+                    ? 'text-green-600'
+                    : isCurrent
+                      ? 'text-gray-900'
+                      : 'text-gray-400'
+                }`}
+              >
+                {label}
+              </span>
+            );
+          })}
         </div>
       </div>
 
@@ -307,7 +326,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
             )}
 
             {/* Q6: Capability Match */}
-            {state.currentStep === 6 && (
+            {state.currentStep === 6 && !state.recommendation && (
               <Q6CapabilityMatchForm
                 onNext={handleQ6Answer}
                 onPrevious={handlePrevious}
