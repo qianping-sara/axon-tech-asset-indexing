@@ -131,24 +131,86 @@ export function exportRecommendationAsCSV(
   lines.push(`Generated: ${new Date().toISOString()}`);
   lines.push('');
 
-  lines.push('Answers:');
-  const summary = generateAnswersSummary(answers);
-  summary.forEach((s) => lines.push(s));
+  lines.push('=== YOUR ANSWERS ===');
   lines.push('');
 
-  lines.push('Recommendation:');
+  // Q1: Strategic Choice
+  if (answers.q1) {
+    const q1Label = answers.q1 === 'yes' ? 'Can modify source' : 'Must accept as-is';
+    lines.push(`Q1 - Strategic Choice: ${q1Label}`);
+  }
+
+  // Q2: Tactical Diagnosis
+  if (answers.q2) {
+    const q2Label = answers.q2 === 'mapping' ? 'Mapping (Structured Data)' : 'Interpretation (Unstructured Data)';
+    lines.push(`Q2 - Tactical Diagnosis: ${q2Label}`);
+  }
+
+  // Q3: AI Capability & Resource Diagnosis
+  if (answers.q3_1) {
+    const q3_1Map: Record<string, string> = {
+      common: 'Common Task',
+      new_pattern: 'New Data Pattern',
+      new_cognitive: 'New Cognitive Task',
+    };
+    lines.push(`Q3.1 - Problem Type: ${q3_1Map[answers.q3_1]}`);
+  }
+
+  if (answers.q3_2) {
+    const q3_2Map: Record<string, string> = {
+      level1: 'Level 1: Business/Rule Expert',
+      level2: 'Level 2: Citizen Developer + AutoML',
+      level3: 'Level 3: Professional AI Team',
+      none: 'No clear capability',
+    };
+    lines.push(`Q3.2 - Capability Match: ${q3_2Map[answers.q3_2]}`);
+  }
+
+  if (answers.q3_3) {
+    const q3_3Label = answers.q3_3 === 'efficiency' ? 'Efficiency Gain' : 'Business Critical';
+    lines.push(`Q3.3 - Business Criticality: ${q3_3Label}`);
+  }
+
+  if (answers.q3_4) {
+    const q3_4Map: Record<string, string> = {
+      ready: 'Data Ready (>100 samples)',
+      partial: 'Partial (50-100 samples)',
+      not_ready: 'Not Ready (<50 samples)',
+    };
+    lines.push(`Q3.4 - Data Readiness: ${q3_4Map[answers.q3_4]}`);
+  }
+
+  lines.push('');
+  lines.push('=== RECOMMENDATION ===');
+  lines.push('');
   lines.push(`Strategy: ${recommendation.strategy}`);
   lines.push(`Technology: ${recommendation.technology}`);
-  lines.push(`Description: ${recommendation.description}`);
+  lines.push('');
+  lines.push('Description:');
+  lines.push(recommendation.description);
   lines.push('');
 
-  lines.push('Details:');
-  recommendation.details.forEach((detail: string) => lines.push(`- ${detail}`));
-  lines.push('');
+  if (recommendation.details && recommendation.details.length > 0) {
+    lines.push('Key Points:');
+    recommendation.details.forEach((detail: string) => lines.push(`• ${detail}`));
+    lines.push('');
+  }
 
-  if (recommendation.nextSteps) {
+  if (recommendation.warning) {
+    lines.push('Warnings:');
+    lines.push(`⚠️ ${recommendation.warning}`);
+    lines.push('');
+  }
+
+  if (recommendation.suggestions && recommendation.suggestions.length > 0) {
+    lines.push('Suggestions:');
+    recommendation.suggestions.forEach((suggestion: string) => lines.push(`→ ${suggestion}`));
+    lines.push('');
+  }
+
+  if (recommendation.nextSteps && recommendation.nextSteps.length > 0) {
     lines.push('Next Steps:');
-    recommendation.nextSteps.forEach((step: string) => lines.push(`- ${step}`));
+    recommendation.nextSteps.forEach((step: string, index: number) => lines.push(`${index + 1}. ${step}`));
   }
 
   return lines.join('\n');

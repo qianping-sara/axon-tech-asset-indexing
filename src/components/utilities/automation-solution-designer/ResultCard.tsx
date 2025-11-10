@@ -95,32 +95,30 @@ export default function ResultCard({ recommendation, answers, onRestart }: Resul
 
       {/* Next Steps Section (if applicable) */}
       {recommendation.nextSteps && recommendation.nextSteps.length > 0 && (
-        <div className="border border-blue-300 rounded-lg p-4 bg-white">
-          <h3 className="text-sm font-bold text-black mb-2 flex items-center gap-2">
-            Next Steps
-          </h3>
-          <div>
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h3 className="text-sm font-bold text-black mb-2">Next Steps</h3>
+          <ol className="space-y-1">
             {recommendation.nextSteps.map((step, index) => (
-              <p key={index} className="text-xs text-gray-700 ml-6">
+              <li key={index} className="text-xs text-gray-600 ml-4">
                 {index + 1}. {step}
-              </p>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       )}
 
       {/* Actions */}
-      <div className="flex gap-3 pt-6 border-t border-gray-200">
+      <div className="flex justify-between gap-3 pt-2">
         <button
           onClick={handleDownload}
-          className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold flex items-center gap-2"
+          className="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg text-sm font-semibold flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
           Download Report
         </button>
         <button
           onClick={onRestart}
-          className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold flex items-center gap-2"
+          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold flex items-center gap-2"
         >
           <RotateCcw className="w-4 h-4" />
           Restart Assessment
