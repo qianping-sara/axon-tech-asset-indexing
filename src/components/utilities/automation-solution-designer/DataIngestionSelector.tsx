@@ -131,16 +131,6 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
         />
       )}
 
-      {/* Back Button for Q2 and Q3 */}
-      {(currentStep === 'q2' || currentStep === 'q3') && (
-        <button
-          onClick={currentStep === 'q2' ? handleBackToQ1 : handleBackToQ2}
-          className="text-sm text-gray-600 hover:text-gray-900 font-medium flex items-center gap-1"
-        >
-          ← Back to previous step
-        </button>
-      )}
-
       {/* Question or Result */}
       {currentStep === 'recommendation' && recommendation ? (
         <ResultCard recommendation={recommendation} answers={answers} onRestart={handleRestart} />
@@ -150,6 +140,7 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
           onSelectOption={handleSelectOption}
           currentStep={progressInfo.stepNumber}
           totalSteps={progressInfo.totalSteps}
+          onPrevious={currentStep === 'q2' ? handleBackToQ1 : currentStep === 'q1' ? undefined : undefined}
         />
       ) : currentStep === 'q3' ? (
         <Q3DiagnosisForm
