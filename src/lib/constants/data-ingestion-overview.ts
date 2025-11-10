@@ -7,7 +7,7 @@ export const DATA_INGESTION_OVERVIEW = {
   description:
     'This dimension guides you through selecting the right data ingestion approach for your automation use case. It helps you decide whether to eliminate unstructured data at the source, use template-based extraction, or leverage AI capabilities.',
   whenToUse:
-    'Use this dimension when your automation use case involves ingesting data from external sources (documents, images, APIs, emails, etc.). If your use case does not require data ingestion, you can skip this dimension and proceed to Phase 3.',
+    'Use this dimension when your automation use case involves ingesting data from external sources (documents, images, APIs, emails, etc.). If your use case does not require data ingestion, you can skip this dimension and proceed to other selector.',
 };
 
 export const DATA_INGESTION_MERMAID_DIAGRAM = `

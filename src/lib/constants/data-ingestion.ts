@@ -91,9 +91,9 @@ export const QUESTION_Q3_1: Question = {
       description:
         'This is a well-known, common industry problem with existing off-the-shelf capabilities.',
       examples: [
-        'Insurance Servicing: Standard document OCR for claim forms',
-        'Insurance Servicing: General invoice/receipt extraction',
-        'Insurance Servicing: Basic text classification (claim type, urgency level)',
+        'Standard document OCR for claim forms',
+        'General invoice/receipt/ID info extraction',
+        'Basic text classification (claim type, urgency level)',
       ],
     },
     {
@@ -102,9 +102,9 @@ export const QUESTION_Q3_1: Question = {
       description:
         'The task type is known (e.g., extraction, classification), but the data is new, unique to our business, or existing models cannot handle it.',
       examples: [
-        'Insurance Servicing: Extracting policy details from company-specific policy documents with unique formats',
-        'Insurance Servicing: Classifying claim types based on company-specific claim categories and terminology',
-        'Insurance Servicing: Processing handwritten claim forms with company-specific abbreviations and formats',
+        'Extracting policy details from company-specific policy documents with unique formats',
+        'Classifying claim types based on company-specific claim categories and terminology',
+        'Processing handwritten claim forms with company-specific abbreviations and formats',
       ],
     },
     {
@@ -113,9 +113,9 @@ export const QUESTION_Q3_1: Question = {
       description:
         'The task itself is new and complex, beyond simple extraction/classification.',
       examples: [
-        'Insurance Servicing: Determining claim eligibility by reasoning over policy terms, customer history, and claim details',
-        'Insurance Servicing: Generating personalized claim response letters based on policy and customer context',
-        'Insurance Servicing: Predicting customer churn risk and recommending retention actions',
+        'Determining claim eligibility by reasoning over policy terms, customer history, and claim details',
+        'Generating personalized claim response letters based on policy and customer context',
+        'Predicting customer churn risk and recommending retention actions',
       ],
     },
   ],
@@ -137,9 +137,9 @@ export const QUESTION_Q3_2: Question = {
       description:
         'Team: BA or SME. Platform: Business systems or configuration tools. Commitment: Low - we can only maintain business rules or configurations, not AI models.',
       examples: [
-        'Insurance Servicing: Claims team with Excel/SQL skills, using company CRM',
-        'Insurance Servicing: Policy experts who can define rules but cannot code',
-        'Insurance Servicing: No dedicated data science team',
+        'Claims export with Excel/SQL skills',
+        'Policy experts who can define rules but cannot code',
+        'No dedicated data science team',
       ],
     },
     {
@@ -148,9 +148,9 @@ export const QUESTION_Q3_2: Question = {
       description:
         'Team: Technical BA or citizen developer. Platform: Confirmed access to AutoML/no-code training platform. Commitment: Medium - our team will self-manage model monitoring and retraining.',
       examples: [
-        'Insurance Servicing: Technical BA with Python basics, using AutoML platform',
-        'Insurance Servicing: 1-2 citizen developers who can manage model training and monitoring',
-        'Insurance Servicing: Access to cloud AutoML services (Azure ML, AWS SageMaker)',
+        'Technical BA with Python basics, using AutoML platform',
+        '1-2 citizen developers who can manage model training and monitoring',
+        'Access to cloud AutoML services (Azure ML, AWS SageMaker)',
       ],
     },
     {
@@ -159,9 +159,9 @@ export const QUESTION_Q3_2: Question = {
       description:
         'Team: Professional AI/ML engineers. Platform: Professional tools (Python, VLLM). Commitment: High - dedicated MLOps team manages full model lifecycle.',
       examples: [
-        'Insurance Servicing: Dedicated ML engineering team with 2+ years experience',
-        'Insurance Servicing: In-house MLOps infrastructure and model deployment pipeline',
-        'Insurance Servicing: Ability to fine-tune LLMs and manage production models',
+        'Dedicated ML engineering team with 2+ years experience',
+        'In-house MLOps infrastructure and model deployment pipeline',
+        'Ability to fine-tune LLMs and manage production models',
       ],
     },
     {
@@ -187,9 +187,9 @@ export const QUESTION_Q3_3: Question = {
       label: 'Efficiency Gain',
       description: 'Higher accuracy is better, but we can tolerate some manual corrections (e.g., <95% accuracy is acceptable).',
       examples: [
-        'Insurance Servicing: Extracting claim amounts - 90% accuracy is acceptable, manual review for edge cases',
-        'Insurance Servicing: Categorizing claim types - 85% accuracy is fine, claims team reviews misclassifications',
-        'Insurance Servicing: Routing claims to departments - 92% accuracy acceptable, manual routing for uncertain cases',
+        'Extracting claim amounts - 90% accuracy is acceptable, manual review for edge cases',
+        'Categorizing claim types - 85% accuracy is fine, claims team reviews misclassifications',
+        'Routing claims to departments - 92% accuracy acceptable, manual routing for uncertain cases',
       ],
     },
     {
@@ -197,9 +197,9 @@ export const QUESTION_Q3_3: Question = {
       label: 'Business Critical',
       description: 'We need >99% accuracy. We cannot tolerate errors.',
       examples: [
-        'Insurance Servicing: Determining claim eligibility - errors directly impact customer satisfaction and legal compliance',
-        'Insurance Servicing: Calculating claim payouts - errors result in financial loss or customer disputes',
-        'Insurance Servicing: Fraud detection - false positives damage customer relationships, false negatives cause losses',
+        'Determining claim eligibility - errors directly impact customer satisfaction and legal compliance',
+        'Calculating claim payouts - errors result in financial loss or customer disputes',
+        'Fraud detection - false positives damage customer relationships, false negatives cause losses',
       ],
     },
   ],
@@ -221,9 +221,9 @@ export const QUESTION_Q3_4: Question = {
       description:
         'We have sufficient labeled/clean data (100-1000+ samples), good data quality, and clear data governance. We can start immediately.',
       examples: [
-        'Insurance Servicing: 500+ labeled claim forms with consistent quality and clear labels',
-        'Insurance Servicing: Structured customer data with 95%+ completeness and validation rules',
-        'Insurance Servicing: Historical policy documents with clear metadata and categorization',
+        '500+ labeled claim forms with consistent quality and clear labels',
+        'Structured customer data with 95%+ completeness and validation rules',
+        'Historical policy documents with clear metadata and categorization',
       ],
     },
     {
@@ -232,9 +232,9 @@ export const QUESTION_Q3_4: Question = {
       description:
         'We have some data, but need preparation work (cleaning, labeling, augmentation). We can start in 2-4 weeks.',
       examples: [
-        'Insurance Servicing: 200+ claim forms but need manual labeling and quality review',
-        'Insurance Servicing: Customer data with 70% completeness, needs data cleaning and enrichment',
-        'Insurance Servicing: Historical documents exist but need to be digitized and categorized',
+        '200+ claim forms but need manual labeling and quality review',
+        'Customer data with 70% completeness, needs data cleaning and enrichment',
+        'Historical documents exist but need to be digitized and categorized',
       ],
     },
     {
@@ -243,9 +243,9 @@ export const QUESTION_Q3_4: Question = {
       description:
         'We lack sufficient data, have poor quality, or unclear governance. We need 1-3 months of preparation before starting.',
       examples: [
-        'Insurance Servicing: <50 labeled examples, need significant data collection effort',
-        'Insurance Servicing: Data scattered across multiple systems with inconsistent formats',
-        'Insurance Servicing: No clear data ownership or governance, need to establish processes first',
+        '<50 labeled examples, need significant data collection effort',
+        'Data scattered across multiple systems with inconsistent formats',
+        'No clear data ownership or governance, need to establish processes first',
       ],
     },
   ],
@@ -288,7 +288,7 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
       'High accuracy and reliability',
     ],
     nextSteps: [
-      'Proceed to Phase 3: Process Orchestration',
+      'Proceed to other selector such as Process Orchestration',
       'Configure extraction rules based on template',
       'Set up validation and error handling',
     ],
@@ -410,29 +410,29 @@ export function generateAIRecommendation(
   if ((q3_1 === 'new_pattern' || q3_1 === 'new_cognitive') && q3_4 === 'not_ready') {
     return {
       type: 'blocked',
-      strategy: '项目阻断：数据未就绪',
+      strategy: 'Project Blocked: Data Not Ready',
       technology: 'N/A',
       description:
-        'L2/L3 模型无法在"数据未就绪"的情况下启动。您的样本数量不足（<50）或数据质量差。必须首先转向数据收集和治理。',
+        'L2/L3 models cannot be launched when "data is not ready". Your sample size is insufficient (<50) or data quality is poor. You must first focus on data collection and governance.',
       details: [
-        '样本数量不足（<50个标注样本）',
-        '数据质量差或不一致',
-        '数据治理流程不清晰',
-        '无法开始AI模型开发',
+        'Insufficient sample size (<50 labeled samples)',
+        'Poor or inconsistent data quality',
+        'Data governance process not clear',
+        'Cannot start AI model development',
       ],
-      warning: '停止所有AI开发',
+      warning: 'Stop All AI Development',
       suggestions: [
-        '转向数据收集和治理工作',
-        '建立数据标注流程',
-        '预计时间：1-3个月',
-        '完成数据准备后重新评估此项目',
+        'Focus on data collection and governance work',
+        'Establish data labeling process',
+        'Estimated time: 1-3 months',
+        'Re-evaluate this project after data preparation is complete',
       ],
       nextSteps: [
-        '停止AI模型开发',
-        '启动数据收集和治理项目',
-        '建立数据标注和验证流程',
-        '预计1-3个月后重新评估',
-        '数据就绪后重新运行此诊断',
+        'Stop AI model development',
+        'Start data collection and governance project',
+        'Establish data labeling and validation process',
+        'Re-evaluate after 1-3 months',
+        'Re-run this assessment after data is ready',
       ],
     };
   }
@@ -448,46 +448,46 @@ export function generateAIRecommendation(
       strategy: 'Use Existing General Capability' + (isHighRisk ? ' (High Risk)' : ''),
       technology: 'Platform General Model API',
       description: isHighRisk
-        ? '您的需求是"业务关键"（需>99%准确率），但您将使用 Level 1 通用模型 API。通用模型可能无法满足此 SLA。'
-        : '您的需求是"通用任务"，已有现成的功能。使用 AutoML 或定制开发会过度设计。',
+        ? 'Your requirement is "Business Critical" (requires >99% accuracy), but you will use Level 1 general model API. The general model may not meet this SLA.'
+        : 'Your requirement is a "common task" with existing off-the-shelf capabilities. Using AutoML or custom development would be over-engineering.',
       details: isHighRisk
         ? [
-            '平台提供通用模型 API，但通常准确率为 80-95%',
-            '您的需求是"业务关键"，需要 >99% 准确率',
-            '通用模型可能无法满足此 SLA',
-            '必须进行严格的 PoC 测试来验证准确率',
-            '如果 PoC 失败，项目必须升级为 L2/L3 项目',
+            'Platform provides general model API, but typically achieves 80-95% accuracy',
+            'Your requirement is "Business Critical", requiring >99% accuracy',
+            'General model may not meet this SLA',
+            'Must conduct strict PoC testing to verify accuracy',
+            'If PoC fails, project must be escalated to L2/L3 project',
           ]
         : [
-            '平台提供现成的通用模型 API',
-            '现有功能已满足典型的准确率要求',
-            '无需 AI 开发或训练',
-            '快速部署，立即获得结果',
-            '成本效益高',
+            'Platform provides ready-to-use general model API',
+            'Existing capability already meets typical accuracy requirements',
+            'No AI development or training needed',
+            'Fast deployment, immediate results',
+            'Cost-effective solution',
           ],
-      warning: isHighRisk ? '高风险警告' : 'Over-design detected',
+      warning: isHighRisk ? 'High Risk Warning' : 'Over-design detected',
       suggestions: isHighRisk
         ? [
-            '必须进行严格的 PoC 测试',
-            '在生产环境中部署前，测量准确率是否达到 >99%',
-            '如果 PoC 失败，此项目必须升级为 L2/L3 项目',
-            '考虑升级到 Level 2（AutoML）或 Level 3（定制开发）',
+            'Must conduct strict PoC testing',
+            'Before production deployment, measure if accuracy reaches >99%',
+            'If PoC fails, this project must be escalated to L2/L3',
+            'Consider upgrading to Level 2 (AutoML) or Level 3 (Custom Development)',
           ]
         : [
-            '首先尝试平台的通用模型 API',
-            '只有当通用模型的准确率无法满足您的"业务关键"（>99%）要求时，才升级到 Level 2/3',
+            'First, try the platform\'s general model API',
+            'Only upgrade to Level 2/3 if the general model\'s accuracy cannot meet your "Business Critical" (>99%) requirement',
           ],
       nextSteps: isHighRisk
         ? [
-            '进行严格的 PoC 测试',
-            '测量准确率是否达到 >99%',
-            '如果成功，集成平台通用模型 API',
-            '如果失败，升级为 L2/L3 项目',
+            'Conduct strict PoC testing',
+            'Measure if accuracy reaches >99%',
+            'If successful, integrate platform general model API',
+            'If failed, escalate to L2/L3 project',
           ]
         : [
-            '集成平台通用模型 API',
-            '使用您的数据进行测试',
-            '如果准确率不足，考虑定制训练',
+            'Integrate platform general model API',
+            'Test with your data',
+            'If accuracy is insufficient, consider custom training',
           ],
     };
   }
@@ -497,27 +497,27 @@ export function generateAIRecommendation(
   if ((q3_1 === 'new_pattern' || q3_1 === 'new_cognitive') && q3_2 === 'level1') {
     return {
       type: 'warning',
-      strategy: '严重能力不匹配 - 寻求AI CoE帮助',
+      strategy: 'Severe Capability Mismatch - Seek AI CoE Help',
       technology: 'N/A',
       description:
-        '您的问题是 L2/L3 复杂度，但您的资源只有 Level 1（业务/规则专家）。您的团队无法训练或运营 AI 模型。',
+        'Your problem is L2/L3 complexity, but your resources are only Level 1 (business/rules experts). Your team cannot train or operate AI models.',
       details: [
-        'Level 2/3 问题需要 Level 2/3 资源（公民开发者 + AutoML 或专业AI团队）',
-        '您的团队只能维护业务规则，不能维护AI模型',
-        '没有适当的工具和培训，AI模型开发会失败',
-        '项目失败和资源浪费的风险很高',
+        'L2/L3 problems require L2/L3 resources (citizen developers + AutoML or professional AI team)',
+        'Your team can only maintain business rules, not AI models',
+        'Without proper tools and training, AI model development will fail',
+        'High risk of project failure and resource waste',
       ],
-      warning: '严重能力不匹配',
+      warning: 'Severe Capability Mismatch',
       suggestions: [
-        '选项1：升级团队能力到 Level 2（获取公民开发者和 AutoML 平台访问权限）',
-        '选项2：提交给 AI CoE（集团AI团队，需排队等待）',
-        '选项3：简化问题范围，使用模板化提取',
+        'Option 1: Upgrade team capability to Level 2 (get citizen developers and AutoML platform access)',
+        'Option 2: Submit to AI CoE (corporate AI team, requires queuing)',
+        'Option 3: Simplify problem scope, use template-based extraction',
       ],
       nextSteps: [
-        '评估哪个选项对您的组织可行',
-        '如果选择选项1，规划培训和平台设置',
-        '如果选择选项2，向 AI CoE 提交需求（预计排队时间：2-4周）',
-        '如果选择选项3，重新评估问题范围',
+        'Evaluate which option is feasible for your organization',
+        'If choosing Option 1, plan training and platform setup',
+        'If choosing Option 2, submit request to AI CoE (estimated queue time: 2-4 weeks)',
+        'If choosing Option 3, re-evaluate problem scope',
       ],
     };
   }
@@ -530,26 +530,26 @@ export function generateAIRecommendation(
       // Data not ready - should have been caught by Rule 4, but handle it here too
       return {
         type: 'warning',
-        strategy: 'AutoML Training (需要数据准备)',
+        strategy: 'AutoML Training (Data Preparation Required)',
         technology: 'Platform AutoML / No-code Training Tools',
         description:
-          '您的问题和资源完美匹配，但数据未就绪。您需要先完成数据准备工作。',
+          'Your problem and resources are perfectly matched, but data is not ready. You need to complete data preparation first.',
         details: [
-          '您的"新数据模式"问题与 Level 2 资源完美匹配',
-          '但您的数据未就绪（样本<50）',
-          '必须首先进行数据收集和标注',
-          '预计时间：1-3个月',
+          'Your "new data pattern" problem is perfectly matched with Level 2 resources',
+          'But your data is not ready (samples < 50)',
+          'Must first conduct data collection and labeling',
+          'Estimated time: 1-3 months',
         ],
-        warning: '数据准备是前提条件',
+        warning: 'Data Preparation is a Prerequisite',
         suggestions: [
-          '启动数据收集和标注项目',
-          '建立数据质量验证流程',
-          '准备好后重新运行此诊断',
+          'Start data collection and labeling project',
+          'Establish data quality validation process',
+          'Re-run this assessment after preparation is complete',
         ],
         nextSteps: [
-          '停止AI模型开发',
-          '启动数据收集和治理项目',
-          '预计1-3个月后重新评估',
+          'Stop AI model development',
+          'Start data collection and governance project',
+          'Re-evaluate after 1-3 months',
         ],
       };
     }
@@ -560,28 +560,28 @@ export function generateAIRecommendation(
       strategy: 'AutoML Model Training',
       technology: 'Platform AutoML / No-code Training Tools',
       description:
-        '完美匹配！您的"新数据模式"问题与 Level 2 资源完美对齐。您的公民开发者可以使用 AutoML 训练自定义模型。',
+        'Perfect match! Your "new data pattern" problem is perfectly aligned with Level 2 resources. Your citizen developers can use AutoML to train custom models.',
       details: [
-        '平台提供 AutoML 和无代码训练界面',
-        '您的团队使用标注的训练数据训练模型',
-        '适合特定领域的模式和自定义场景',
-        '通常需要 100-1000+ 个标注样本',
-        '比通用模型对您的特定用例有更好的准确性',
-        '您的团队根据需要维护和重新训练模型',
+        'Platform provides AutoML and no-code training interface',
+        'Your team trains models using labeled training data',
+        'Suitable for domain-specific patterns and custom scenarios',
+        'Typically requires 100-1000+ labeled samples',
+        'Better accuracy for your specific use case compared to general models',
+        'Your team maintains and retrains models as needed',
       ],
       nextSteps: [
         ...(q3_4 === 'partial'
           ? [
-              '数据准备：清理和标注现有数据（预计 2-4 周）',
-              '收集额外的训练样本以达到 100-1000+ 个',
+              'Data Preparation: Clean and label existing data (estimated 2-4 weeks)',
+              'Collect additional training samples to reach 100-1000+',
             ]
           : []),
-        '准备和标注训练数据（100-1000+ 个样本）',
-        '使用平台 AutoML 界面训练模型',
-        '在测试数据上验证模型准确性',
-        '部署训练的模型',
-        '根据需要监控性能和重新训练',
-        '进行到第3阶段：流程编排',
+        'Prepare and label training data (100-1000+ samples)',
+        'Use platform AutoML interface to train model',
+        'Validate model accuracy on test data',
+        'Deploy the trained model',
+        'Monitor performance and retrain as needed',
+        'Proceed to Phase 3: Process Orchestration',
       ],
     };
   }
@@ -624,26 +624,26 @@ export function generateAIRecommendation(
       // Data not ready - should have been caught by Rule 4, but handle it here too
       return {
         type: 'warning',
-        strategy: '定制模型开发（需要数据准备）',
+        strategy: 'Custom Model Development (Data Preparation Required)',
         technology: 'Professional AI/ML Team + Advanced Tools',
         description:
-          '您的问题和资源完美匹配，但数据未就绪。您需要先完成数据准备工作。',
+          'Your problem and resources are perfectly matched, but data is not ready. You need to complete data preparation first.',
         details: [
-          '您的"新认知任务"问题与 Level 3 资源完美匹配',
-          '但您的数据未就绪（样本<50）',
-          '必须首先进行数据收集和标注',
-          '预计时间：1-3个月',
+          'Your "new cognitive task" problem is perfectly matched with Level 3 resources',
+          'But your data is not ready (samples < 50)',
+          'Must first conduct data collection and labeling',
+          'Estimated time: 1-3 months',
         ],
-        warning: '数据准备是前提条件',
+        warning: 'Data Preparation is a Prerequisite',
         suggestions: [
-          '启动数据收集和标注项目',
-          '建立数据质量验证流程',
-          '准备好后重新运行此诊断',
+          'Start data collection and labeling project',
+          'Establish data quality validation process',
+          'Re-run this assessment after preparation is complete',
         ],
         nextSteps: [
-          '停止AI模型开发',
-          '启动数据收集和治理项目',
-          '预计1-3个月后重新评估',
+          'Stop AI model development',
+          'Start data collection and governance project',
+          'Re-evaluate after 1-3 months',
         ],
       };
     }
@@ -653,57 +653,57 @@ export function generateAIRecommendation(
 
     return {
       type: 'matched',
-      strategy: '定制模型开发' + (hasCostBenefitReview ? '（需成本效益审查）' : ''),
+      strategy: 'Custom Model Development' + (hasCostBenefitReview ? ' (Cost-Benefit Review Required)' : ''),
       technology: 'Professional AI/ML Team + Advanced Tools',
       description:
-        '完美匹配！您的"新认知任务"需要 Level 3 专业知识。您的AI团队可以构建专业化解决方案。' +
+        'Perfect match! Your "new cognitive task" requires Level 3 expertise. Your AI team can build specialized solutions.' +
         (hasCostBenefitReview
-          ? '但您的需求是"提升效率"，请在项目开始前确认 TCO 和 ROI。'
+          ? ' However, your requirement is "efficiency gain", please confirm TCO and ROI before project start.'
           : ''),
       details: [
-        '专业AI/ML团队设计和构建定制模型',
-        '可能使用高级技术（VLLM、自定义算法等）',
-        '通过 API 网关与平台集成',
-        '最高的准确性和灵活性',
-        '适合复杂的、新颖的问题',
+        'Professional AI/ML team designs and builds custom models',
+        'May use advanced techniques (VLLM, custom algorithms, etc.)',
+        'Integrate with platform via API gateway',
+        'Highest accuracy and flexibility',
+        'Suitable for complex, novel problems',
         ...(hasCostBenefitReview
           ? [
-              '注意：您的需求是"提升效率"（可容忍错误），但您将使用最昂贵的 L3 资源',
-              '必须确认此投入的成本效益是否合理',
+              'Note: Your requirement is "efficiency gain" (error-tolerant), but you will use the most expensive L3 resources',
+              'Must confirm if this investment is cost-effective',
             ]
           : []),
       ],
       ...(hasCostBenefitReview
         ? {
-            warning: '成本效益审查',
+            warning: 'Cost-Benefit Review',
             suggestions: [
-              '在项目开始前确认 TCO（总拥有成本）',
-              '评估 ROI（投资回报率）是否合理',
-              '确保此投入值得',
-              '考虑是否可以使用 Level 2 AutoML 作为替代方案',
+              'Confirm TCO (Total Cost of Ownership) before project start',
+              'Evaluate if ROI (Return on Investment) is reasonable',
+              'Ensure this investment is worthwhile',
+              'Consider if Level 2 AutoML could be an alternative',
             ],
           }
         : {}),
       nextSteps: [
         ...(hasCostBenefitReview
           ? [
-              '确认 TCO（总拥有成本）和 ROI（投资回报率）',
-              '评估此投入是否值得',
-              '与财务部门讨论预算和回报',
+              'Confirm TCO (Total Cost of Ownership) and ROI (Return on Investment)',
+              'Evaluate if this investment is worthwhile',
+              'Discuss budget and returns with finance department',
             ]
           : []),
         ...(q3_4 === 'partial'
           ? [
-              '数据准备：清理和标注现有数据（预计 2-4 周）',
-              '收集额外的训练样本',
+              'Data Preparation: Clean and label existing data (estimated 2-4 weeks)',
+              'Collect additional training samples',
             ]
           : []),
-        '让专业AI/ML团队参与',
-        '定义问题范围和成功标准',
-        '开发或采购专业化模型',
-        '实现与平台的 API 集成',
-        '进行彻底的测试和验证',
-        '部署并进行到第3阶段：流程编排',
+        'Engage professional AI/ML team',
+        'Define problem scope and success criteria',
+        'Develop or procure specialized models',
+        'Implement API integration with platform',
+        'Conduct thorough testing and validation',
+        'Deploy and proceed to Phase 3: Process Orchestration',
       ],
     };
   }
@@ -713,27 +713,27 @@ export function generateAIRecommendation(
   if (q3_1 === 'new_cognitive' && q3_2 === 'level2') {
     return {
       type: 'warning',
-      strategy: '能力不匹配 - 寻求AI CoE帮助',
+      strategy: 'Capability Mismatch - Seek AI CoE Help',
       technology: 'N/A',
       description:
-        '您的问题是 L3"新认知任务"（如推理、生成），但您的资源是 L2 AutoML。AutoML 平台通常无法处理 L3 任务。',
+        'Your problem is L3 "new cognitive task" (e.g., reasoning, generation), but your resources are L2 AutoML. AutoML platforms typically cannot handle L3 tasks.',
       details: [
-        '新认知任务需要专业的AI/ML知识',
-        'Level 2 (公民开发者) 缺乏处理新问题的专业知识',
-        'AutoML 平台有局限性，无法处理复杂的推理或生成任务',
-        '没有专业支持，项目失败的风险很高',
+        'New cognitive tasks require professional AI/ML expertise',
+        'Level 2 (citizen developers) lack specialized knowledge for novel problems',
+        'AutoML platforms have limitations and cannot handle complex reasoning or generation tasks',
+        'Without professional support, project failure risk is high',
       ],
-      warning: '问题复杂度超过团队能力',
+      warning: 'Problem Complexity Exceeds Team Capability',
       suggestions: [
-        '选项1：升级到 Level 3（您自己的专业AI团队）',
-        '选项2：提交给 AI CoE（集团AI团队，需排队等待）',
-        '选项3：简化问题范围，使其适合 Level 2 AutoML',
+        'Option 1: Upgrade to Level 3 (your own professional AI team)',
+        'Option 2: Submit to AI CoE (corporate AI team, requires queuing)',
+        'Option 3: Simplify problem scope to fit Level 2 AutoML',
       ],
       nextSteps: [
-        '评估哪个选项对您的组织可行',
-        '如果选择选项1，让您的专业AI团队参与',
-        '如果选择选项2，向 AI CoE 提交需求（预计排队时间：2-4周）',
-        '如果选择选项3，重新定义问题范围',
+        'Evaluate which option is feasible for your organization',
+        'If choosing Option 1, engage your professional AI team',
+        'If choosing Option 2, submit request to AI CoE (estimated queue time: 2-4 weeks)',
+        'If choosing Option 3, redefine problem scope',
       ],
     };
   }
