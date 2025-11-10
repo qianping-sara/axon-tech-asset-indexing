@@ -205,6 +205,52 @@ export const QUESTION_Q3_3: Question = {
   ],
 };
 
+/**
+ * Q3.4 - Data Readiness
+ */
+export const QUESTION_Q3_4: Question = {
+  id: 'q3.4',
+  title: 'Data Readiness',
+  description: 'How ready is your data for AI model training or processing?',
+  helpText:
+    'Data readiness is critical for success. Unready data leads to poor model performance and wasted effort. Be honest about your data quality and availability.',
+  options: [
+    {
+      value: 'ready',
+      label: 'Data is Ready',
+      description:
+        'We have sufficient labeled/clean data (100-1000+ samples), good data quality, and clear data governance. We can start immediately.',
+      examples: [
+        'Insurance Servicing: 500+ labeled claim forms with consistent quality and clear labels',
+        'Insurance Servicing: Structured customer data with 95%+ completeness and validation rules',
+        'Insurance Servicing: Historical policy documents with clear metadata and categorization',
+      ],
+    },
+    {
+      value: 'partial',
+      label: 'Data is Partially Ready',
+      description:
+        'We have some data, but need preparation work (cleaning, labeling, augmentation). We can start in 2-4 weeks.',
+      examples: [
+        'Insurance Servicing: 200+ claim forms but need manual labeling and quality review',
+        'Insurance Servicing: Customer data with 70% completeness, needs data cleaning and enrichment',
+        'Insurance Servicing: Historical documents exist but need to be digitized and categorized',
+      ],
+    },
+    {
+      value: 'not_ready',
+      label: 'Data is Not Ready',
+      description:
+        'We lack sufficient data, have poor quality, or unclear governance. We need 1-3 months of preparation before starting.',
+      examples: [
+        'Insurance Servicing: <50 labeled examples, need significant data collection effort',
+        'Insurance Servicing: Data scattered across multiple systems with inconsistent formats',
+        'Insurance Servicing: No clear data ownership or governance, need to establish processes first',
+      ],
+    },
+  ],
+};
+
 
 
 /**

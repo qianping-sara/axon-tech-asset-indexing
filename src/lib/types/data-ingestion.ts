@@ -20,6 +20,9 @@ export type Q3_2Answer = 'level1' | 'level2' | 'level3' | 'none';
 // Question 3.3: Business Criticality
 export type Q3_3Answer = 'efficiency' | 'critical';
 
+// Question 3.4: Data Readiness
+export type Q3_4Answer = 'ready' | 'partial' | 'not_ready';
+
 export interface DataIngestionAnswers {
   // Step 1: Strategic Choice
   q1?: Q1Answer;
@@ -31,6 +34,7 @@ export interface DataIngestionAnswers {
   q3_1?: Q3_1Answer;  // Problem type
   q3_2?: Q3_2Answer;  // Capability-Platform-Operations
   q3_3?: Q3_3Answer;  // Business criticality
+  q3_4?: Q3_4Answer;  // Data readiness
 }
 
 export type RecommendationType = 'matched' | 'warning' | 'downgrade';

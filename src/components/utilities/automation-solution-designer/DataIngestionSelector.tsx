@@ -55,12 +55,14 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
     q3_1: string;
     q3_2: string;
     q3_3: string;
+    q3_4?: string;
   }) => {
     const newAnswers: DataIngestionAnswers = {
       ...answers,
       q3_1: q3Answers.q3_1 as any,
       q3_2: q3Answers.q3_2 as any,
       q3_3: q3Answers.q3_3 as any,
+      ...(q3Answers.q3_4 ? { q3_4: q3Answers.q3_4 as any } : {}),
     };
     setAnswers(newAnswers);
     setCurrentStep('recommendation');

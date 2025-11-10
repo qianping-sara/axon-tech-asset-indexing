@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { QUESTION_Q3_1, QUESTION_Q3_2, QUESTION_Q3_3 } from '@/lib/constants/data-ingestion';
+import { QUESTION_Q3_1, QUESTION_Q3_2, QUESTION_Q3_3, QUESTION_Q3_4 } from '@/lib/constants/data-ingestion';
 
 interface Q3DiagnosisFormProps {
   onComplete: (answers: {
     q3_1: string;
     q3_2: string;
     q3_3: string;
+    q3_4?: string;
   }) => void;
   onBack?: () => void;
 }
@@ -16,8 +17,11 @@ export default function Q3DiagnosisForm({ onComplete, onBack }: Q3DiagnosisFormP
   const [q3_1, setQ3_1] = useState<string | null>(null);
   const [q3_2, setQ3_2] = useState<string | null>(null);
   const [q3_3, setQ3_3] = useState<string | null>(null);
+  const [q3_4, setQ3_4] = useState<string | null>(null);
 
-  const isComplete = q3_1 && q3_2 && q3_3;
+  // Q3.4 is only required if Q3.1 is "new_pattern" or "new_cognitive"
+  const needsDataReadiness = q3_1 === 'new_pattern' || q3_1 === 'new_cognitive';
+  const isComplete = q3_1 && q3_2 && q3_3 && (needsDataReadiness ? q3_4 : true);
 
   const handleAnalyze = () => {
     if (isComplete) {
@@ -25,6 +29,7 @@ export default function Q3DiagnosisForm({ onComplete, onBack }: Q3DiagnosisFormP
         q3_1,
         q3_2,
         q3_3,
+        ...(needsDataReadiness && q3_4 ? { q3_4 } : {}),
       });
     }
   };
@@ -196,6 +201,56 @@ export default function Q3DiagnosisForm({ onComplete, onBack }: Q3DiagnosisFormP
           ))}
         </div>
       </div>
+
+      {/* Q3.4 - Data Readiness (conditional - only if Q3.1 is new_pattern or new_cognitive) */}
+      {needsDataReadiness && (
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{QUESTION_Q3_4.title}</h3>
+          <p className="text-sm text-gray-600 mb-4">{QUESTION_Q3_4.description}</p>
+          {QUESTION_Q3_4.helpText && (
+            <p className="text-gray-600 text-sm mb-4 italic">{QUESTION_Q3_4.helpText}</p>
+          )}
+          <div className="space-y-2">
+            {QUESTION_Q3_4.options.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => setQ3_4(option.value)}
+                className={`w-full text-left p-4 border rounded-lg transition-all ${
+                  q3_4 === option.value
+                    ? 'border-green-700 bg-green-50'
+                    : 'border-gray-200 hover:border-green-700 hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`w-5 h-5 rounded border-2 flex-shrink-0 mt-0.5 ${
+                      q3_4 === option.value
+                        ? 'border-green-700 bg-green-700'
+                        : 'border-gray-300 hover:border-green-700'
+                    }`}
+                  />
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900">{option.label}</h4>
+                    <p className="text-sm text-gray-600 mt-1">{option.description}</p>
+                    {option.examples && (
+                      <div className="mt-2 pl-3 border-l-2 border-gray-300">
+                        <p className="text-xs font-medium text-gray-500 mb-1">Examples:</p>
+                        <ul className="space-y-1">
+                          {option.examples.map((ex, idx) => (
+                            <li key={idx} className="text-xs text-gray-600">
+                              • {ex}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Action Buttons */}
       <div className="flex gap-3 pt-6">
