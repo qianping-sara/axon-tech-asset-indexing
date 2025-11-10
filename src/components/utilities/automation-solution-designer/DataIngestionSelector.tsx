@@ -12,6 +12,7 @@ import { DATA_INGESTION_OVERVIEW, DATA_INGESTION_MERMAID_DIAGRAM } from '@/lib/c
 import QuestionCard from './QuestionCard';
 import ResultCard from './ResultCard';
 import DimensionOverview from './DimensionOverview';
+import Q3DiagnosisForm from './Q3DiagnosisForm';
 
 interface DataIngestionSelectorProps {
   // Props will be defined when implementing the actual content
@@ -28,9 +29,18 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
     switch (currentStep) {
       case 'q1':
         newAnswers.q1 = value as any;
+        // Clear Q2 and Q3 answers when Q1 changes
+        delete newAnswers.q2;
+        delete newAnswers.q3_1;
+        delete newAnswers.q3_2;
+        delete newAnswers.q3_3;
         break;
       case 'q2':
         newAnswers.q2 = value as any;
+        // Clear Q3 answers when Q2 changes
+        delete newAnswers.q3_1;
+        delete newAnswers.q3_2;
+        delete newAnswers.q3_3;
         break;
     }
 
@@ -39,6 +49,37 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
     // Determine next step
     const nextStep = getNextStep(newAnswers);
     setCurrentStep(nextStep);
+  };
+
+  const handleQ3Complete = (q3Answers: {
+    q3_1: string;
+    q3_2: string;
+    q3_3: string;
+  }) => {
+    const newAnswers = { ...answers, ...q3Answers };
+    setAnswers(newAnswers);
+    setCurrentStep('recommendation');
+  };
+
+  const handleBackToQ2 = () => {
+    // Go back to Q2, clear Q3 answers
+    const newAnswers = { ...answers };
+    delete newAnswers.q3_1;
+    delete newAnswers.q3_2;
+    delete newAnswers.q3_3;
+    setAnswers(newAnswers);
+    setCurrentStep('q2');
+  };
+
+  const handleBackToQ1 = () => {
+    // Go back to Q1, clear Q2 and Q3 answers
+    const newAnswers = { ...answers };
+    delete newAnswers.q2;
+    delete newAnswers.q3_1;
+    delete newAnswers.q3_2;
+    delete newAnswers.q3_3;
+    setAnswers(newAnswers);
+    setCurrentStep('q1');
   };
 
   const handleRestart = () => {
@@ -76,6 +117,16 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
         />
       )}
 
+      {/* Back Button for Q2 and Q3 */}
+      {(currentStep === 'q2' || currentStep === 'q3') && (
+        <button
+          onClick={currentStep === 'q2' ? handleBackToQ1 : handleBackToQ2}
+          className="text-sm text-gray-600 hover:text-gray-900 font-medium flex items-center gap-1"
+        >
+          ← Back to previous step
+        </button>
+      )}
+
       {/* Question or Result */}
       {currentStep === 'recommendation' && recommendation ? (
         <ResultCard recommendation={recommendation} answers={answers} onRestart={handleRestart} />
@@ -87,9 +138,10 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
           totalSteps={progressInfo.totalSteps}
         />
       ) : currentStep === 'q3' ? (
-        <div className="text-center py-12">
-          <p className="text-gray-600">Q3 Diagnosis Form Component (To be implemented)</p>
-        </div>
+        <Q3DiagnosisForm
+          onComplete={handleQ3Complete}
+          onBack={handleBackToQ2}
+        />
       ) : null}
     </div>
   );
