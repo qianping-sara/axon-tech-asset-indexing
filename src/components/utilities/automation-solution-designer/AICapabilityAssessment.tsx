@@ -6,9 +6,9 @@ import { ChevronDown } from 'lucide-react';
 interface AICapabilityAssessmentProps {
   onComplete: (answers: {
     hasExisting: string;
-    precisionAcceptable?: string;
-    improvementApproach?: string;
-    hasResources?: string;
+    precisionAcceptable?: string | null;
+    improvementApproach?: string | null;
+    hasResources?: string | null;
   }) => void;
 }
 
