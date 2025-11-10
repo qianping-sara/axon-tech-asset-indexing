@@ -437,32 +437,58 @@ export function generateAIRecommendation(
     };
   }
 
-  // Scenario 1: Common Task + Any Level
-  // Recommendation: Use existing general capability (Level 1)
+  // Rule 1 & Rule 8: Common Task + Any Level
+  // Rule 1: Use existing general capability (Level 1)
+  // Rule 8: If Business Critical + Level 1, add high risk warning
   if (q3_1 === 'common') {
+    const isHighRisk = q3_3 === 'critical' && q3_2 === 'level1';
+
     return {
-      type: 'downgrade',
-      strategy: 'Use Existing General Capability',
+      type: isHighRisk ? 'warning' : 'downgrade',
+      strategy: 'Use Existing General Capability' + (isHighRisk ? ' (High Risk)' : ''),
       technology: 'Platform General Model API',
-      description:
-        'Your need is a "common task" with existing off-the-shelf capabilities. Using AutoML or custom development would be over-engineering.',
-      details: [
-        'Platform provides ready-to-use General Model API for common tasks',
-        'Existing capability already meets typical accuracy requirements',
-        'No AI development or training needed',
-        'Fast deployment, immediate results',
-        'Cost-effective solution',
-      ],
-      warning: 'Over-design detected',
-      suggestions: [
-        'First, try the platform\'s general model API',
-        'Only upgrade to Level 2/3 if the general model\'s accuracy cannot meet your "Business Critical" (>99%) requirement',
-      ],
-      nextSteps: [
-        'Integrate platform General Model API',
-        'Test with your data',
-        'If accuracy is insufficient, consider custom training',
-      ],
+      description: isHighRisk
+        ? '您的需求是"业务关键"（需>99%准确率），但您将使用 Level 1 通用模型 API。通用模型可能无法满足此 SLA。'
+        : '您的需求是"通用任务"，已有现成的功能。使用 AutoML 或定制开发会过度设计。',
+      details: isHighRisk
+        ? [
+            '平台提供通用模型 API，但通常准确率为 80-95%',
+            '您的需求是"业务关键"，需要 >99% 准确率',
+            '通用模型可能无法满足此 SLA',
+            '必须进行严格的 PoC 测试来验证准确率',
+            '如果 PoC 失败，项目必须升级为 L2/L3 项目',
+          ]
+        : [
+            '平台提供现成的通用模型 API',
+            '现有功能已满足典型的准确率要求',
+            '无需 AI 开发或训练',
+            '快速部署，立即获得结果',
+            '成本效益高',
+          ],
+      warning: isHighRisk ? '高风险警告' : 'Over-design detected',
+      suggestions: isHighRisk
+        ? [
+            '必须进行严格的 PoC 测试',
+            '在生产环境中部署前，测量准确率是否达到 >99%',
+            '如果 PoC 失败，此项目必须升级为 L2/L3 项目',
+            '考虑升级到 Level 2（AutoML）或 Level 3（定制开发）',
+          ]
+        : [
+            '首先尝试平台的通用模型 API',
+            '只有当通用模型的准确率无法满足您的"业务关键"（>99%）要求时，才升级到 Level 2/3',
+          ],
+      nextSteps: isHighRisk
+        ? [
+            '进行严格的 PoC 测试',
+            '测量准确率是否达到 >99%',
+            '如果成功，集成平台通用模型 API',
+            '如果失败，升级为 L2/L3 项目',
+          ]
+        : [
+            '集成平台通用模型 API',
+            '使用您的数据进行测试',
+            '如果准确率不足，考虑定制训练',
+          ],
     };
   }
 
@@ -627,10 +653,13 @@ export function generateAIRecommendation(
 
     return {
       type: 'matched',
-      strategy: '定制模型开发',
+      strategy: '定制模型开发' + (hasCostBenefitReview ? '（需成本效益审查）' : ''),
       technology: 'Professional AI/ML Team + Advanced Tools',
       description:
-        '完美匹配！您的"新认知任务"需要 Level 3 专业专业知识。您的AI团队可以构建专业化解决方案。',
+        '完美匹配！您的"新认知任务"需要 Level 3 专业知识。您的AI团队可以构建专业化解决方案。' +
+        (hasCostBenefitReview
+          ? '但您的需求是"提升效率"，请在项目开始前确认 TCO 和 ROI。'
+          : ''),
       details: [
         '专业AI/ML团队设计和构建定制模型',
         '可能使用高级技术（VLLM、自定义算法等）',
@@ -638,14 +667,29 @@ export function generateAIRecommendation(
         '最高的准确性和灵活性',
         '适合复杂的、新颖的问题',
         ...(hasCostBenefitReview
-          ? ['注意：您的需求是"提升效率"，请确认 TCO 和 ROI 是否合理']
+          ? [
+              '注意：您的需求是"提升效率"（可容忍错误），但您将使用最昂贵的 L3 资源',
+              '必须确认此投入的成本效益是否合理',
+            ]
           : []),
       ],
+      ...(hasCostBenefitReview
+        ? {
+            warning: '成本效益审查',
+            suggestions: [
+              '在项目开始前确认 TCO（总拥有成本）',
+              '评估 ROI（投资回报率）是否合理',
+              '确保此投入值得',
+              '考虑是否可以使用 Level 2 AutoML 作为替代方案',
+            ],
+          }
+        : {}),
       nextSteps: [
         ...(hasCostBenefitReview
           ? [
               '确认 TCO（总拥有成本）和 ROI（投资回报率）',
               '评估此投入是否值得',
+              '与财务部门讨论预算和回报',
             ]
           : []),
         ...(q3_4 === 'partial'
