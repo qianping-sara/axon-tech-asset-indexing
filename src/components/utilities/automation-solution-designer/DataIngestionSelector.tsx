@@ -44,9 +44,9 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
 
   const handleAICapabilityComplete = (assessmentAnswers: {
     hasExisting: string;
-    precisionAcceptable?: string;
-    improvementApproach?: string;
-    hasResources?: string;
+    precisionAcceptable?: string | null;
+    improvementApproach?: string | null;
+    hasResources?: string | null;
   }) => {
     const newAnswers = { ...answers };
     newAnswers.q1_3a = assessmentAnswers.hasExisting as any;
