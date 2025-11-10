@@ -21,53 +21,12 @@ export function getNextStep(answers: DataIngestionAnswers): DataIngestionStep {
         // Template-based extraction - go to result
         return 'result';
       }
-      // If Q1.2 is 'unstructured', continue to Q1.3a
-      if (answers.q1_3a) {
-        if (answers.q1_3a === 'yes') {
-          // Has existing capability - check precision (Q1.3b)
-          if (answers.q1_3b) {
-            if (answers.q1_3b === 'yes') {
-              // Precision is acceptable - go to result
-              return 'result';
-            }
-            // Precision not acceptable - continue to Q1.3c
-            if (answers.q1_3c) {
-              if (answers.q1_3c === 'training') {
-                // Training approach - check data & tools (Q1.3d)
-                if (answers.q1_3d) {
-                  // Q1.3d answered - go to result
-                  return 'result';
-                }
-                // Q1.3d not answered yet
-                return 'q1.3d';
-              }
-              // Config or specialized - go to result
-              return 'result';
-            }
-            // Q1.3c not answered yet
-            return 'q1.3c';
-          }
-          // Q1.3b not answered yet
-          return 'q1.3b';
-        }
-        // No existing capability - continue to Q1.3c
-        if (answers.q1_3c) {
-          if (answers.q1_3c === 'training') {
-            // Training approach - check data & tools (Q1.3d)
-            if (answers.q1_3d) {
-              // Q1.3d answered - go to result
-              return 'result';
-            }
-            // Q1.3d not answered yet
-            return 'q1.3d';
-          }
-          // Config or specialized - go to result
-          return 'result';
-        }
-        // Q1.3c not answered yet
-        return 'q1.3c';
+      // If Q1.2 is 'unstructured', continue to Q1.3 (comprehensive assessment)
+      if (answers.q1_3a && answers.q1_3c) {
+        // All Q1.3 answers collected - go to result
+        return 'result';
       }
-      // Q1.3a not answered yet
+      // Q1.3 not fully answered yet
       return 'q1.3a';
     }
     // Q1.2 not answered yet
@@ -105,13 +64,13 @@ export function getCurrentQuestion(step: DataIngestionStep) {
  */
 export function getProgressInfo(step: DataIngestionStep): { percentage: number; stepNumber: number; totalSteps: number } {
   const stepMap: Record<DataIngestionStep, { percentage: number; stepNumber: number }> = {
-    'q1.1': { percentage: 20, stepNumber: 1 },
-    'q1.2': { percentage: 40, stepNumber: 2 },
-    'q1.3a': { percentage: 50, stepNumber: 3 },
-    'q1.3b': { percentage: 60, stepNumber: 3 },
-    'q1.3c': { percentage: 70, stepNumber: 3 },
-    'q1.3d': { percentage: 80, stepNumber: 3 },
-    'result': { percentage: 100, stepNumber: 4 },
+    'q1.1': { percentage: 33, stepNumber: 1 },
+    'q1.2': { percentage: 66, stepNumber: 2 },
+    'q1.3a': { percentage: 100, stepNumber: 3 },
+    'q1.3b': { percentage: 100, stepNumber: 3 },
+    'q1.3c': { percentage: 100, stepNumber: 3 },
+    'q1.3d': { percentage: 100, stepNumber: 3 },
+    'result': { percentage: 100, stepNumber: 3 },
   };
 
   const info = stepMap[step] || { percentage: 0, stepNumber: 0 };

@@ -12,6 +12,7 @@ import { DATA_INGESTION_OVERVIEW, DATA_INGESTION_MERMAID_DIAGRAM } from '@/lib/c
 import QuestionCard from './QuestionCard';
 import ResultCard from './ResultCard';
 import DimensionOverview from './DimensionOverview';
+import AICapabilityAssessment from './AICapabilityAssessment';
 
 interface DataIngestionSelectorProps {
   // Props will be defined when implementing the actual content
@@ -32,18 +33,6 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
       case 'q1.2':
         newAnswers.q1_2 = value as any;
         break;
-      case 'q1.3a':
-        newAnswers.q1_3a = value as any;
-        break;
-      case 'q1.3b':
-        newAnswers.q1_3b = value as any;
-        break;
-      case 'q1.3c':
-        newAnswers.q1_3c = value as any;
-        break;
-      case 'q1.3d':
-        newAnswers.q1_3d = value as any;
-        break;
     }
 
     setAnswers(newAnswers);
@@ -51,6 +40,24 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
     // Determine next step
     const nextStep = getNextStep(newAnswers);
     setCurrentStep(nextStep);
+  };
+
+  const handleAICapabilityComplete = (assessmentAnswers: {
+    hasExisting: string;
+    precisionAcceptable?: string;
+    improvementApproach?: string;
+    hasResources?: string;
+  }) => {
+    const newAnswers = { ...answers };
+    newAnswers.q1_3a = assessmentAnswers.hasExisting as any;
+    newAnswers.q1_3b = assessmentAnswers.precisionAcceptable as any;
+    newAnswers.q1_3c = assessmentAnswers.improvementApproach as any;
+    newAnswers.q1_3d = assessmentAnswers.hasResources as any;
+
+    setAnswers(newAnswers);
+
+    // Move to result
+    setCurrentStep('result');
   };
 
   const handleRestart = () => {
@@ -74,10 +81,31 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
         />
       )}
 
+      {/* AI Capability Assessment - comprehensive form for Q1.3 */}
+      {currentStep === 'q1.3a' && (
+        <>
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 mb-6">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Step 3 of 3</h3>
+                <p className="text-sm text-gray-600 mt-1">AI Capability Assessment</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium text-gray-900">100%</p>
+              </div>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-green-700 h-2 rounded-full" style={{ width: '100%' }}></div>
+            </div>
+          </div>
+          <AICapabilityAssessment onComplete={handleAICapabilityComplete} />
+        </>
+      )}
+
       {/* Question or Result */}
       {currentStep === 'result' && recommendation ? (
         <ResultCard recommendation={recommendation} answers={answers} onRestart={handleRestart} />
-      ) : currentQuestion ? (
+      ) : currentQuestion && currentStep !== 'q1.3a' ? (
         <QuestionCard
           question={currentQuestion}
           onSelectOption={handleSelectOption}
