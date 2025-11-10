@@ -16,42 +16,92 @@ import {
 export const PROCESS_ORCHESTRATION_QUESTIONS = {
   Q1: {
     id: 'q1',
-    title: 'Strategic Intent Diagnosis',
+    title: 'Process Scope Diagnosis',
     description:
-      'What is the strategic intent of this new process? Our core principle is "Prioritize Integration, Eliminate Fragmentation".',
+      'What is the scope of this process? Are you building something new, modifying an existing process, or replacing one?',
     options: [
       {
-        id: 'integrate',
-        label: 'Integrate Capability',
+        id: 'new',
+        label: 'New Process',
         description:
-          'I want to integrate this process capability into our existing core workbench (e.g., UAW-T1, DAE-advisor).',
-        example:
-          'Insurance Servicing: I want claims staff to click a button in UAW-T1 to trigger a backend "quick claim approval" workflow.',
-      },
-      {
-        id: 'new_strategic',
-        label: 'New Strategic Process',
-        description:
-          'This is a new, long-term, core business process that currently has no suitable workbench and will become a strategic asset managed and iterated over time.',
+          'I am building a completely new process that does not currently exist in our organization.',
         example:
           'Insurance Servicing: We are designing a new end-to-end policy lifecycle management process for our new "On-Demand Travel Insurance" business.',
       },
       {
-        id: 'new_tactical',
-        label: 'New Tactical Application',
+        id: 'modify',
+        label: 'Modify Existing Process',
         description:
-          'This is a tactical, urgent, or temporary application that is not within the scope of core workbenches and needs rapid delivery.',
+          'I want to enhance or improve an existing process that is already running in our organization.',
         example:
-          'Insurance Servicing: We need to quickly build a temporary simple claims registration portal for the upcoming typhoon season, to be used for only 3 months.',
+          'Insurance Servicing: Our current claims approval process is slow. We want to add automation to speed it up.',
+      },
+      {
+        id: 'replace',
+        label: 'Replace Existing Process',
+        description:
+          'I want to replace an existing process with a new solution due to technical debt, cost, or functionality issues.',
+        example:
+          'Insurance Servicing: Our legacy claims system is outdated. We want to replace it with a modern solution.',
       },
     ],
   } as Question,
 
   Q2: {
     id: 'q2',
+    title: 'Business Nature Diagnosis',
+    description:
+      'You have chosen to build a new process. What is the business nature of this process?',
+    options: [
+      {
+        id: 'strategic',
+        label: 'Strategic Process',
+        description:
+          'This is a long-term, core business process that will become a strategic asset managed and iterated over time.',
+        example:
+          'Insurance Servicing: We are designing a new end-to-end policy lifecycle management process for our new "On-Demand Travel Insurance" business.',
+      },
+      {
+        id: 'tactical',
+        label: 'Tactical Application',
+        description:
+          'This is a tactical, urgent, or temporary application that needs rapid delivery and may have a limited lifespan.',
+        example:
+          'Insurance Servicing: We need to quickly build a temporary simple claims registration portal for the upcoming typhoon season, to be used for only 3 months.',
+      },
+    ],
+  } as Question,
+
+  Q3: {
+    id: 'q3',
+    title: 'Integration Requirement Diagnosis',
+    description:
+      'Does this process need to be integrated into an existing workbench, or will it run independently?',
+    options: [
+      {
+        id: 'integrate_to_workbench',
+        label: 'Integrate to Existing Workbench',
+        description:
+          'I want to integrate this process capability into our existing core workbench (e.g., UAW-T1, DAE-advisor).',
+        example:
+          'Insurance Servicing: I want claims staff to click a button in UAW-T1 to trigger a backend "quick claim approval" workflow.',
+      },
+      {
+        id: 'standalone',
+        label: 'Standalone Application',
+        description:
+          'This process will run independently and does not need to be integrated into an existing workbench.',
+        example:
+          'Insurance Servicing: We are building a new standalone policy management portal that will be accessed directly by users.',
+      },
+    ],
+  } as Question,
+
+  Q3_5: {
+    id: 'q3_5',
     title: 'Integration Strategy Diagnosis',
     description:
-      'You have chosen "Integrate". What type of automation capability does this existing workbench need?',
+      'You have chosen to integrate into an existing workbench. What type of automation capability does this workbench need?',
     options: [
       {
         id: 'backend_engine',
@@ -68,28 +118,6 @@ export const PROCESS_ORCHESTRATION_QUESTIONS = {
           'The workbench needs a new "button" or "function" to automatically execute a single, repeatable task.',
         example:
           'Insurance Servicing: I need a callable "task" that automatically logs into the money system and retrieves the customer\'s payment history based on policy number.',
-      },
-      {
-        id: 'workbench_enhancement',
-        label: 'Workbench Enhancement',
-        description:
-          'I need the workbench itself to be enhanced, not a backend process or atomic task.',
-        example:
-          'Insurance Servicing: I need to add a new "Customer Claim History" tab to the main screen of UAW-T1, which requires the UAW-T1 team to develop.',
-      },
-    ],
-  } as Question,
-
-  Q3: {
-    id: 'q3',
-    title: 'New Path Confirmation',
-    description:
-      'You have chosen a new path. Please confirm your choice and we will guide you through the appropriate diagnostic steps.',
-    options: [
-      {
-        id: 'confirmed',
-        label: 'Confirmed',
-        description: 'I confirm my choice and want to proceed with the diagnosis.',
       },
     ],
   } as Question,
@@ -204,29 +232,10 @@ export function generateProcessOrchestrationRecommendation(
     return null;
   }
 
-  // Rule 0: Workbench Enhancement - Exit
-  if (input.q2 === 'workbench_enhancement') {
-    return {
-      type: 'redirect',
-      strategy: 'Redirect to Core System Team',
-      description:
-        'Your requirement is "workbench enhancement", which is outside the scope of Automation CoE. Please contact the responsible team for that core workbench.',
-      details: [
-        'Workbench enhancements are managed by the core system team',
-        'Submit your enhancement request through their process',
-        'This is not an automation CoE responsibility',
-      ],
-      nextSteps: [
-        'Contact the core workbench team',
-        'Submit enhancement request through their process',
-      ],
-    };
-  }
-
-  // Rule 1: BPA Integration Path (Integrate + Backend Engine + Level 2)
+  // Rule 1: Integration to Workbench + Backend Engine + Level 2 → BPA (Bizagi)
   if (
-    input.q1 === 'integrate' &&
-    input.q2 === 'backend_engine' &&
+    input.q3 === 'integrate_to_workbench' &&
+    input.q3_5 === 'backend_engine' &&
     input.q6 === 'level2'
   ) {
     const recommendation: ProcessOrchestrationRecommendation = {
@@ -256,8 +265,78 @@ export function generateProcessOrchestrationRecommendation(
     return recommendation;
   }
 
-  // Rule 2: LCAP New Tactical Path (New Tactical + Level 2)
-  if (input.q1 === 'new_tactical' && input.q6 === 'level2') {
+  // Rule 2: Integration to Workbench + Atomic Task → L1 Task API
+  if (
+    input.q3 === 'integrate_to_workbench' &&
+    input.q3_5 === 'atomic_task'
+  ) {
+    const recommendation: ProcessOrchestrationRecommendation = {
+      type: 'matched',
+      strategy: 'Atomic Task Automation (L1)',
+      primaryBrain: 'L1_TASK',
+      technology: 'L1 Task API',
+      description:
+        'Your requirement is an L1 "atomic task" (e.g., fetch payment history from legacy system). This should be built by CoE team as a reusable L1 API for your existing workbench to call.',
+      details: [
+        'L1 task is a single, repeatable automation',
+        'CoE team builds and maintains as a generic API',
+        'Your workbench calls this API when needed',
+        'No custom development needed for your team',
+      ],
+      nextSteps: [
+        'Submit L1 task requirement to CoE',
+        'CoE team builds the task automation',
+        'Integrate task API into your workbench',
+        'Test and validate',
+        'Deploy',
+      ],
+    };
+
+    applyAttachmentRules(recommendation, input);
+    return recommendation;
+  }
+
+  // Rule 3: New + Strategic + Standalone + Level 2 → BPA (Bizagi)
+  if (
+    input.q1 === 'new' &&
+    input.q2 === 'strategic' &&
+    input.q3 === 'standalone' &&
+    input.q6 === 'level2'
+  ) {
+    const recommendation: ProcessOrchestrationRecommendation = {
+      type: 'matched',
+      strategy: 'Backend Process Architecture (BPA)',
+      primaryBrain: 'BPA',
+      technology: 'Bizagi',
+      description:
+        'Your L2 team should use Bizagi to build this new strategic core process.',
+      details: [
+        'Bizagi is the "brain" for strategic, long-term processes',
+        'Includes built-in work portal for end users',
+        'Your L2 citizen developers design and configure the process',
+        'Supports complex workflows, SLA management, and reporting',
+      ],
+      nextSteps: [
+        'Define end-to-end process flow',
+        'Model process in Bizagi',
+        'Configure business rules and SLA',
+        'Set up work portal and user roles',
+        'Test and validate',
+        'Deploy and establish governance',
+      ],
+    };
+
+    applyAttachmentRules(recommendation, input);
+    return recommendation;
+  }
+
+  // Rule 4: New + Tactical + Standalone + Level 2 → LCAP (Power Platform)
+  if (
+    input.q1 === 'new' &&
+    input.q2 === 'tactical' &&
+    input.q3 === 'standalone' &&
+    input.q6 === 'level2'
+  ) {
     const recommendation: ProcessOrchestrationRecommendation = {
       type: 'matched',
       strategy: 'Low-Code Application Platform (LCAP)',
@@ -286,75 +365,18 @@ export function generateProcessOrchestrationRecommendation(
     return recommendation;
   }
 
-  // Rule 3: BPA New Strategic Path (New Strategic + Level 2)
-  if (input.q1 === 'new_strategic' && input.q6 === 'level2') {
-    const recommendation: ProcessOrchestrationRecommendation = {
-      type: 'matched',
-      strategy: 'Backend Process Architecture (BPA)',
-      primaryBrain: 'BPA',
-      technology: 'Bizagi',
-      description:
-        'Your L2 team should use Bizagi to build this new strategic core process.',
-      details: [
-        'Bizagi is the "brain" for strategic, long-term processes',
-        'Includes built-in work portal for end users',
-        'Your L2 citizen developers design and configure the process',
-        'Supports complex workflows, SLA management, and reporting',
-      ],
-      nextSteps: [
-        'Define end-to-end process flow',
-        'Model process in Bizagi',
-        'Configure business rules and SLA',
-        'Set up work portal and user roles',
-        'Test and validate',
-        'Deploy and establish governance',
-      ],
-    };
-
-    applyAttachmentRules(recommendation, input);
-    return recommendation;
-  }
-
-  // Rule 4: L1 Atomic Task (Integrate + Atomic Task)
-  if (input.q1 === 'integrate' && input.q2 === 'atomic_task') {
-    const recommendation: ProcessOrchestrationRecommendation = {
-      type: 'matched',
-      strategy: 'Atomic Task Automation (L1)',
-      primaryBrain: 'L1_TASK',
-      technology: 'L1 Task API',
-      description:
-        'Your requirement is an L1 "atomic task" (e.g., fetch payment history from legacy system). This should be built by CoE team as a reusable L1 API for your existing workbench to call.',
-      details: [
-        'L1 task is a single, repeatable automation',
-        'CoE team builds and maintains as a generic API',
-        'Your workbench calls this API when needed',
-        'No custom development needed for your team',
-      ],
-      nextSteps: [
-        'Submit L1 task requirement to CoE',
-        'CoE team builds the task automation',
-        'Integrate task API into your workbench',
-        'Test and validate',
-        'Deploy',
-      ],
-    };
-
-    applyAttachmentRules(recommendation, input);
-    return recommendation;
-  }
-
-  // Rule 8: Severe Capability Mismatch (L2 problem + L1 resources)
+  // Rule 5: Severe Capability Mismatch (L2 problem + L1 resources)
   if (
-    ((input.q1 === 'integrate' && input.q2 === 'backend_engine') ||
-      input.q1 === 'new_strategic' ||
-      input.q1 === 'new_tactical') &&
+    ((input.q3 === 'integrate_to_workbench' && input.q3_5 === 'backend_engine') ||
+      (input.q1 === 'new' && input.q2 === 'strategic') ||
+      (input.q1 === 'new' && input.q2 === 'tactical')) &&
     input.q6 === 'level1'
   ) {
     return {
       type: 'warning',
       strategy: 'Severe Capability Mismatch - Seek CoE Help',
       description:
-        'You have an L2 problem (new process/application) but only L1 resources (business experts). Your team cannot build or operate this solution.',
+        'You have an L2 problem (new process/application or integration) but only L1 resources (business experts). Your team cannot build or operate this solution.',
       details: [
         'L2 problems require L2 resources (citizen developers + LCAP/BPA)',
         'Your team can only define rules, not build or maintain processes',
@@ -402,10 +424,10 @@ export function generateProcessOrchestrationRecommendation(
     };
   }
 
-  // Rule 10: Over-Engineering (L1 problem + L2/L3 resources)
+  // Rule 6: Over-Engineering (L1 problem + L2/L3 resources)
   if (
-    input.q1 === 'integrate' &&
-    input.q2 === 'atomic_task' &&
+    input.q3 === 'integrate_to_workbench' &&
+    input.q3_5 === 'atomic_task' &&
     (input.q6 === 'level2' || input.q6 === 'level3')
   ) {
     return {
@@ -507,23 +529,25 @@ function applyAttachmentRules(
 
 export const PROCESS_ORCHESTRATION_PROGRESS = {
   stepLabels: [
-    'Strategic Intent',
+    'Process Scope',
+    'Business Nature',
+    'Integration Requirement',
     'Integration Strategy',
-    'Confirmation',
-    'Integration Footprint',
+    'System Interaction',
     'Logic Complexity',
     'Capability Match',
   ],
-  totalSteps: 6,
+  totalSteps: 7,
   getStepNumber: (step: string): number => {
     const stepMap: Record<string, number> = {
       q1: 1,
       q2: 2,
       q3: 3,
-      q4: 4,
-      q5: 5,
-      q6: 6,
-      recommendation: 6,
+      q3_5: 4,
+      q4: 5,
+      q5: 6,
+      q6: 7,
+      recommendation: 7,
     };
     return stepMap[step] || 1;
   },

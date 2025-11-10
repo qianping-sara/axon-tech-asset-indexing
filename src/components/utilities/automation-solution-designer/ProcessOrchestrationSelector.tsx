@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { Q1StrategicIntentForm } from './Q1StrategicIntentForm';
-import { Q2IntegrationStrategyForm } from './Q2IntegrationStrategyForm';
-import { Q3ConfirmationStep } from './Q3ConfirmationStep';
+import { Q2BusinessNatureForm } from './Q2BusinessNatureForm';
+import { Q3IntegrationRequirementForm } from './Q3IntegrationRequirementForm';
+import { Q3_5IntegrationStrategyForm } from './Q3_5IntegrationStrategyForm';
 import { Q4IntegrationFootprintForm } from './Q4IntegrationFootprintForm';
 import { Q5LogicComplexityForm } from './Q5LogicComplexityForm';
 import { Q6CapabilityMatchForm } from './Q6CapabilityMatchForm';
@@ -29,7 +30,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
   // Calculate progress percentage
   const getProgressPercentage = () => {
     if (state.recommendation) return 100;
-    return (state.currentStep / 6) * 100;
+    return (state.currentStep / 7) * 100;
   };
 
   // Handle Q1 answer
@@ -42,47 +43,52 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
         q1: answer as any,
         q2: undefined,
         q3: undefined,
+        q3_5: undefined,
       },
     }));
   };
 
-  // Handle Q2 answer (only shown when Q1='integrate')
+  // Handle Q2 answer (Business Nature - only shown when Q1='new')
   const handleQ2Answer = (answer: string) => {
-    const q2Answer = answer as any;
-
-    // Rule 0: Workbench Enhancement - Exit
-    if (q2Answer === 'workbench_enhancement') {
-      const recommendation = generateProcessOrchestrationRecommendation({
-        q1: state.answers.q1 as any,
-        q2: q2Answer,
-      });
-      setState((prev) => ({
-        ...prev,
-        recommendation: recommendation,
-        isLoading: false,
-      }));
-      return;
-    }
-
     setState((prev) => ({
       ...prev,
-      currentStep: 4,
+      currentStep: 3,
       answers: {
         ...prev.answers,
-        q2: q2Answer,
+        q2: answer as any,
         q3: undefined,
+        q3_5: undefined,
       },
     }));
   };
 
-  // Handle Q3 answer (only shown when Q1='new_strategic' or 'new_tactical')
+  // Handle Q3 answer (Integration Requirement - shown for all processes)
   const handleQ3Answer = (answer: string) => {
+    const q3Answer = answer as any;
+
+    // If choosing 'integrate_to_workbench', go to Q3.5
+    // If choosing 'standalone', go to Q4
+    const nextStep = q3Answer === 'integrate_to_workbench' ? 3.5 : 4;
+
+    setState((prev) => ({
+      ...prev,
+      currentStep: nextStep as any,
+      answers: {
+        ...prev.answers,
+        q3: q3Answer,
+        q3_5: undefined,
+      },
+    }));
+  };
+
+  // Handle Q3.5 answer (Integration Strategy - only shown when Q3='integrate_to_workbench')
+  const handleQ3_5Answer = (answer: string) => {
     setState((prev) => ({
       ...prev,
       currentStep: 4,
       answers: {
         ...prev.answers,
-        q3: answer as any,
+        q3_5: answer as any,
       },
     }));
   };
@@ -127,6 +133,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
       q1: state.answers.q1 as any,
       q2: state.answers.q2 as any,
       q3: state.answers.q3 as any,
+      q3_5: state.answers.q3_5 as any,
       q4: state.answers.q4 as any,
       q5: state.answers.q5 as any,
       q6: answer as any,
@@ -142,25 +149,29 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
   // Handle previous step
   const handlePrevious = () => {
     setState((prev) => {
-      let newStep = Math.max(1, prev.currentStep - 1);
+      let newStep: number | number = Math.max(1, prev.currentStep - 1);
 
-      // Special handling for step transitions
-      // If going back from Q4 (step 4) and Q1 is 'new_strategic' or 'new_tactical', go to Q3 (step 3)
-      // If going back from Q4 (step 4) and Q1 is 'integrate', go to Q2 (step 2)
+      // Special handling for step transitions based on new flow
+      // From Q4 (step 4): go back to Q3 or Q3.5 depending on Q3 answer
       if (prev.currentStep === 4) {
-        if (prev.answers.q1 === 'new_strategic' || prev.answers.q1 === 'new_tactical') {
+        if (prev.answers.q3 === 'integrate_to_workbench') {
+          newStep = 3.5;
+        } else {
           newStep = 3;
-        } else if (prev.answers.q1 === 'integrate') {
-          newStep = 2;
         }
       }
 
-      // If going back from Q3 (step 3), go to Q1 (step 1)
-      if (prev.currentStep === 3) {
-        newStep = 1;
+      // From Q3.5 (step 3.5): go back to Q3
+      if (prev.currentStep === 3.5) {
+        newStep = 3;
       }
 
-      // If going back from Q2 (step 2), go to Q1 (step 1)
+      // From Q3 (step 3): go back to Q2 if Q1='new', otherwise go to Q1
+      if (prev.currentStep === 3) {
+        newStep = prev.answers.q1 === 'new' ? 2 : 1;
+      }
+
+      // From Q2 (step 2): go back to Q1
       if (prev.currentStep === 2) {
         newStep = 1;
       }
@@ -237,7 +248,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
           />
         ) : (
           <>
-            {/* Q1: Strategic Intent */}
+            {/* Q1: Process Scope */}
             {state.currentStep === 1 && (
               <Q1StrategicIntentForm
                 onNext={handleQ1Answer}
@@ -245,24 +256,32 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
               />
             )}
 
-            {/* Q2: Integration Strategy (only if Q1='integrate') */}
-            {(state.currentStep === 2 || state.currentStep === 3) && state.answers.q1 === 'integrate' && (
-              <Q2IntegrationStrategyForm
+            {/* Q2: Business Nature (only if Q1='new') */}
+            {state.currentStep === 2 && state.answers.q1 === 'new' && (
+              <Q2BusinessNatureForm
                 onNext={handleQ2Answer}
                 onPrevious={handlePrevious}
                 currentAnswer={state.answers.q2}
               />
             )}
 
-            {/* Q3: Confirmation (only if Q1='new_strategic' or 'new_tactical') */}
-            {(state.currentStep === 2 || state.currentStep === 3) &&
-              (state.answers.q1 === 'new_strategic' || state.answers.q1 === 'new_tactical') && (
-                <Q3ConfirmationStep
-                  onNext={handleQ3Answer}
-                  onPrevious={handlePrevious}
-                  q1Answer={state.answers.q1}
-                />
-              )}
+            {/* Q3: Integration Requirement (shown for all processes) */}
+            {state.currentStep === 3 && (
+              <Q3IntegrationRequirementForm
+                onNext={handleQ3Answer}
+                onPrevious={handlePrevious}
+                currentAnswer={state.answers.q3}
+              />
+            )}
+
+            {/* Q3.5: Integration Strategy (only if Q3='integrate_to_workbench') */}
+            {state.currentStep === 3.5 && state.answers.q3 === 'integrate_to_workbench' && (
+              <Q3_5IntegrationStrategyForm
+                onNext={handleQ3_5Answer}
+                onPrevious={handlePrevious}
+                currentAnswer={state.answers.q3_5}
+              />
+            )}
 
             {/* Q4: Integration Footprint */}
             {state.currentStep === 4 && (

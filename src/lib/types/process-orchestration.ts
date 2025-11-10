@@ -7,14 +7,17 @@
 // Question Answers
 // ============================================================================
 
-/** Q1: Strategic Intent - What is the strategic intent of this new process? */
-export type Q1Answer = 'integrate' | 'new_strategic' | 'new_tactical';
+/** Q1: Process Scope - What is the scope of this process? */
+export type Q1Answer = 'new' | 'modify' | 'replace';
 
-/** Q2: Integration Strategy - Only shown when Q1='integrate' */
-export type Q2Answer = 'backend_engine' | 'atomic_task' | 'workbench_enhancement';
+/** Q2: Business Nature - Only shown when Q1='new' */
+export type Q2Answer = 'strategic' | 'tactical';
 
-/** Q3: Confirmation - Only shown when Q1='new_strategic' or 'new_tactical' */
-export type Q3Answer = 'confirmed';
+/** Q3: Integration Requirement - Shown for all processes */
+export type Q3Answer = 'integrate_to_workbench' | 'standalone';
+
+/** Q3.5: Integration Strategy - Only shown when Q3='integrate_to_workbench' */
+export type Q3_5Answer = 'backend_engine' | 'atomic_task';
 
 /** Q4: Integration Footprint - What systems does it need to interact with? */
 export type Q4Answer = 'modern_only' | 'legacy_involved' | 'mix';
@@ -85,6 +88,7 @@ export interface ProcessOrchestrationInput {
   q1: Q1Answer;
   q2?: Q2Answer;
   q3?: Q3Answer;
+  q3_5?: Q3_5Answer;
   q4?: Q4Answer;
   q5?: Q5Answer;
   q6?: Q6Answer;
@@ -95,8 +99,8 @@ export interface ProcessOrchestrationInput {
 // ============================================================================
 
 export interface ProcessOrchestrationState {
-  /** Current step (1-6) */
-  currentStep: 1 | 2 | 3 | 4 | 5 | 6;
+  /** Current step (1-7, including Q3.5) */
+  currentStep: 1 | 2 | 3 | 3.5 | 4 | 5 | 6 | 7;
 
   /** User's answers to all questions */
   answers: Partial<ProcessOrchestrationInput>;
