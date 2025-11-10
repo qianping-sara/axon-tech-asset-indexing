@@ -74,6 +74,7 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
     delete newAnswers.q3_1;
     delete newAnswers.q3_2;
     delete newAnswers.q3_3;
+    delete newAnswers.q3_4;
     setAnswers(newAnswers);
     setCurrentStep('q2');
   };
@@ -85,6 +86,7 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
     delete newAnswers.q3_1;
     delete newAnswers.q3_2;
     delete newAnswers.q3_3;
+    delete newAnswers.q3_4;
     setAnswers(newAnswers);
     setCurrentStep('q1');
   };
@@ -105,7 +107,12 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
       recommendation = RECOMMENDATIONS['template-based'];
     } else if (answers.q3_1 && answers.q3_2 && answers.q3_3) {
       // AI diagnosis recommendation
-      recommendation = generateAIRecommendation(answers.q3_1, answers.q3_2, answers.q3_3);
+      recommendation = generateAIRecommendation(
+        answers.q3_1,
+        answers.q3_2,
+        answers.q3_3,
+        answers.q3_4 // Pass Q3.4 (data readiness) parameter
+      );
     }
   }
 

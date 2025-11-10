@@ -382,15 +382,59 @@ export const RECOMMENDATIONS: Record<string, RecommendationResult> = {
 /**
  * Generate recommendation based on Q3 diagnosis answers
  * This implements the "profile matching" logic described in the design
+ *
+ * Rules implemented:
+ * - Rule 1: Common task → Use existing model (downgrade)
+ * - Rule 2: New pattern + Level 2 + Efficiency + Data ready → AutoML (matched)
+ * - Rule 3: New cognitive + Level 3 + Data ready → Custom model (matched)
+ * - Rule 4: New pattern/cognitive + Data not ready → Project blocked (blocked)
+ * - Rule 5: New pattern/cognitive + Level 1 → Capability mismatch (warning)
+ * - Rule 6: New cognitive + Level 2 → Capability mismatch (warning)
+ * - Rule 7: Common + Level 2/3 → Over-design (downgrade)
+ * - Rule 8: Critical + Level 1 → High risk warning (warning)
+ * - Rule 9: Efficiency + Level 3 → Cost-benefit review (matched with info)
  */
 export function generateAIRecommendation(
   q3_1?: string,  // Problem type: common | new_pattern | new_cognitive
   q3_2?: string,  // Capability level: level1 | level2 | level3 | none
-  q3_3?: string   // Business criticality: efficiency | critical
+  q3_3?: string,  // Business criticality: efficiency | critical
+  q3_4?: string   // Data readiness: ready | partial | not_ready
 ): RecommendationResult | null {
   // Validate inputs
   if (!q3_1 || !q3_2 || !q3_3) {
     return null;
+  }
+
+  // Rule 4: Data Not Ready - Project Blocked
+  // If problem is new_pattern or new_cognitive AND data is not ready, block the project
+  if ((q3_1 === 'new_pattern' || q3_1 === 'new_cognitive') && q3_4 === 'not_ready') {
+    return {
+      type: 'blocked',
+      strategy: '项目阻断：数据未就绪',
+      technology: 'N/A',
+      description:
+        'L2/L3 模型无法在"数据未就绪"的情况下启动。您的样本数量不足（<50）或数据质量差。必须首先转向数据收集和治理。',
+      details: [
+        '样本数量不足（<50个标注样本）',
+        '数据质量差或不一致',
+        '数据治理流程不清晰',
+        '无法开始AI模型开发',
+      ],
+      warning: '停止所有AI开发',
+      suggestions: [
+        '转向数据收集和治理工作',
+        '建立数据标注流程',
+        '预计时间：1-3个月',
+        '完成数据准备后重新评估此项目',
+      ],
+      nextSteps: [
+        '停止AI模型开发',
+        '启动数据收集和治理项目',
+        '建立数据标注和验证流程',
+        '预计1-3个月后重新评估',
+        '数据就绪后重新运行此诊断',
+      ],
+    };
   }
 
   // Scenario 1: Common Task + Any Level
@@ -422,59 +466,96 @@ export function generateAIRecommendation(
     };
   }
 
-  // Scenario 2: New Data Pattern + Level 1
-  // Warning: Capability mismatch
-  if (q3_1 === 'new_pattern' && q3_2 === 'level1') {
+  // Rule 5: New Pattern/Cognitive + Level 1
+  // Warning: Severe capability mismatch
+  if ((q3_1 === 'new_pattern' || q3_1 === 'new_cognitive') && q3_2 === 'level1') {
     return {
       type: 'warning',
-      strategy: 'Capability Mismatch - Cannot Proceed',
+      strategy: '严重能力不匹配 - 寻求AI CoE帮助',
       technology: 'N/A',
       description:
-        'You have a "new data pattern" problem (Level 2 complexity) but only Level 1 resources (BA/SME). This combination will fail.',
+        '您的问题是 L2/L3 复杂度，但您的资源只有 Level 1（业务/规则专家）。您的团队无法训练或运营 AI 模型。',
       details: [
-        'Level 2 problems require Level 2 resources (citizen developers + AutoML)',
-        'Your team can only maintain business rules, not AI models',
-        'Without proper tools and training, custom model development will fail',
-        'Risk of project failure and wasted resources',
+        'Level 2/3 问题需要 Level 2/3 资源（公民开发者 + AutoML 或专业AI团队）',
+        '您的团队只能维护业务规则，不能维护AI模型',
+        '没有适当的工具和培训，AI模型开发会失败',
+        '项目失败和资源浪费的风险很高',
       ],
-      warning: 'Capability-Problem Mismatch',
+      warning: '严重能力不匹配',
       suggestions: [
-        'Option 1: Upgrade your team capability to Level 2 (get citizen developers + AutoML platform access)',
-        'Option 2: Escalate to professional AI team (Level 3)',
-        'Option 3: Simplify the problem to use template-based extraction instead',
+        '选项1：升级团队能力到 Level 2（获取公民开发者和 AutoML 平台访问权限）',
+        '选项2：提交给 AI CoE（集团AI团队，需排队等待）',
+        '选项3：简化问题范围，使用模板化提取',
       ],
       nextSteps: [
-        'Assess which option is feasible for your organization',
-        'If choosing Option 1, plan training and platform setup',
-        'If choosing Option 2, engage professional AI team',
+        '评估哪个选项对您的组织可行',
+        '如果选择选项1，规划培训和平台设置',
+        '如果选择选项2，向 AI CoE 提交需求（预计排队时间：2-4周）',
+        '如果选择选项3，重新评估问题范围',
       ],
     };
   }
 
-  // Scenario 3: New Data Pattern + Level 2 + Efficiency
+  // Rule 2: New Data Pattern + Level 2 + Efficiency + Data Ready
   // Recommendation: AutoML Training (matched)
   if (q3_1 === 'new_pattern' && q3_2 === 'level2' && q3_3 === 'efficiency') {
+    // Check data readiness
+    if (q3_4 === 'not_ready') {
+      // Data not ready - should have been caught by Rule 4, but handle it here too
+      return {
+        type: 'warning',
+        strategy: 'AutoML Training (需要数据准备)',
+        technology: 'Platform AutoML / No-code Training Tools',
+        description:
+          '您的问题和资源完美匹配，但数据未就绪。您需要先完成数据准备工作。',
+        details: [
+          '您的"新数据模式"问题与 Level 2 资源完美匹配',
+          '但您的数据未就绪（样本<50）',
+          '必须首先进行数据收集和标注',
+          '预计时间：1-3个月',
+        ],
+        warning: '数据准备是前提条件',
+        suggestions: [
+          '启动数据收集和标注项目',
+          '建立数据质量验证流程',
+          '准备好后重新运行此诊断',
+        ],
+        nextSteps: [
+          '停止AI模型开发',
+          '启动数据收集和治理项目',
+          '预计1-3个月后重新评估',
+        ],
+      };
+    }
+
+    // Data is ready or partially ready
     return {
       type: 'matched',
       strategy: 'AutoML Model Training',
       technology: 'Platform AutoML / No-code Training Tools',
       description:
-        'Perfect match! Your "new data pattern" problem aligns with Level 2 resources. Your citizen developers can train a custom model using AutoML.',
+        '完美匹配！您的"新数据模式"问题与 Level 2 资源完美对齐。您的公民开发者可以使用 AutoML 训练自定义模型。',
       details: [
-        'Platform provides AutoML and no-code training interface',
-        'Your team trains model using labeled training data',
-        'Suitable for domain-specific patterns and custom scenarios',
-        'Typically requires 100-1000+ labeled samples',
-        'Better accuracy than general models for your specific use case',
-        'Your team maintains and retrains the model as needed',
+        '平台提供 AutoML 和无代码训练界面',
+        '您的团队使用标注的训练数据训练模型',
+        '适合特定领域的模式和自定义场景',
+        '通常需要 100-1000+ 个标注样本',
+        '比通用模型对您的特定用例有更好的准确性',
+        '您的团队根据需要维护和重新训练模型',
       ],
       nextSteps: [
-        'Prepare and label training data (100-1000+ samples)',
-        'Use platform AutoML interface to train model',
-        'Validate model accuracy on test data',
-        'Deploy trained model',
-        'Monitor performance and retrain as needed',
-        'Proceed to Phase 3: Process Orchestration',
+        ...(q3_4 === 'partial'
+          ? [
+              '数据准备：清理和标注现有数据（预计 2-4 周）',
+              '收集额外的训练样本以达到 100-1000+ 个',
+            ]
+          : []),
+        '准备和标注训练数据（100-1000+ 个样本）',
+        '使用平台 AutoML 界面训练模型',
+        '在测试数据上验证模型准确性',
+        '部署训练的模型',
+        '根据需要监控性能和重新训练',
+        '进行到第3阶段：流程编排',
       ],
     };
   }
@@ -509,61 +590,113 @@ export function generateAIRecommendation(
     };
   }
 
-  // Scenario 5: New Cognitive Task + Level 3
+  // Rule 3: New Cognitive Task + Level 3 + Data Ready
   // Recommendation: Custom Development (matched)
   if (q3_1 === 'new_cognitive' && q3_2 === 'level3') {
+    // Check data readiness
+    if (q3_4 === 'not_ready') {
+      // Data not ready - should have been caught by Rule 4, but handle it here too
+      return {
+        type: 'warning',
+        strategy: '定制模型开发（需要数据准备）',
+        technology: 'Professional AI/ML Team + Advanced Tools',
+        description:
+          '您的问题和资源完美匹配，但数据未就绪。您需要先完成数据准备工作。',
+        details: [
+          '您的"新认知任务"问题与 Level 3 资源完美匹配',
+          '但您的数据未就绪（样本<50）',
+          '必须首先进行数据收集和标注',
+          '预计时间：1-3个月',
+        ],
+        warning: '数据准备是前提条件',
+        suggestions: [
+          '启动数据收集和标注项目',
+          '建立数据质量验证流程',
+          '准备好后重新运行此诊断',
+        ],
+        nextSteps: [
+          '停止AI模型开发',
+          '启动数据收集和治理项目',
+          '预计1-3个月后重新评估',
+        ],
+      };
+    }
+
+    // Rule 9: Cost-benefit review for Efficiency + Level 3
+    const hasCostBenefitReview = q3_3 === 'efficiency';
+
     return {
       type: 'matched',
-      strategy: 'Custom Model Development',
+      strategy: '定制模型开发',
       technology: 'Professional AI/ML Team + Advanced Tools',
       description:
-        'Perfect match! Your "new cognitive task" requires Level 3 professional expertise. Your AI team can build a specialized solution.',
+        '完美匹配！您的"新认知任务"需要 Level 3 专业专业知识。您的AI团队可以构建专业化解决方案。',
       details: [
-        'Professional AI/ML team designs and builds custom model',
-        'May use advanced techniques (VLLM, custom algorithms, etc.)',
-        'Integrates with platform via API Gateway',
-        'Highest accuracy and flexibility',
-        'Suitable for complex, novel problems',
+        '专业AI/ML团队设计和构建定制模型',
+        '可能使用高级技术（VLLM、自定义算法等）',
+        '通过 API 网关与平台集成',
+        '最高的准确性和灵活性',
+        '适合复杂的、新颖的问题',
+        ...(hasCostBenefitReview
+          ? ['注意：您的需求是"提升效率"，请确认 TCO 和 ROI 是否合理']
+          : []),
       ],
       nextSteps: [
-        'Engage professional AI/ML team',
-        'Define problem scope and success criteria',
-        'Develop or procure specialized model',
-        'Implement API integration with platform',
-        'Conduct thorough testing and validation',
-        'Deploy and proceed to Phase 3: Process Orchestration',
+        ...(hasCostBenefitReview
+          ? [
+              '确认 TCO（总拥有成本）和 ROI（投资回报率）',
+              '评估此投入是否值得',
+            ]
+          : []),
+        ...(q3_4 === 'partial'
+          ? [
+              '数据准备：清理和标注现有数据（预计 2-4 周）',
+              '收集额外的训练样本',
+            ]
+          : []),
+        '让专业AI/ML团队参与',
+        '定义问题范围和成功标准',
+        '开发或采购专业化模型',
+        '实现与平台的 API 集成',
+        '进行彻底的测试和验证',
+        '部署并进行到第3阶段：流程编排',
       ],
     };
   }
 
-  // Scenario 6: New Cognitive Task + Level 1 or 2
-  // Warning: Insufficient resources
-  if (q3_1 === 'new_cognitive' && (q3_2 === 'level1' || q3_2 === 'level2')) {
+  // Rule 6: New Cognitive Task + Level 2
+  // Warning: Capability mismatch (L3 problem vs L2 resources)
+  if (q3_1 === 'new_cognitive' && q3_2 === 'level2') {
     return {
       type: 'warning',
-      strategy: 'Insufficient Resources',
+      strategy: '能力不匹配 - 寻求AI CoE帮助',
       technology: 'N/A',
       description:
-        'Your "new cognitive task" is too complex for Level 1 or 2 resources. You need professional AI expertise.',
+        '您的问题是 L3"新认知任务"（如推理、生成），但您的资源是 L2 AutoML。AutoML 平台通常无法处理 L3 任务。',
       details: [
-        'New cognitive tasks require specialized AI/ML knowledge',
-        'Level 1 (BA/SME) cannot handle this complexity',
-        'Level 2 (citizen developers) lacks the expertise for novel problems',
-        'Risk of project failure without professional support',
+        '新认知任务需要专业的AI/ML知识',
+        'Level 2 (公民开发者) 缺乏处理新问题的专业知识',
+        'AutoML 平台有局限性，无法处理复杂的推理或生成任务',
+        '没有专业支持，项目失败的风险很高',
       ],
-      warning: 'Problem complexity exceeds team capability',
+      warning: '问题复杂度超过团队能力',
       suggestions: [
-        'Escalate to professional AI team (Level 3)',
-        'Consider simplifying the problem scope',
-        'Partner with external AI/ML specialists',
+        '选项1：升级到 Level 3（您自己的专业AI团队）',
+        '选项2：提交给 AI CoE（集团AI团队，需排队等待）',
+        '选项3：简化问题范围，使其适合 Level 2 AutoML',
       ],
       nextSteps: [
-        'Engage professional AI/ML team',
-        'Reassess problem scope and feasibility',
-        'Plan for professional development and support',
+        '评估哪个选项对您的组织可行',
+        '如果选择选项1，让您的专业AI团队参与',
+        '如果选择选项2，向 AI CoE 提交需求（预计排队时间：2-4周）',
+        '如果选择选项3，重新定义问题范围',
       ],
     };
   }
+
+  // Rule 5 (continued): New Cognitive Task + Level 1
+  // Already handled above in the combined rule 5 check
+  // This is just for clarity in the code structure
 
   // Scenario 7: Any problem + Level "none"
   // Warning: No clear capability

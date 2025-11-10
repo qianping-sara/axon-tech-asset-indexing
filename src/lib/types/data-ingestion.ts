@@ -37,7 +37,7 @@ export interface DataIngestionAnswers {
   q3_4?: Q3_4Answer;  // Data readiness
 }
 
-export type RecommendationType = 'matched' | 'warning' | 'downgrade';
+export type RecommendationType = 'matched' | 'warning' | 'downgrade' | 'blocked';
 
 export interface RecommendationResult {
   type: RecommendationType;
