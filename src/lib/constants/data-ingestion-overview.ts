@@ -12,52 +12,55 @@ export const DATA_INGESTION_OVERVIEW = {
 
 export const DATA_INGESTION_MERMAID_DIAGRAM = `
 graph TD
-    A["Dimension 1: Data Ingestion<br/>Does your use case involve data ingestion?"] 
-    
-    A -->|No| SKIP["Skip to Phase 3<br/>Process Orchestration"]
-    A -->|Yes| Q1_1["Q1.1: Strategic Choice<br/>Can input be digitized at source?"]
-    
-    Q1_1 -->|Yes| SHIFT_LEFT["Result: Shift-Left<br/>Channel-side Transformation"]
-    Q1_1 -->|No| Q1_2["Q1.2: Data Characteristics<br/>What is the data type?"]
-    
-    Q1_2 -->|Structured| TEMPLATE["Result: Template-based<br/>RPA / Script Extraction"]
-    Q1_2 -->|Unstructured| Q1_3a["Q1.3a: Reusable Capability<br/>Existing general capability?"]
-    
-    Q1_3a -->|Yes| Q1_3b["Q1.3b: Precision Check<br/>Does it meet requirements?"]
-    Q1_3a -->|No| Q1_3c["Q1.3c: Build/Improve<br/>What approach?"]
-    
-    Q1_3b -->|Yes| USE_EXISTING["Result: Use Existing<br/>General Model API"]
-    Q1_3b -->|No| Q1_3c
-    
-    Q1_3c -->|Config| CONFIG["Result: Configuration<br/>Parameter Tuning"]
-    Q1_3c -->|Training| Q1_3d["Q1.3d: Data & Tools<br/>Have data + tools?"]
-    Q1_3c -->|Specialized| CUSTOM["Result: Custom Model<br/>Professional Team"]
-    
-    Q1_3d -->|Yes| AUTOML["Result: AutoML Training<br/>Self-service Training"]
-    Q1_3d -->|No| CUSTOM
-    
-    SHIFT_LEFT --> PHASE3["Proceed to Phase 3"]
-    TEMPLATE --> PHASE3
-    USE_EXISTING --> PHASE3
-    CONFIG --> PHASE3
-    AUTOML --> PHASE3
-    CUSTOM --> PHASE3
-    SKIP --> PHASE3
-    
-    style A fill:#e1f5e1
-    style Q1_1 fill:#e1f5e1
-    style Q1_2 fill:#e1f5e1
-    style Q1_3a fill:#e1f5e1
-    style Q1_3b fill:#e1f5e1
-    style Q1_3c fill:#e1f5e1
-    style Q1_3d fill:#e1f5e1
+    A["Q1: Strategic Choice<br/>Can input be digitized at source?"]
+
+    A -->|Yes| SHIFT_LEFT["Recommendation: Shift-Left<br/>Channel-side Transformation"]
+    A -->|No| Q2["Q2: Tactical Diagnosis<br/>What is the main challenge?"]
+
+    Q2 -->|Mapping| TEMPLATE["Recommendation: Template-based<br/>RPA / Script Extraction"]
+    Q2 -->|Interpretation| Q3["Q3: AI Capability & Resource Diagnosis"]
+
+    Q3 --> Q3_1["Q3.1: Problem Type<br/>Common / New Pattern / New Cognitive"]
+
+    Q3_1 -->|Common| DOWNGRADE["Recommendation: Use Existing Model<br/>Downgrade to Level 1"]
+    Q3_1 -->|New Pattern| Q3_2["Q3.2: Capability Match<br/>Level 1 / 2 / 3 / None"]
+    Q3_1 -->|New Cognitive| Q3_2
+
+    Q3_2 --> Q3_3["Q3.3: Business Criticality<br/>Efficiency / Critical"]
+
+    Q3_3 --> Q3_4_CHECK{Q3.1 is<br/>New Pattern or<br/>New Cognitive?}
+
+    Q3_4_CHECK -->|Yes| Q3_4["Q3.4: Data Readiness<br/>Ready / Partial / Not Ready"]
+    Q3_4_CHECK -->|No| RECOMMEND["Generate Recommendation<br/>Based on Profile Matching"]
+
+    Q3_4 --> RECOMMEND
+
+    RECOMMEND --> MATCHED["Recommendation: Matched<br/>Perfect Alignment"]
+    RECOMMEND --> WARNING["Recommendation: Warning<br/>Capability Mismatch"]
+    RECOMMEND --> DOWNGRADE2["Recommendation: Downgrade<br/>Over-engineering Detected"]
+
+    SHIFT_LEFT --> END["Proceed to Phase 3"]
+    TEMPLATE --> END
+    DOWNGRADE --> END
+    DOWNGRADE2 --> END
+    MATCHED --> END
+    WARNING --> END
+
+    style A fill:#e1f5ff
+    style Q2 fill:#e1f5ff
+    style Q3 fill:#fff3e0
+    style Q3_1 fill:#fff3e0
+    style Q3_2 fill:#fff3e0
+    style Q3_3 fill:#fff3e0
+    style Q3_4 fill:#fff3e0
+    style Q3_4_CHECK fill:#fff3e0
     style SHIFT_LEFT fill:#c8e6c9
     style TEMPLATE fill:#c8e6c9
-    style USE_EXISTING fill:#c8e6c9
-    style CONFIG fill:#c8e6c9
-    style AUTOML fill:#c8e6c9
-    style CUSTOM fill:#c8e6c9
-    style PHASE3 fill:#fff9c4
-    style SKIP fill:#fff9c4
+    style DOWNGRADE fill:#c8e6c9
+    style DOWNGRADE2 fill:#c8e6c9
+    style MATCHED fill:#c8e6c9
+    style WARNING fill:#ffccbc
+    style RECOMMEND fill:#fff9c4
+    style END fill:#b2dfdb
 `;
 
