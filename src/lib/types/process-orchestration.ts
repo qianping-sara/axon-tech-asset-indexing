@@ -36,7 +36,7 @@ export type Q6Answer = 'level1' | 'level2' | 'level3' | 'none';
 export type RecommendationType = 'matched' | 'warning' | 'blocked' | 'redirect';
 
 /** Primary brain/platform for the solution */
-export type PrimaryBrain = 'BPA' | 'LCAP' | 'L1_TASK' | 'NONE';
+export type PrimaryBrain = 'BPA' | 'LCAP' | 'L1_TASK' | 'L3_CUSTOM' | 'NONE';
 
 /** Additional components that may be needed */
 export type AdditionalComponent = 'L1_RPA' | 'L1_IPAAS' | 'L3_CUSTOM';

@@ -560,6 +560,35 @@ export function generateProcessOrchestrationRecommendation(
     };
   }
 
+  // Rule 7: L3 Professional Development Team → Custom Solution
+  if (input.q6 === 'level3') {
+    const recommendation: ProcessOrchestrationRecommendation = {
+      type: 'matched',
+      strategy: 'Professional Development Solution (L3)',
+      primaryBrain: 'L3_CUSTOM',
+      technology: 'Custom Microservice / Professional Platform',
+      description:
+        'Your L3 professional development team should build a custom solution using professional platforms (Java/K8s, microservices, etc.).',
+      details: [
+        'L3 team has professional development expertise and infrastructure',
+        'Can build complex, high-performance solutions',
+        'Supports enterprise-grade scalability and reliability',
+        'Full control over architecture and technology stack',
+      ],
+      nextSteps: [
+        'Define detailed technical requirements',
+        'Design system architecture and microservices',
+        'Implement using professional platforms (Java/K8s, etc.)',
+        'Set up professional DevOps and monitoring',
+        'Test and validate at scale',
+        'Deploy with professional SLA and support',
+      ],
+    };
+
+    applyAttachmentRules(recommendation, input);
+    return recommendation;
+  }
+
   // Rule 11: L3 Logic Capability Mismatch (L3 logic + L1/L2 resources)
   if (
     input.q5 === 'high_performance' &&
