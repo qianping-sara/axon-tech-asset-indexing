@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 
 export default function AutomationPrinciples() {
@@ -42,6 +43,17 @@ export default function AutomationPrinciples() {
             <div key={index} className="bg-white rounded-lg p-4 border border-gray-200">
               <h3 className="font-semibold text-gray-900 mb-2">{principle.title}</h3>
               <p className="text-sm text-gray-700 leading-relaxed">{principle.description}</p>
+              {index === 2 && (
+                <div className="mt-4 flex justify-center">
+                  <Image
+                    src="/assets/automation/solution-tiers-pyramid.png"
+                    alt="Three-tier approach: Common, Scenario, and Custom solutions"
+                    width={600}
+                    height={400}
+                    className="rounded-lg"
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>
