@@ -18,11 +18,11 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const category = searchParams.get('category');
     const search = searchParams.get('search');
-    const status = searchParams.get('status') || 'PUBLISHED';
+    const statusParam = searchParams.get('status') || 'PUBLISHED';
 
     // Build filter conditions
     const where: Prisma.axon_utilityWhereInput = {
-      status: status,
+      status: statusParam as Prisma.EnumStatusFilter<'axon_utility'>,
     };
 
     if (category) {

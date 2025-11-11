@@ -14,12 +14,20 @@ jest.mock('@prisma/client', () => {
   };
 });
 
+interface MockPrisma {
+  axon_utility: {
+    findMany: jest.Mock;
+    findUnique: jest.Mock;
+  };
+  $disconnect: jest.Mock;
+}
+
 describe('Utilities API', () => {
-  let mockPrisma: PrismaClient;
+  let mockPrisma: MockPrisma;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockPrisma = new PrismaClient();
+    mockPrisma = new PrismaClient() as unknown as MockPrisma;
   });
 
   describe('GET /api/utilities', () => {

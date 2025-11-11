@@ -32,12 +32,15 @@ const SOLUTION_COLORS: Record<number, string> = {
 export default function TCOChart({ solutions, visibleSolutions, onVisibilityToggle }: TCOChartProps) {
   const chartData = generateChartData(solutions);
 
-  const handleLegendClick = (data: { dataKey: string }) => {
-    const solutionId = data.dataKey;
-    onVisibilityToggle(solutionId);
+  const handleLegendClick = (data: { dataKey?: string | number | ((obj: unknown) => unknown) }) => {
+    if (data.dataKey && typeof data.dataKey === 'string') {
+      onVisibilityToggle(data.dataKey);
+    } else if (data.dataKey && typeof data.dataKey === 'number') {
+      onVisibilityToggle(String(data.dataKey));
+    }
   };
 
-  const customTooltip = (props: { active?: boolean; payload?: Array<{ name: string; value: number; color?: string }>; label?: string }) => {
+  const customTooltip = (props: { active?: boolean; payload?: Array<{ name: string; value: number; color?: string }>; label?: string | number }) => {
     const { active, payload, label } = props;
     if (active && payload && payload.length) {
       return (

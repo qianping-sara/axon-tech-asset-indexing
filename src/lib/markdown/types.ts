@@ -14,7 +14,7 @@ export interface MarkdownFrontmatter {
   version?: string;
   status?: string;
   owner?: string;
-  [key: string]: string | undefined;
+  [key: string]: unknown;
 }
 
 /**
