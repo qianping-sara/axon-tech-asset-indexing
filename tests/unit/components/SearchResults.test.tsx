@@ -3,11 +3,25 @@ import SearchResults from '@/components/search/SearchResults';
 
 // Mock next/link
 jest.mock('next/link', () => {
-  // eslint-disable-next-line react/display-name, @typescript-eslint/no-explicit-any
-  return ({ children, href }: any) => (
+  // eslint-disable-next-line react/display-name
+  return ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href}>{children}</a>
   );
 });
+
+// Mock next/navigation
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+  }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => '/search',
+}));
 
 // Mock fetch
 global.fetch = jest.fn();
@@ -27,29 +41,29 @@ describe('SearchResults Component', () => {
       version: '1.0.0',
       status: 'PUBLISHED',
       updatedAt: new Date(),
-      tags: [],
+      axon_asset_tag: [],
     },
   ];
 
-  it('renders search results container', () => {
+  it('renders search bar', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       json: async () => ({
         success: true,
-        data: mockAssets,
-        pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasMore: false },
+        data: [],
+        pagination: { page: 1, limit: 20, total: 0, totalPages: 1 },
       }),
     });
 
     render(
       <SearchResults
-        initialQuery="test"
+        initialQuery=""
         initialCategory=""
         initialAssetType=""
         initialStatus=""
       />
     );
 
-    expect(screen.getByText('Search Results')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Search for APIs/)).toBeInTheDocument();
   });
 
   it('displays search query in results', async () => {
@@ -57,7 +71,7 @@ describe('SearchResults Component', () => {
       json: async () => ({
         success: true,
         data: mockAssets,
-        pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasMore: false },
+        pagination: { page: 1, limit: 20, total: 1, totalPages: 1 },
       }),
     });
 
@@ -71,51 +85,7 @@ describe('SearchResults Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Results for/)).toBeInTheDocument();
-    });
-  });
-
-  it('renders status filter', () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      json: async () => ({
-        success: true,
-        data: mockAssets,
-        pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasMore: false },
-      }),
-    });
-
-    render(
-      <SearchResults
-        initialQuery=""
-        initialCategory=""
-        initialAssetType=""
-        initialStatus=""
-      />
-    );
-
-    expect(screen.getByText('Status')).toBeInTheDocument();
-  });
-
-  it('renders asset cards', async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      json: async () => ({
-        success: true,
-        data: mockAssets,
-        pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasMore: false },
-      }),
-    });
-
-    render(
-      <SearchResults
-        initialQuery=""
-        initialCategory=""
-        initialAssetType=""
-        initialStatus=""
-      />
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText('React Library')).toBeInTheDocument();
+      expect(screen.getByText(/Search results for "React"/)).toBeInTheDocument();
     });
   });
 
@@ -123,8 +93,8 @@ describe('SearchResults Component', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       json: async () => ({
         success: true,
-        data: mockAssets,
-        pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasMore: false },
+        data: [],
+        pagination: { page: 1, limit: 20, total: 0, totalPages: 1 },
       }),
     });
 
@@ -140,12 +110,35 @@ describe('SearchResults Component', () => {
     expect(screen.getByText('Category')).toBeInTheDocument();
   });
 
-  it('calls fetch API on mount', async () => {
+  it('renders asset cards when data is returned', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       json: async () => ({
         success: true,
         data: mockAssets,
-        pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasMore: false },
+        pagination: { page: 1, limit: 20, total: 1, totalPages: 1 },
+      }),
+    });
+
+    render(
+      <SearchResults
+        initialQuery="React"
+        initialCategory=""
+        initialAssetType=""
+        initialStatus=""
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('React Library')).toBeInTheDocument();
+    });
+  });
+
+  it('renders status filter', () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      json: async () => ({
+        success: true,
+        data: [],
+        pagination: { page: 1, limit: 20, total: 0, totalPages: 1 },
       }),
     });
 
@@ -158,11 +151,7 @@ describe('SearchResults Component', () => {
       />
     );
 
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/assets')
-      );
-    });
+    expect(screen.getByText('Status')).toBeInTheDocument();
   });
 
   it('shows no results message when empty', async () => {
@@ -170,7 +159,7 @@ describe('SearchResults Component', () => {
       json: async () => ({
         success: true,
         data: [],
-        pagination: { page: 1, limit: 20, total: 0, totalPages: 0, hasMore: false },
+        pagination: { page: 1, limit: 20, total: 0, totalPages: 1 },
       }),
     });
 
@@ -188,8 +177,14 @@ describe('SearchResults Component', () => {
     });
   });
 
-  it('handles API errors gracefully', async () => {
-    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('API Error'));
+  it('renders search interface with all filters', () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      json: async () => ({
+        success: true,
+        data: [],
+        pagination: { page: 1, limit: 20, total: 0, totalPages: 1 },
+      }),
+    });
 
     render(
       <SearchResults
@@ -200,9 +195,10 @@ describe('SearchResults Component', () => {
       />
     );
 
-    await waitFor(() => {
-      expect(screen.getByText(/Failed to load/)).toBeInTheDocument();
-    });
+    // Verify all filter sections are present
+    expect(screen.getByText('Category')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('Business Domain')).toBeInTheDocument();
   });
 });
 

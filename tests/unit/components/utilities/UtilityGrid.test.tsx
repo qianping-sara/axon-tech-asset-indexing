@@ -69,7 +69,7 @@ describe('UtilityGrid Component', () => {
 
   it('renders correct number of utility cards', () => {
     render(<UtilityGrid utilities={mockUtilities} />);
-    const cards = screen.getAllByText(/View Details/);
+    const cards = screen.getAllByText('Open');
     expect(cards).toHaveLength(mockUtilities.length);
   });
 

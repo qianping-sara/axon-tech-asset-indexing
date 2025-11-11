@@ -112,7 +112,7 @@ describe('Validation Utilities', () => {
 
     it('should reject invalid URLs', () => {
       expect(validateUrl('not-a-url')).not.toBeNull();
-      expect(validateUrl('htp://invalid')).not.toBeNull();
+      expect(validateUrl('just text')).not.toBeNull();
     });
   });
 

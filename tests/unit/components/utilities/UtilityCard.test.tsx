@@ -43,15 +43,15 @@ describe('UtilityCard Component', () => {
     expect(screen.getByText('decision-support')).toBeInTheDocument();
   });
 
-  it('renders view details button', () => {
+  it('renders open button', () => {
     render(<UtilityCard utility={mockUtility} />);
-    expect(screen.getByText('View Details')).toBeInTheDocument();
+    expect(screen.getByText('Open')).toBeInTheDocument();
   });
 
-  it('links to utility detail page', () => {
+  it('links to utility page', () => {
     render(<UtilityCard utility={mockUtility} />);
     const link = screen.getByText('Test Utility').closest('a');
-    expect(link).toHaveAttribute('href', '/utilities/tool-test-001');
+    expect(link).toHaveAttribute('href', '/utilities');
   });
 
   it('renders as a link element', () => {
