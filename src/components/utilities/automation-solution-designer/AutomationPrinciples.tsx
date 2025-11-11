@@ -45,13 +45,15 @@ export default function AutomationPrinciples() {
               <p className="text-sm text-gray-700 leading-relaxed">{principle.description}</p>
               {index === 2 && (
                 <div className="mt-4 flex justify-center">
-                  <Image
-                    src="/assets/automation/solution-tiers-pyramid.png"
-                    alt="Three-tier approach: Common, Scenario, and Custom solutions"
-                    width={600}
-                    height={400}
-                    className="rounded-lg"
-                  />
+                  <div className="w-4/5">
+                    <Image
+                      src="/assets/automation/solution-tiers-pyramid.png"
+                      alt="Three-tier approach: Common, Scenario, and Custom solutions"
+                      width={600}
+                      height={400}
+                      className="rounded-lg w-full h-auto"
+                    />
+                  </div>
                 </div>
               )}
             </div>
