@@ -1,6 +1,13 @@
 /**
  * Utility Icon Components
- * Maps icon names to lucide-react components
+ * Maps icon names (stored in database) to lucide-react components
+ *
+ * This file is the ONLY place where icon names are mapped to React components.
+ * Icon names are stored in the database (axon_utility.icon field).
+ * When adding a new icon:
+ * 1. Add the icon import from lucide-react
+ * 2. Add the mapping in UTILITY_ICON_MAP
+ * 3. Update the database record with the icon name
  */
 
 import React from 'react';

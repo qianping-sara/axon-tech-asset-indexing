@@ -1,6 +1,10 @@
 /**
  * Utilities Constants
  * Configuration for CoE Utilities system
+ *
+ * NOTE: All utility data (name, description, icon, etc.) is now stored in the database.
+ * This file only contains category definitions.
+ * Do NOT duplicate utility definitions here - they should only exist in the database.
  */
 
 import { UtilityCategory } from '@/lib/types/utility';
@@ -13,73 +17,6 @@ export const UTILITY_CATEGORIES: UtilityCategory[] = [
   {
     id: 'decision-support',
     name: 'Decision Support',
-  },
-];
-
-/**
- * Initial Decision Support Tools
- * These are the tools that will be seeded into the database
- */
-export const DECISION_SUPPORT_TOOLS = [
-  {
-    id: 'tool-business-case',
-    name: 'Business Case and Strategic Alignment',
-    description: 'Validating the legitimacy of the business need and its alignment with corporate strategy',
-    category: 'decision-support',
-    icon: 'briefcase', // lucide-react icon
-    url: '/utilities/business-case',
-    version: '1.0.0',
-    status: 'PUBLISHED' as const,
-    owner: 'AutomationCoE Team',
-    tags: ['decision-support', 'business-case', 'strategy'],
-  },
-  {
-    id: 'tool-sourcing-model',
-    name: 'Sourcing Model Analysis',
-    description: 'Making a strategic decision on the sourcing model: Build, Buy, or Open Source',
-    category: 'decision-support',
-    icon: 'bar-chart-3', // lucide-react icon
-    url: '/utilities/sourcing-model',
-    version: '1.0.0',
-    status: 'PUBLISHED' as const,
-    owner: 'AutomationCoE Team',
-    tags: ['decision-support', 'sourcing-model', 'build-buy-oss'],
-  },
-  {
-    id: 'tool-preliminary-evaluation',
-    name: 'Preliminary Evaluation and Shortlisting',
-    description: 'Conducting preliminary evaluation of potential solutions and creating a shortlist of viable candidates',
-    category: 'decision-support',
-    icon: 'filter', // lucide-react icon
-    url: '/utilities/preliminary-evaluation',
-    version: '1.0.0',
-    status: 'PUBLISHED' as const,
-    owner: 'AutomationCoE Team',
-    tags: ['decision-support', 'evaluation', 'shortlisting'],
-  },
-  {
-    id: 'tool-tco-calculation',
-    name: 'TCO Calculation',
-    description: 'Calculate and compare the Total Cost of Ownership for different solutions over a 5-year period',
-    category: 'decision-support',
-    icon: 'calculator', // lucide-react icon
-    url: '/utilities/tco-calculation',
-    version: '1.0.0',
-    status: 'PUBLISHED' as const,
-    owner: 'AutomationCoE Team',
-    tags: ['decision-support', 'tco', 'financial-analysis', 'cost-comparison'],
-  },
-  {
-    id: 'tool-automation-solution-designer',
-    name: 'Automation Solution Designer',
-    description: 'Design a standardized, architecturally sound, and cost-effective technology stack for automation use cases through a structured assessment process',
-    category: 'decision-support',
-    icon: 'zap', // lucide-react icon
-    url: '/utilities/automation-solution-designer',
-    version: '1.0.0',
-    status: 'PUBLISHED' as const,
-    owner: 'AutomationCoE Team',
-    tags: ['decision-support', 'automation', 'solution-design', 'technology-stack', 'architecture'],
   },
 ];
 
