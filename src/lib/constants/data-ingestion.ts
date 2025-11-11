@@ -2,7 +2,7 @@
  * Data Ingestion Advisor Constants (Redesigned)
  */
 
-import { Question, RecommendationResult, DataIngestionAnswers } from '@/lib/types/data-ingestion';
+import { Question, RecommendationResult } from '@/lib/types/data-ingestion';
 
 /**
  * Q1 - Strategic Choice: Can we eliminate the problem at the source?

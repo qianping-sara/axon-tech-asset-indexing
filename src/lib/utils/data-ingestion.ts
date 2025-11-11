@@ -2,8 +2,8 @@
  * Data Ingestion Advisor Utilities (Redesigned)
  */
 
-import { DataIngestionStep, DataIngestionAnswers } from '@/lib/types/data-ingestion';
-import { QUESTION_Q1, QUESTION_Q2, QUESTION_Q3_1, QUESTION_Q3_2, QUESTION_Q3_3 } from '@/lib/constants/data-ingestion';
+import { DataIngestionStep, DataIngestionAnswers, RecommendationResult } from '@/lib/types/data-ingestion';
+import { QUESTION_Q1, QUESTION_Q2 } from '@/lib/constants/data-ingestion';
 
 /**
  * Determine the next step based on current answers
@@ -123,7 +123,7 @@ export function generateAnswersSummary(answers: DataIngestionAnswers): string[] 
  */
 export function exportRecommendationAsCSV(
   answers: DataIngestionAnswers,
-  recommendation: any
+  recommendation: RecommendationResult
 ): string {
   const lines: string[] = [];
 
@@ -221,7 +221,7 @@ export function exportRecommendationAsCSV(
  */
 export function downloadRecommendation(
   answers: DataIngestionAnswers,
-  recommendation: any
+  recommendation: RecommendationResult
 ): void {
   const csv = exportRecommendationAsCSV(answers, recommendation);
   const blob = new Blob([csv], { type: 'text/plain;charset=utf-8;' });

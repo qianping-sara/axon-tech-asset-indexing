@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Solution, CostData } from '@/lib/types/tco-calculation';
+import { Solution } from '@/lib/types/tco-calculation';
 import { TCO_COST_ITEMS, getDirectCostItems, getIndirectCostItems, YEAR_KEYS } from '@/lib/constants/tco-calculation';
 import { calculateYearlyTotal, calculateFiveYearTotal, calculateDirectCostsTotal, calculateIndirectCostsTotal, formatCurrency } from '@/lib/utils/tco-calculation';
 

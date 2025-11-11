@@ -30,7 +30,7 @@ export default function TCOSolutionManager({
     if (solutions.length > 0 && expandedId === null) {
       setExpandedId(solutions[0].id);
     }
-  }, [solutions]);
+  }, [solutions, expandedId]);
 
   const handleAddSolution = () => {
     if (newSolutionName.trim()) {

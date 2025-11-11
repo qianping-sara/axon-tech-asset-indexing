@@ -37,10 +37,6 @@ export default function BusinessCasePage() {
     }
   };
 
-  const hasInput = Object.values(criteriaData).some(
-    (c) => c.score > 0 || c.notes.trim() !== ''
-  );
-
   return (
     <div className="min-h-screen bg-white">
       <Header />

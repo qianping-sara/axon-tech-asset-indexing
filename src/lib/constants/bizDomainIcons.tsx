@@ -57,7 +57,7 @@ export function getBizDomainIconComponent(iconName: string): React.ReactNode {
  * @returns React component with custom color
  */
 export function getBizDomainIconWithColor(iconName: string, color: string = 'text-gray-700'): React.ReactNode {
-  const iconMap: Record<string, React.ComponentType<any>> = {
+  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     'clipboard-list': ClipboardList,
     'wallet': Wallet,
     'help-circle': HelpCircle,

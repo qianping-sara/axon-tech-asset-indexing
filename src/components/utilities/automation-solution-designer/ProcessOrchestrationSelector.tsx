@@ -10,15 +10,11 @@ import { Q5LogicComplexityForm } from './Q5LogicComplexityForm';
 import { Q6CapabilityMatchForm } from './Q6CapabilityMatchForm';
 import { ProcessOrchestrationResultCard } from './ProcessOrchestrationResultCard';
 import DimensionOverview from './DimensionOverview';
-import { ProcessOrchestrationState } from '@/lib/types/process-orchestration';
+import { ProcessOrchestrationState, Q1Answer, Q2Answer, Q3Answer, Q3_5Answer, Q4Answer, Q5Answer, Q6Answer } from '@/lib/types/process-orchestration';
 import { generateProcessOrchestrationRecommendation, PROCESS_ORCHESTRATION_PROGRESS } from '@/lib/constants/process-orchestration';
 import { PROCESS_ORCHESTRATION_OVERVIEW, PROCESS_ORCHESTRATION_MERMAID_DIAGRAM } from '@/lib/constants/process-orchestration-overview';
 
-interface ProcessOrchestrationSelectorProps {
-  // Props will be defined when implementing the actual content
-}
-
-export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSelectorProps) {
+export default function ProcessOrchestrationSelector() {
   const [state, setState] = React.useState<ProcessOrchestrationState>({
     currentStep: 1,
     answers: {},
@@ -35,14 +31,14 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
 
   // Handle Q1 answer
   const handleQ1Answer = (answer: string) => {
-    const q1Answer = answer as any;
+    const q1Answer = answer as Q1Answer;
     // If Q1='new', go to Q2 (Business Nature)
     // If Q1='modify' or 'replace', skip Q2 and go to Q3 (Integration Requirement)
     const nextStep = q1Answer === 'new' ? 2 : 3;
 
     setState((prev) => ({
       ...prev,
-      currentStep: nextStep,
+      currentStep: nextStep as ProcessOrchestrationState['currentStep'],
       answers: {
         ...prev.answers,
         q1: q1Answer,
@@ -60,7 +56,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
       currentStep: 3,
       answers: {
         ...prev.answers,
-        q2: answer as any,
+        q2: answer as Q2Answer,
         q3: undefined,
         q3_5: undefined,
       },
@@ -69,7 +65,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
 
   // Handle Q3 answer (Integration Requirement - shown for all processes)
   const handleQ3Answer = (answer: string) => {
-    const q3Answer = answer as any;
+    const q3Answer = answer as Q3Answer;
 
     // If choosing 'integrate_to_workbench', go to Q3.5
     // If choosing 'standalone', go to Q4
@@ -77,7 +73,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
 
     setState((prev) => ({
       ...prev,
-      currentStep: nextStep as any,
+      currentStep: nextStep as ProcessOrchestrationState['currentStep'],
       answers: {
         ...prev.answers,
         q3: q3Answer,
@@ -93,7 +89,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
       currentStep: 4,
       answers: {
         ...prev.answers,
-        q3_5: answer as any,
+        q3_5: answer as Q3_5Answer,
       },
     }));
   };
@@ -105,7 +101,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
       currentStep: 5, // Q4 is step 5 (System Interaction)
       answers: {
         ...prev.answers,
-        q4: answer as any,
+        q4: answer as Q4Answer,
       },
     }));
   };
@@ -117,7 +113,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
       currentStep: 6, // Q5 is step 6 (Logic Complexity)
       answers: {
         ...prev.answers,
-        q5: answer as any,
+        q5: answer as Q5Answer,
       },
     }));
   };
@@ -130,19 +126,19 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
       isLoading: true,
       answers: {
         ...prev.answers,
-        q6: answer as any,
+        q6: answer as Q6Answer,
       },
     }));
 
     // Generate recommendation
     const recommendation = generateProcessOrchestrationRecommendation({
-      q1: state.answers.q1 as any,
-      q2: state.answers.q2 as any,
-      q3: state.answers.q3 as any,
-      q3_5: state.answers.q3_5 as any,
-      q4: state.answers.q4 as any,
-      q5: state.answers.q5 as any,
-      q6: answer as any,
+      q1: state.answers.q1 as Q1Answer,
+      q2: state.answers.q2 as Q2Answer | undefined,
+      q3: state.answers.q3 as Q3Answer | undefined,
+      q3_5: state.answers.q3_5 as Q3_5Answer | undefined,
+      q4: state.answers.q4 as Q4Answer | undefined,
+      q5: state.answers.q5 as Q5Answer | undefined,
+      q6: answer as Q6Answer,
     });
 
     setState((prev) => ({
@@ -184,7 +180,7 @@ export default function ProcessOrchestrationSelector({}: ProcessOrchestrationSel
 
       return {
         ...prev,
-        currentStep: newStep as any,
+        currentStep: newStep as ProcessOrchestrationState['currentStep'],
       };
     });
   };

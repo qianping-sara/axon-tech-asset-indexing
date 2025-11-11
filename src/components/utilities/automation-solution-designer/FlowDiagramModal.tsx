@@ -21,7 +21,7 @@ export default function FlowDiagramModal({
   useEffect(() => {
     if (isOpen && typeof window !== 'undefined') {
       // Load mermaid script if not already loaded
-      const mermaidWindow = window as any;
+      const mermaidWindow = window as Window & { mermaid?: { contentLoaded?: () => void } };
       if (!mermaidWindow.mermaid) {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js';

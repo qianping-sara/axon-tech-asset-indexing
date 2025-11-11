@@ -35,7 +35,7 @@ export function InitialAssessmentGrouped({
     let totalScore = 0;
     let totalWeight = 0;
     group.criteria.forEach((criterion) => {
-      const score = (data as any)[criterion.id]?.score || 0;
+      const score = (data[criterion.id as keyof InitialAssessmentData] as { score: number; notes: string })?.score || 0;
       totalScore += score * criterion.weight;
       totalWeight += criterion.weight;
     });
@@ -75,7 +75,7 @@ export function InitialAssessmentGrouped({
             {isExpanded && (
               <div className="bg-white p-6 space-y-6">
                 {group.criteria.map((criterion) => {
-                  const criterionData = (data as any)[criterion.id] || {
+                  const criterionData = (data[criterion.id as keyof InitialAssessmentData] as { score: number; notes: string }) || {
                     score: 0,
                     notes: '',
                   };

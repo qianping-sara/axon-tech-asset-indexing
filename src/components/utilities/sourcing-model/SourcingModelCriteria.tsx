@@ -7,7 +7,7 @@ import SourcingModelCriteriaRow from './SourcingModelCriteriaRow';
 
 interface SourcingModelCriteriaProps {
   criteriaData: SourcingModelData;
-  onCriteriaChange: (key: keyof SourcingModelData, data: any) => void;
+  onCriteriaChange: (key: keyof SourcingModelData, data: { notes: string; score: number }) => void;
   onClearAll: () => void;
 }
 

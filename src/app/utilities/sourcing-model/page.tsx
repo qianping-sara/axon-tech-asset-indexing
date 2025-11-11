@@ -21,7 +21,7 @@ export default function SourcingModelPage() {
     integrationFriendliness: { notes: '', score: 0 },
   });
 
-  const handleCriteriaChange = (key: keyof SourcingModelData, data: any) => {
+  const handleCriteriaChange = (key: keyof SourcingModelData, data: { notes: string; score: number }) => {
     setCriteriaData((prev) => ({
       ...prev,
       [key]: data,

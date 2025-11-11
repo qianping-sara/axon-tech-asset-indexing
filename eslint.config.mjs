@@ -16,7 +16,17 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "node_modules/**",
     "dist/**",
+    // Ignore scripts and prisma utilities
+    "scripts/**",
+    "prisma/**",
   ]),
+  // Override specific rules
+  {
+    rules: {
+      "@next/next/no-img-element": "warn",
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

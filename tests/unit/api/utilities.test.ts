@@ -15,7 +15,7 @@ jest.mock('@prisma/client', () => {
 });
 
 describe('Utilities API', () => {
-  let mockPrisma: any;
+  let mockPrisma: PrismaClient;
 
   beforeEach(() => {
     jest.clearAllMocks();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import EvaluationSummary from '@/components/utilities/business-case/EvaluationSummary';
 import { CriteriaData } from '@/lib/types/business-case';
 

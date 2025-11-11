@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Download } from 'lucide-react';
-import { SourcingModelData, SourcingModelResult } from '@/lib/types/sourcing-model';
+import { SourcingModelData } from '@/lib/types/sourcing-model';
 import { calculateSourcingModelScores, downloadSourcingModelReport } from '@/lib/utils/sourcing-model';
 
 interface SourcingModelSummaryProps {

@@ -2,6 +2,7 @@
  * Tag API business logic
  */
 
+import { randomUUID } from 'crypto';
 import { prisma } from '@/lib/db/client';
 import { Prisma } from '@prisma/client';
 
@@ -157,8 +158,6 @@ export async function createTag(data: {
   description?: string;
   category: string;
 }) {
-  const { randomUUID } = require('crypto');
-
   return prisma.axon_tag.create({
     data: {
       id: randomUUID(),

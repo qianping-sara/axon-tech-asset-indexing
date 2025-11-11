@@ -1,6 +1,7 @@
+import { randomUUID } from 'crypto';
 import { prisma } from '@/lib/db/client';
 import { AssetListQuery, AssetListItem, PaginatedResponse } from '@/lib/types/asset';
-import { Category, Status, BizDomain } from '@prisma/client';
+import { Category, Status, BizDomain, Prisma } from '@prisma/client';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
@@ -17,7 +18,7 @@ export async function getAssets(
   const skip = (page - 1) * limit;
 
   // Build where clause
-  const whereConditions: any[] = [];
+  const whereConditions: Prisma.axon_assetWhereInput[] = [];
 
   if (query.category) {
     whereConditions.push({ category: query.category as Category });
@@ -54,13 +55,13 @@ export async function getAssets(
     });
   }
 
-  const where: any =
+  const where: Prisma.axon_assetWhereInput =
     whereConditions.length > 0 ? { AND: whereConditions } : {};
 
   // Build order by
-  const orderBy: any = {};
+  const orderBy: Prisma.axon_assetOrderByWithRelationInput = {};
   if (query.sortBy) {
-    orderBy[query.sortBy] = query.sortOrder || 'desc';
+    orderBy[query.sortBy as keyof Prisma.axon_assetOrderByWithRelationInput] = query.sortOrder || 'desc';
   } else {
     orderBy.updatedAt = 'desc';
   }
@@ -184,8 +185,6 @@ export async function createAsset(data: {
   bizDomain?: string;
   tags?: string[];
 }) {
-  const { randomUUID } = require('crypto');
-
   return prisma.axon_asset.create({
     data: {
       id: randomUUID(),

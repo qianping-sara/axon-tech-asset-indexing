@@ -11,7 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Solution, ChartDataPoint } from '@/lib/types/tco-calculation';
+import { Solution } from '@/lib/types/tco-calculation';
 import { generateChartData, formatCurrency } from '@/lib/utils/tco-calculation';
 
 interface TCOChartProps {
@@ -32,18 +32,18 @@ const SOLUTION_COLORS: Record<number, string> = {
 export default function TCOChart({ solutions, visibleSolutions, onVisibilityToggle }: TCOChartProps) {
   const chartData = generateChartData(solutions);
 
-  const handleLegendClick = (data: any) => {
+  const handleLegendClick = (data: { dataKey: string }) => {
     const solutionId = data.dataKey;
     onVisibilityToggle(solutionId);
   };
 
-  const customTooltip = (props: any) => {
+  const customTooltip = (props: { active?: boolean; payload?: Array<{ name: string; value: number; color?: string }>; label?: string }) => {
     const { active, payload, label } = props;
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-3 border border-gray-300 rounded shadow-lg">
           <p className="text-sm font-semibold text-gray-900">{label}</p>
-          {payload.map((entry: any, index: number) => (
+          {payload.map((entry: { name: string; value: number; color?: string }, index: number) => (
             <p key={index} style={{ color: entry.color }} className="text-sm">
               {entry.name}: {formatCurrency(entry.value)}
             </p>

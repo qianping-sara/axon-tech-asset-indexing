@@ -14,11 +14,7 @@ import ResultCard from './ResultCard';
 import DimensionOverview from './DimensionOverview';
 import Q3DiagnosisForm from './Q3DiagnosisForm';
 
-interface DataIngestionSelectorProps {
-  // Props will be defined when implementing the actual content
-}
-
-export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
+export default function DataIngestionSelector() {
   const [answers, setAnswers] = useState<DataIngestionAnswers>({});
   const [currentStep, setCurrentStep] = useState<DataIngestionStep>('q1');
 
@@ -28,7 +24,7 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
 
     switch (currentStep) {
       case 'q1':
-        newAnswers.q1 = value as any;
+        newAnswers.q1 = value as 'yes' | 'no';
         // Clear Q2 and Q3 answers when Q1 changes
         delete newAnswers.q2;
         delete newAnswers.q3_1;
@@ -36,7 +32,7 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
         delete newAnswers.q3_3;
         break;
       case 'q2':
-        newAnswers.q2 = value as any;
+        newAnswers.q2 = value as 'mapping' | 'interpretation';
         // Clear Q3 answers when Q2 changes
         delete newAnswers.q3_1;
         delete newAnswers.q3_2;
@@ -59,10 +55,10 @@ export default function DataIngestionSelector({}: DataIngestionSelectorProps) {
   }) => {
     const newAnswers: DataIngestionAnswers = {
       ...answers,
-      q3_1: q3Answers.q3_1 as any,
-      q3_2: q3Answers.q3_2 as any,
-      q3_3: q3Answers.q3_3 as any,
-      ...(q3Answers.q3_4 ? { q3_4: q3Answers.q3_4 as any } : {}),
+      q3_1: q3Answers.q3_1 as 'common' | 'new_pattern' | 'new_cognitive',
+      q3_2: q3Answers.q3_2 as 'level1' | 'level2' | 'level3' | 'none',
+      q3_3: q3Answers.q3_3 as 'efficiency' | 'critical',
+      ...(q3Answers.q3_4 ? { q3_4: q3Answers.q3_4 as 'ready' | 'partial' | 'not_ready' } : {}),
     };
     setAnswers(newAnswers);
     setCurrentStep('recommendation');

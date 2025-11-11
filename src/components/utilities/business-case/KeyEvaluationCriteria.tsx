@@ -7,7 +7,7 @@ import CriteriaRow from './CriteriaRow';
 
 interface KeyEvaluationCriteriaProps {
   criteriaData: CriteriaData;
-  onCriteriaChange: (key: keyof CriteriaData, data: any) => void;
+  onCriteriaChange: (key: keyof CriteriaData, data: { notes: string; score: number }) => void;
   onClearAll: () => void;
 }
 

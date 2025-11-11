@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { RecommendationResult } from '@/lib/types/data-ingestion';
+import { RecommendationResult, DataIngestionAnswers } from '@/lib/types/data-ingestion';
 import { Download, RotateCcw, CheckCircle, AlertCircle, AlertTriangle } from 'lucide-react';
 import { downloadRecommendation } from '@/lib/utils/data-ingestion';
 
 interface ResultCardProps {
   recommendation: RecommendationResult;
-  answers: any;
+  answers: DataIngestionAnswers;
   onRestart: () => void;
 }
 

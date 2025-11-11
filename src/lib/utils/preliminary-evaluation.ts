@@ -19,7 +19,7 @@ export function calculateInitialAssessmentScore(data: InitialAssessmentData): nu
 
   INITIAL_ASSESSMENT_CRITERIA_GROUPS.forEach((group) => {
     group.criteria.forEach((criteria) => {
-      const score = (data as any)[criteria.id]?.score || 0;
+      const score = (data[criteria.id as keyof InitialAssessmentData] as { score: number; notes: string })?.score || 0;
       if (score > 0) {
         totalScore += (score / 5) * criteria.weight;
         totalWeight += criteria.weight;
@@ -38,7 +38,7 @@ export function calculateSourcingModelScore(
   let totalWeight = 0;
 
   criteria.forEach((crit) => {
-    const criteriaData = data as Record<string, any>;
+    const criteriaData = (data as unknown) as Record<string, { score: number; notes: string }>;
     const score = criteriaData[crit.id]?.score || 0;
     if (score > 0) {
       totalScore += (score / 5) * crit.weight;
@@ -114,8 +114,8 @@ export function downloadPreliminaryEvaluationReport(
   INITIAL_ASSESSMENT_CRITERIA_GROUPS.forEach((group) => {
     rows.push([group.title, '', group.totalWeight.toString(), '', '', '']);
     group.criteria.forEach((criteria) => {
-      const score = (data.initialAssessment as any)[criteria.id]?.score || 0;
-      const notes = (data.initialAssessment as any)[criteria.id]?.notes || '';
+      const score = ((data.initialAssessment as unknown) as Record<string, { score: number; notes: string }>)[criteria.id]?.score || 0;
+      const notes = ((data.initialAssessment as unknown) as Record<string, { score: number; notes: string }>)[criteria.id]?.notes || '';
       rows.push([
         '',
         criteria.title,
@@ -133,16 +133,16 @@ export function downloadPreliminaryEvaluationReport(
   rows.push(['PART 2: SOURCING MODEL SPECIFIC', '', '', '', '', '']);
 
   let modelCriteria: typeof COTS_EVALUATION_CRITERIA = COTS_EVALUATION_CRITERIA;
-  let modelData: Record<string, any> = data.sourcingModelSpecific.buy;
+  let modelData: Record<string, { score: number; notes: string }> = (data.sourcingModelSpecific.buy as unknown) as Record<string, { score: number; notes: string }>;
   let modelName = 'COTS (Buy)';
 
   if (selectedModel === 'build') {
     modelCriteria = CUSTOM_DEVELOPMENT_CRITERIA;
-    modelData = data.sourcingModelSpecific.build;
+    modelData = (data.sourcingModelSpecific.build as unknown) as Record<string, { score: number; notes: string }>;
     modelName = 'Custom Development (Build)';
   } else if (selectedModel === 'openSource') {
     modelCriteria = OSS_EVALUATION_CRITERIA;
-    modelData = data.sourcingModelSpecific.openSource;
+    modelData = (data.sourcingModelSpecific.openSource as unknown) as Record<string, { score: number; notes: string }>;
     modelName = 'Open Source Software (OSS)';
   }
 

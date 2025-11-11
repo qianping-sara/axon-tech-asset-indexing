@@ -8,10 +8,8 @@ import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { logger, LogLevel, logRequest, logResponse, logApiError } from '@/lib/utils/logger';
 
 describe('Logger Utility', () => {
-  let consoleSpy: jest.SpyInstance;
-
   beforeEach(() => {
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+    jest.spyOn(console, 'log').mockImplementation();
     jest.spyOn(console, 'debug').mockImplementation();
     jest.spyOn(console, 'warn').mockImplementation();
     jest.spyOn(console, 'error').mockImplementation();

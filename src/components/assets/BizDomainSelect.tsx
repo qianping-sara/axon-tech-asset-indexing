@@ -1,6 +1,6 @@
 'use client';
 
-import { BIZ_DOMAINS, BizDomainInfo } from '@/lib/constants/bizDomains';
+import { BIZ_DOMAINS } from '@/lib/constants/bizDomains';
 
 interface BizDomainSelectProps {
   value?: string;

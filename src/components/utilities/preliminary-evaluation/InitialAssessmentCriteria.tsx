@@ -7,7 +7,7 @@ import { INITIAL_ASSESSMENT_CRITERIA_GROUPS } from '@/lib/constants/preliminary-
 
 interface InitialAssessmentCriteriaProps {
   data: InitialAssessmentData;
-  onDataChange: (key: keyof InitialAssessmentData, value: any) => void;
+  onDataChange: (key: keyof InitialAssessmentData, value: { notes: string; score: number }) => void;
   onClearAll: () => void;
 }
 
@@ -38,7 +38,7 @@ export default function InitialAssessmentCriteria({
     let totalScore = 0;
     let totalWeight = 0;
     group.criteria.forEach((criterion) => {
-      const score = (data as any)[criterion.id]?.score || 0;
+      const score = (data[criterion.id as keyof InitialAssessmentData] as { score: number; notes: string })?.score || 0;
       totalScore += score * criterion.weight;
       totalWeight += criterion.weight;
     });
@@ -46,7 +46,7 @@ export default function InitialAssessmentCriteria({
   };
 
   const handleScoreChange = (criteriaId: string, score: number) => {
-    const currentData = (data as any)[criteriaId] || { score: 0, notes: '' };
+    const currentData = (data[criteriaId as keyof InitialAssessmentData] as { score: number; notes: string }) || { score: 0, notes: '' };
     onDataChange(criteriaId as keyof InitialAssessmentData, {
       ...currentData,
       score,
@@ -54,7 +54,7 @@ export default function InitialAssessmentCriteria({
   };
 
   const handleNotesChange = (criteriaId: string, notes: string) => {
-    const currentData = (data as any)[criteriaId] || { score: 0, notes: '' };
+    const currentData = (data[criteriaId as keyof InitialAssessmentData] as { score: number; notes: string }) || { score: 0, notes: '' };
     onDataChange(criteriaId as keyof InitialAssessmentData, {
       ...currentData,
       notes,
@@ -121,7 +121,7 @@ export default function InitialAssessmentCriteria({
                     </thead>
                     <tbody>
                       {group.criteria.map((criterion, idx) => {
-                        const criterionData = (data as any)[criterion.id] || {
+                        const criterionData = (data[criterion.id as keyof InitialAssessmentData] as { score: number; notes: string }) || {
                           score: 0,
                           notes: '',
                         };

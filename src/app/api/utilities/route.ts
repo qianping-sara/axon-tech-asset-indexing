@@ -9,7 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status') || 'PUBLISHED';
 
     // Build filter conditions
-    const where: any = {
+    const where: Prisma.axon_utilityWhereInput = {
       status: status,
     };
 

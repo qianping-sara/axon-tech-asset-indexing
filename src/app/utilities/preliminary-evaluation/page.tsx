@@ -90,7 +90,7 @@ export default function PreliminaryEvaluationPage() {
     }
   }, []);
 
-  const handleInitialAssessmentChange = (key: keyof typeof data.initialAssessment, value: any) => {
+  const handleInitialAssessmentChange = (key: keyof typeof data.initialAssessment, value: unknown) => {
     setData((prev) => ({
       ...prev,
       initialAssessment: {
@@ -130,7 +130,7 @@ export default function PreliminaryEvaluationPage() {
   const handleSourcingModelChange = (
     model: 'buy' | 'build' | 'openSource',
     key: string,
-    value: any
+    value: unknown
   ) => {
     setData((prev) => ({
       ...prev,

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, Info } from 'lucide-react';
 import { SourcingModelSpecificData } from '@/lib/types/preliminary-evaluation';
 import {
@@ -12,7 +12,7 @@ import {
 interface SourcingModelSpecificCriteriaProps {
   data: SourcingModelSpecificData;
   selectedModel: 'buy' | 'build' | 'openSource';
-  onDataChange: (model: 'buy' | 'build' | 'openSource', key: string, value: any) => void;
+  onDataChange: (model: 'buy' | 'build' | 'openSource', key: string, value: { notes: string; score: number }) => void;
   onClearAll: (model: 'buy' | 'build' | 'openSource') => void;
 }
 
@@ -72,7 +72,7 @@ export default function SourcingModelSpecificCriteria({
       return;
     }
 
-    const currentData = (getModelData(model) as any)[criteriaId] || { score: 0, notes: '' };
+    const currentData = ((getModelData(model) as unknown) as Record<string, { score: number; notes: string }>)[criteriaId] || { score: 0, notes: '' };
     onDataChange(model, criteriaId, {
       ...currentData,
       score,
@@ -80,7 +80,7 @@ export default function SourcingModelSpecificCriteria({
   };
 
   const handleNotesChange = (model: 'buy' | 'build' | 'openSource', criteriaId: string, notes: string) => {
-    const currentData = (getModelData(model) as any)[criteriaId] || { score: 0, notes: '' };
+    const currentData = ((getModelData(model) as unknown) as Record<string, { score: number; notes: string }>)[criteriaId] || { score: 0, notes: '' };
     onDataChange(model, criteriaId, {
       ...currentData,
       notes,
@@ -94,7 +94,7 @@ export default function SourcingModelSpecificCriteria({
     let totalScore = 0;
     let totalWeight = 0;
     criteria.forEach((criterion) => {
-      const score = (modelData as any)[criterion.id]?.score || 0;
+      const score = ((modelData as unknown) as Record<string, { score: number; notes: string }>)[criterion.id]?.score || 0;
       totalScore += score * criterion.weight;
       totalWeight += criterion.weight;
     });
@@ -177,7 +177,7 @@ export default function SourcingModelSpecificCriteria({
                     </thead>
                     <tbody>
                       {modelCriteria.map((criterion, idx) => {
-                        const criterionData = (modelData as any)[criterion.id] || {
+                        const criterionData = ((modelData as unknown) as Record<string, { score: number; notes: string }>)[criterion.id] || {
                           score: 0,
                           notes: '',
                         };
