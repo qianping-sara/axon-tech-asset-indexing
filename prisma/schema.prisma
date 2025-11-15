@@ -161,3 +161,21 @@ enum Status {
   DEPRECATED
   ARCHIVED
 }
+
+model Idea {
+  id            String   @id @default(cuid())
+  title         String   @db.VarChar(100)
+  description   String   @db.VarChar(500)
+  businessDomain String?  @db.VarChar(50)
+  assetCategory String?   @db.VarChar(50)
+  tags          Json?    @default("[]")
+  status        String   @default("evaluating") @db.VarChar(20)
+  voteCount     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([voteCount])
+  @@index([createdAt])
+  @@map("idea")
+}

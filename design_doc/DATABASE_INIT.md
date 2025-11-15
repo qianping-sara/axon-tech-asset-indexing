@@ -1,7 +1,7 @@
 # Axon Asset Golden Index - Database Schema & Initialization
 
-**Version**: 2.0
-**Last Updated**: 2025-11-05
+**Version**: 2.1
+**Last Updated**: 2025-11-15
 **Database**: PostgreSQL (Neon)
 **ORM**: Prisma
 
@@ -43,8 +43,12 @@
 
 ### Key Statistics
 
-- **Tables**: 5 core tables
-- **Enums**: 4 enums (Category, Status, BizDomain, RelationType)
+- **Tables**: 5 core tables (axon_asset, axon_tag, axon_asset_tag, axon_asset_relation, axon_asset_version)
+- **Enums**: 4 enums
+  - Category: 7 values
+  - Status: 4 values
+  - BizDomain: 11 values (5 core + 5 support + 1 common)
+  - RelationType: 8 values (ArchiMate 3.x standard)
 - **Indexes**: 14 indexes for performance
 - **Foreign Keys**: 5 relationships with CASCADE delete
 - **Unique Constraints**: 3 unique constraints
@@ -94,7 +98,7 @@ axon_asset (main record)
 | `contentHash` | VARCHAR(64) | NOT NULL | SHA256 hash of content |
 | `sourceSystem` | VARCHAR(100) | NOT NULL | Source system (e.g., GitHub) |
 | `sourceLink` | VARCHAR(500) | NOT NULL | Link to source |
-| `bizDomain` | BizDomain ENUM | NULLABLE | Business domain classification (11 types) |
+| `bizDomain` | BizDomain ENUM | NULLABLE | Business domain classification (11 types: 5 core + 5 support + 1 common) |
 | `createdAt` | TIMESTAMP | DEFAULT: NOW() | Creation timestamp |
 | `updatedAt` | TIMESTAMP | NOT NULL | Last update timestamp |
 | `publishedAt` | TIMESTAMP | NULLABLE | Publication timestamp |
@@ -288,32 +292,52 @@ CREATE TYPE "BizDomain" AS ENUM (
   'INQUIRY_GENERAL_CHANGES',
   'MONEY_OUT',
   'WEALTH',
-  'CHANNEL_EXPERIENCE',
+  'CUSTOMER_ENGAGEMENT',
+  'CUSTOMER_RELATIONSHIP_MANAGEMENT',
   'PAYMENT_SETTLEMENT',
   'FINANCE_ACCOUNTING',
   'RISK_COMPLIANCE',
-  'CUSTOMER_COMMUNICATION'
+  'COMMON_CAPABILITIES'
 );
 ```
 
 **Categories**:
 - **Core Servicing Domains** (5): CLAIM, FINANCIAL_CHANGE, INQUIRY_GENERAL_CHANGES, MONEY_OUT, WEALTH
-- **Horizontal Capabilities** (6): CHANNEL_EXPERIENCE, PAYMENT_SETTLEMENT, FINANCE_ACCOUNTING, RISK_COMPLIANCE, CUSTOMER_COMMUNICATION
+- **Support Domain Capabilities** (5): CUSTOMER_ENGAGEMENT, CUSTOMER_RELATIONSHIP_MANAGEMENT, PAYMENT_SETTLEMENT, FINANCE_ACCOUNTING, RISK_COMPLIANCE
+- **General Domain Capabilities** (1): COMMON_CAPABILITIES
 
-### 4. RelationType (6 values)
+**Migration Note**:
+- CHANNEL_EXPERIENCE → CUSTOMER_ENGAGEMENT (migrated in update_biz_domain_structure)
+- CUSTOMER_COMMUNICATION → CUSTOMER_ENGAGEMENT (migrated in update_biz_domain_structure)
 
-Asset relationship types:
+### 4. RelationType (8 values - ArchiMate 3.x Standard)
+
+Asset relationship types following ArchiMate 3.x standard:
 
 ```sql
 CREATE TYPE "RelationType" AS ENUM (
-  'DEPENDS_ON',
-  'USED_BY',
-  'RELATED_TO',
-  'EXTENDS',
-  'IMPLEMENTS',
-  'REFERENCES'
+  'COMPOSITION',
+  'AGGREGATION',
+  'ASSIGNMENT',
+  'REALIZATION',
+  'SERVING',
+  'ACCESS',
+  'INFLUENCE',
+  'ASSOCIATION'
 );
 ```
+
+**Structural Relationships**:
+- `COMPOSITION` - A is composed of B (strong lifecycle dependency)
+- `AGGREGATION` - A aggregates B (weak lifecycle dependency)
+- `ASSIGNMENT` - A is assigned to B (allocation of responsibility/behavior/storage)
+- `REALIZATION` - A realizes/implements B (concrete implementation of abstract element)
+
+**Dependency Relationships**:
+- `SERVING` - A serves/provides functionality to B
+- `ACCESS` - A accesses/uses B (active element accesses passive element)
+- `INFLUENCE` - A influences B's implementation/achievement
+- `ASSOCIATION` - Unspecified relationship between A and B
 
 ---
 
@@ -365,14 +389,31 @@ CREATE TYPE "Status" AS ENUM (
   'ARCHIVED'
 );
 
--- RelationType Enum (6 values)
+-- BizDomain Enum (11 values)
+CREATE TYPE "BizDomain" AS ENUM (
+  'CLAIM',
+  'FINANCIAL_CHANGE',
+  'INQUIRY_GENERAL_CHANGES',
+  'MONEY_OUT',
+  'WEALTH',
+  'CUSTOMER_ENGAGEMENT',
+  'CUSTOMER_RELATIONSHIP_MANAGEMENT',
+  'PAYMENT_SETTLEMENT',
+  'FINANCE_ACCOUNTING',
+  'RISK_COMPLIANCE',
+  'COMMON_CAPABILITIES'
+);
+
+-- RelationType Enum (8 values - ArchiMate 3.x Standard)
 CREATE TYPE "RelationType" AS ENUM (
-  'DEPENDS_ON',
-  'USED_BY',
-  'RELATED_TO',
-  'EXTENDS',
-  'IMPLEMENTS',
-  'REFERENCES'
+  'COMPOSITION',
+  'AGGREGATION',
+  'ASSIGNMENT',
+  'REALIZATION',
+  'SERVING',
+  'ACCESS',
+  'INFLUENCE',
+  'ASSOCIATION'
 );
 ```
 
@@ -586,13 +627,30 @@ The Prisma schema defines all models and relationships. Key features:
 
 #### 0_init
 - Initial schema creation
-- All 5 tables and 3 enums
+- All 5 tables and 3 enums (Category, Status, RelationType)
 - All indexes and constraints
+
+#### add_biz_domain
+- Adds BizDomain enum (10 initial values)
+- Adds bizDomain column to axon_asset table
+- Creates index on bizDomain
+
+#### update_biz_domain_structure
+- Restructures BizDomain enum to 3-tier architecture
+- Adds 3 new values: CUSTOMER_ENGAGEMENT, CUSTOMER_RELATIONSHIP_MANAGEMENT, COMMON_CAPABILITIES
+- Migrates data: CHANNEL_EXPERIENCE → CUSTOMER_ENGAGEMENT
+- Migrates data: CUSTOMER_COMMUNICATION → CUSTOMER_ENGAGEMENT
+- Final BizDomain: 11 values (5 core + 5 support + 1 common)
 
 #### add_revival_apis
 - Sample data for revival APIs
 - 7 tags and 3 assets
 - Asset-tag associations
+
+#### Other migrations
+- add_ai_ml_services_category: Adds AI_ML_SERVICES to Category enum
+- add_axon_utility_table: Adds axon_utility table for CoE utilities
+- seed_* migrations: Seed data for various tools and utilities
 
 ---
 
@@ -664,10 +722,15 @@ curl https://your-domain.vercel.app/api/health
 
 ---
 
-**Last Updated**: 2025-11-05
-**Schema Version**: 2.0
+**Last Updated**: 2025-11-15
+**Schema Version**: 2.1
 **Status**: Production Ready
-- ✅ All versions are removed (via axon_asset_version)
+
+**Recent Changes (v2.1)**:
+- ✅ Updated BizDomain enum to 11 values (5 core + 5 support + 1 common)
+- ✅ Updated RelationType enum to 8 values (ArchiMate 3.x standard)
+- ✅ Added migration notes for BizDomain restructuring
+- ✅ Clarified enum value counts and categories
 
 ---
 
@@ -810,7 +873,7 @@ npx prisma migrate deploy
 
 ---
 
-**Last Updated**: 2025-11-05
-**Schema Version**: 2.0
+**Last Updated**: 2025-11-15
+**Schema Version**: 2.1
 **Status**: Production Ready
 
