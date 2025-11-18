@@ -1,4 +1,5 @@
 const { PrismaClient, Category, Status } = require('@prisma/client');
+const { randomUUID } = require('crypto');
 
 const prisma = new PrismaClient();
 
@@ -543,6 +544,26 @@ const apiAssetsData = [
   },
 ];
 
+// Architecture Pattern Assets (新增)
+const architecturePatternAssetsData = [
+  {
+    id: 'arch_stp_automation_pattern',
+    name: 'Straight-Through Processing (STP) Automation Pattern',
+    description: 'Architecture pattern for automating insurance claims and revivals processing with STP-first approach, microservices, and orchestration',
+    category: 'ARCHITECTURE_GOVERNANCE',
+    assetType: 'Solution Patterns',
+    version: '1.0.0',
+    status: 'PUBLISHED',
+    owner: 'Architecture Team',
+    contentPath: 'public/assets/architecture/patterns/stp-automation-pattern.md',
+    contentHash: '3de76c0d17cd6ae00f7089975fb9b06ea54a70ffdd8699cf2c4fbed2a1e1d977',
+    sourceSystem: 'GitHub',
+    sourceLink: 'https://github.com/qianping-sara/axon-tech-asset-indexing',
+    bizDomain: 'CLAIM',
+    tags: ['Architecture', 'Automation', 'Claims', 'STP', 'Orchestration'],
+  },
+];
+
 async function main() {
   console.log('🌱 Starting seed with API assets and tags...');
 
@@ -614,6 +635,66 @@ async function main() {
       }
     }
     console.log(`✅ Created ${linkCount} asset-tag links`);
+
+    // 4. Import Architecture Pattern Assets (新增)
+    console.log('🏗️ Importing architecture pattern assets...');
+    for (const asset of architecturePatternAssetsData) {
+      const { tags, ...assetData } = asset;
+      await prisma.axon_asset.upsert({
+        where: { id: assetData.id },
+        update: {},
+        create: {
+          ...assetData,
+          updatedAt: new Date(),
+        },
+      });
+    }
+    console.log(`✅ Imported ${architecturePatternAssetsData.length} architecture pattern assets`);
+
+    // 5. Link Architecture Pattern Assets and Tags (新增)
+    console.log('🔗 Linking architecture pattern assets and tags...');
+    let archLinkCount = 0;
+    for (const asset of architecturePatternAssetsData) {
+      const dbAsset = await prisma.axon_asset.findUnique({
+        where: { id: asset.id },
+      });
+
+      if (dbAsset) {
+        for (const tagName of asset.tags) {
+          let tag = await prisma.axon_tag.findUnique({
+            where: { name: tagName },
+          });
+
+          if (!tag) {
+            tag = await prisma.axon_tag.create({
+              data: {
+                id: randomUUID(),
+                name: tagName,
+                category: 'general',
+                updatedAt: new Date(),
+              },
+            });
+          }
+
+          await prisma.axon_asset_tag.upsert({
+            where: {
+              assetId_tagId: {
+                assetId: dbAsset.id,
+                tagId: tag.id,
+              },
+            },
+            update: {},
+            create: {
+              id: randomUUID(),
+              assetId: dbAsset.id,
+              tagId: tag.id,
+            },
+          });
+          archLinkCount++;
+        }
+      }
+    }
+    console.log(`✅ Created ${archLinkCount} architecture pattern asset-tag links`);
 
     console.log('✨ Seed completed successfully!');
   } catch (error) {

@@ -46,7 +46,7 @@ Start → Initiation → Documents Received?
 - Redesign business processes with the explicit goal of achieving Straight-Through Processing (STP)
 - Manual intervention should be treated as an exception, not the default
 
-### 3.2 User Centricity (UI 重构)
+### 3.2 User Centricity (UI refactor)
 - **Eliminate "Swivel Chair"**: UIs must be redesigned to aggregate relevant information into a single view for the agent
 - **Contextual Data**: Present only necessary data to the agent to facilitate quick decision-making for non-STP cases
 
