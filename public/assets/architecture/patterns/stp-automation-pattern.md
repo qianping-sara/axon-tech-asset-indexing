@@ -27,6 +27,9 @@ In modernizing insurance and financial services (e.g., Underwriting, Claims), th
 
 The following logic flow illustrates the standard Happy Path for STP and the exception handling for manual intervention:
 
+![automation-patter](/assets/architecture/patterns/images/automation-pattern.jpg)
+
+
 ```
 Start → Initiation → Documents Received?
   ├─ Yes → Validation & Enrichment (Service Call)
