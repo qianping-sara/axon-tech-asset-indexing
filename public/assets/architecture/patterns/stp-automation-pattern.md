@@ -6,8 +6,8 @@ assetType: Solution Patterns
 version: 1.0.0
 status: PUBLISHED
 owner: Architecture Team
-sourceSystem: GitHub
-sourceLink: https://github.com/axon-platform/architecture-patterns
+sourceSystem: Internal
+sourceLink: https://axon-tech-asset-indexing.vercel.app/assets/arch_stp_automation_pattern
 bizDomain: CLAIM
 ---
 
