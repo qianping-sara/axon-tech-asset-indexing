@@ -94,7 +94,6 @@ export const CATEGORIES: CategoryInfo[] = [
       'Technology Stacks',
       'Standards',
       'Principles',
-      'Checklists',
       'Policies',
       'Decision Records',
     ],
@@ -109,7 +108,6 @@ export const CATEGORIES: CategoryInfo[] = [
       'Playbooks',
       'Best Practices',
       'Tutorials',
-      'Quick Start Guides',
     ],
   },
 ];
@@ -157,7 +155,6 @@ export const ASSET_TYPES_BY_CATEGORY: Record<string, string[]> = {
     'Technology Stacks',
     'Standards',
     'Principles',
-    'Checklists',
     'Policies',
     'Decision Records',
   ],
@@ -166,7 +163,6 @@ export const ASSET_TYPES_BY_CATEGORY: Record<string, string[]> = {
     'Playbooks',
     'Best Practices',
     'Tutorials',
-    'Quick Start Guides',
   ],
 };
 
@@ -202,14 +198,12 @@ export const ALL_ASSET_TYPES: string[] = [
   'Technology Stacks',
   'Standards',
   'Principles',
-  'Checklists',
   'Policies',
   'Decision Records',
   'SOPs',
   'Playbooks',
   'Best Practices',
   'Tutorials',
-  'Quick Start Guides',
 ];
 
 /**
