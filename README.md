@@ -4,7 +4,35 @@ A technical asset discovery portal for Center of Excellence (CoE). Built with Ne
 
 ## 🎯 Overview
 
-Asset Golden Index is a "content as code" platform where users maintain Markdown files for asset details, and the website automatically indexes and renders them. It supports 6 asset categories with 30+ asset types.
+**Axon** is the **AutomationCoE Hub** that unifies assets, guides solutions, and connects needs with emerging tech. It serves as the **Golden Index** for automation assets—a unified discovery portal that transforms scattered automation capabilities into circulating value.
+
+### The Problem We Solve
+
+**For Automation Developers & Solution Architects** - *The "Internal Silos" Need*
+When automation assets (APIs, bots, processes) are scattered across multiple, siloed systems (Spax, Bizagi, Gravitee, RPA, Confluence), teams struggle to discover reusable assets. This leads to searching, wasting development time, and increasing future maintenance costs. Your automation would lead to "reinventing the wheel."
+
+**For Solution Architects/FA & Enterprise Architects** - *The "Decision Paralysis" Need*
+A clear way to make informed choice: Only relying on experience or manual reviews is unscalable. The CoE needs a way to embed its "playbook" and design standards directly into the decision process to ensure compliance, security, and quality before bad decisions are made.
+
+**For Process Owners & Solution Architects/FA** - *The "Inspiration Gap" Need*
+(Biz-to-Tech): Business teams lack a contextual channel to explore external technology trends (e.g., GenAI) that could solve their problems in new ways.
+
+### Our Solution
+
+Axon is the **Golden Index** for automation assets. We don't replace your existing systems—we connect them, providing a **single search interface** to discover all automation capabilities across your organization.
+
+**Key Capabilities:**
+- **Reliable**: Validated and trustworthy assets from source systems
+- **Re-usable**: Build once, use multiple times across scenarios
+- **Scalable**: Support future automation with sustainable architecture
+- **Trackable**: Know which assets are used by whom and where
+
+**What Makes Axon Different:**
+- **Unified Asset Discovery**: Enterprise-wide "asset catalog" indexing all internal systems (APIs, bots, processes), transforming siloed, static technical accumulation into a portable library of dynamic, reusable components
+- **Solution Design Advisor**: The CoE's "governance engine" that externalizes architectural wisdom into playbooks, decision trees, and reference architectures, guiding teams to select the correct solution (API vs. RPA vs. Low-code) for their specific problem
+- **Innovation & Opportunity Marketplace**: The CoE's strategic "engagement center" creating a horizontal marketplace for real-time needs (via the Challenge Board) and intriguing opportunities (via the Innovation Radar), moving from a reactive "order-taker" to a proactive value orchestrator
+
+This is a "content as code" platform where users maintain Markdown files for asset details, and the website automatically indexes and renders them. It supports 6 asset categories with 30+ asset types.
 
 ## 🏗️ Architecture
 
@@ -234,125 +262,7 @@ Required for production:
 
 **See [VERCEL_SETUP.md](./VERCEL_SETUP.md) for detailed deployment instructions.**
 
-## 📚 Documentation
-
-- [Database Design](../design/DB_DESIGN.md)
-- [Workspace Structure](../design/WORKSPACE_STRUCTURE.md)
-- [Development Tasks](../design/DEVELOPMENT_TASKS.md)
-
-## 🤝 Contributing
-
-1. Create a feature branch
-2. Make your changes
-3. Run tests and linting
-4. Submit a pull request
-
 ## 📄 License
 
 MIT
 
-## 👥 Team
-
-Asset Golden Index MVP - Center of Excellence
-
----
-
-## ✅ Project Status
-
-### Phase 1: Project Setup (COMPLETED)
-- [x] Task 1.1: Project creation and dependencies installation
-- [x] Task 1.2: Database initialization (schema created, ready for Vercel setup)
-- [x] Task 1.3: Project structure creation
-- [x] Task 1.4: Git and CI/CD initialization
-
-### Phase 2: Backend API Development (IN PROGRESS)
-- [x] Task 2.1: Asset API - List, Search, and Filtering
-  - [x] GET /api/assets (pagination, filtering, sorting)
-  - [x] GET /api/assets?search=keyword (search)
-  - [x] GET /api/assets?category=CODE_COMPONENTS (category filter)
-  - [x] GET /api/assets?tag=python (tag filter)
-  - [x] Query optimization and caching strategy
-  - [x] Unit tests for asset API
-  - [x] Integration tests for API endpoints
-  - [x] API documentation
-
-- [x] Task 2.3: Asset API - Create, Update, and Delete
-  - [x] POST /api/assets (create asset)
-  - [x] GET /api/assets/[id] (get asset details)
-  - [x] PUT /api/assets/[id] (update asset)
-  - [x] DELETE /api/assets/[id] (delete asset)
-  - [x] Comprehensive data validation
-  - [x] Validation utilities for all fields
-  - [x] Unit tests for validation
-  - [x] Unit tests for asset detail operations
-  - [x] Integration tests for detail API endpoints
-  - [x] API documentation with examples
-
-- [x] Task 2.4: Tags and Categories API
-  - [x] GET /api/tags (list tags with pagination and filtering)
-  - [x] GET /api/tags/[id] (get tag details with associated assets)
-  - [x] GET /api/categories (list all categories with asset counts)
-  - [x] GET /api/categories/[category] (get category details with assets)
-  - [x] Category statistics and metadata
-  - [x] Unit tests for tags API
-  - [x] Unit tests for categories API
-
-- [x] Task 2.5: Markdown Parsing and GitHub Webhook Sync
-  - [x] Markdown file parsing with Frontmatter extraction (gray-matter)
-  - [x] Asset metadata validation
-  - [x] SHA256 content hash calculation for change detection
-  - [x] GitHub webhook signature verification
-  - [x] File change detection (added, modified, removed)
-  - [x] Asset sync business logic (create, update, delete)
-  - [x] POST /api/sync (GitHub webhook endpoint)
-  - [x] GET /api/sync (sync status endpoint)
-  - [x] Unit tests for Markdown parser (15 tests)
-  - [x] Unit tests for hash and webhook utilities (20 tests)
-  - [x] Unit tests for sync business logic (8 tests)
-
-- [x] Task 2.6: Health Check and Error Handling
-  - [x] GET /api/health (health check endpoint with database connectivity check)
-  - [x] Global error handling utilities (ApiError, ValidationError, NotFoundError, etc.)
-  - [x] Error response standardization
-  - [x] Logging utility with multiple log levels (DEBUG, INFO, WARN, ERROR)
-  - [x] Request/response logging
-  - [x] API error logging with context
-  - [x] Middleware for request/response logging
-  - [x] API handler wrapper for error handling
-  - [x] Unit tests for logger (13 tests)
-  - [x] Unit tests for error handling (20 tests)
-
-### Phase 3: Frontend Development (IN PROGRESS)
-- [ ] Task 3: Home Page and Search Functionality
-  - [ ] 3.1: Header component
-  - [ ] 3.2: SearchBlock component
-  - [ ] 3.3: CategoryCard component
-  - [ ] 3.4: SolutionIntro component (6 categories)
-  - [ ] 3.5: FourPillars component
-  - [ ] 3.6: AssetCard component (with Asset Type)
-  - [ ] 3.7: AssetTypeFilter component
-  - [ ] 3.8: SearchResults component
-  - [ ] 3.9: useSearch Hook
-  - [ ] 3.10: useFilters Hook
-  - [ ] 3.11: Home page integration
-  - [ ] 3.12: Search results page integration
-  - [ ] 3.13: Component tests
-  - [ ] 3.14: Hook tests
-
-**Design Review Completed**:
-- ✅ Reviewed latest classification system (V2)
-- ✅ Updated design plan based on 6 categories and 32 asset types
-- ✅ Added assetType filtering support to API
-- ✅ Created categories constants file
-- ✅ See [TASK_3_REVIEW_COMPLETE.md](./TASK_3_REVIEW_COMPLETE.md) for details
-
-### Next Steps
-- Task 3: Frontend implementation (14 subtasks)
-- Task 4: Integration tests and optimization
-
-### Database Setup Notes
-- Prisma schema is ready in `prisma/schema.prisma`
-- Database migration will be executed in Vercel environment
-- Use `DATABASE_URL_UNPOOLED` for migrations in production
-- Use `DATABASE_URL` (pooled) for application connections
-- All tables prefixed with `axon_` for isolation from existing tables
