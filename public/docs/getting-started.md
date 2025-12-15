@@ -1,114 +1,138 @@
 # Getting Started with Axon
 
-Welcome to Axon, your comprehensive technical asset discovery and management platform.
-
-
-
-## 🎯 Platform Positioning
-
-### The Problem
-
-> When automation assets are scattered across disconnected systems (Gravitee, EA Platform, Confluence...etc), developers waste time searching and often reinvent solutions that already exist. 
-
-### The Solution: Your Unified Discovery Portal
-
-> **Axon is the Golden Index for automation assets.** We don't replace your existing systems—we connect them, providing a **single search interface** to discover all automation capabilities across your organization.
-
-### Core Value Proposition
-
-> - 🔍 **Contextual Search**: Search across all asset types and discover related assets with one click
-> - 🛡️ **Trusted Metadata**: Indexed and linked data from your source systems
-> - 📈 **Accelerate Delivery, Reduce Costs**: Reuse proven assets instead of rebuilding
-
-### Key Differentiators
-
-> **Unlike Gravitee (API Portal)**
-> - Gravitee is the "System of Record" for APIs (publication, security, lifecycle)
-> - Axon is the "System of Discovery" for automation—it answers "To implement this business process, which API, which RPA Bot, and which AI model should I use?"
-> 
-> **Unlike Sparx (Architecture modeling)**
-> - Sparx is the "System of Record" for architecture blueprints & modeling tool
-> - Axon is a "practical utility" for frontline developers—a bottom-up discovery tool focused on "what's available for reuse today"
-
-## 📦 Asset Categories
-
-Axon manages **7 primary categories** of technical assets, each containing multiple asset types:
-
-
-| Category | Asset Type | Description | Example |
-|---|---|---|---|
-| CODE_COMPONENTS | Scripts | Reusable automation scripts (Shell, Python, etc.) | "Deployment automation script" |
-| | Frontend Components | Reusable UI components (React, Vue, etc.) | "Shared Date Picker component" |
-| | Backend Libraries | Reusable backend modules and packages | "Shared Java library for policyholder verification" |
-| | Development Frameworks | SDKs, scaffolding, and development toolkits | "Development Framework, SDK" |
-| | Open Source Projects | Curated and approved open-source tools | "Curated list of approved Python libraries" |
-| SERVICES_APIS | REST APIs | HTTP-based services for system-to-system interaction | "Policy Basic Info API, Banking Detail Check API" |
-| | GraphQL APIs | Flexible query language APIs | "Mobile App Gateway API" |
-| | Microservices | Domain-driven services oriented to business scenarios | "Scenario driven domain API" |
-| | Integration Services | Middleware components connecting disparate systems | "ETL services" |
-| AI_ML_SERVICES | ML Models | Trained machine learning models for prediction/classification | "Fraud Detection Model", "Risk Scoring Model" |
-| | LLM Services | Large Language Model services and APIs | "Document Classification LLM", "Chatbot Service" |
-| | AI Agents | Autonomous AI agents for specific tasks | "Customer Service Agent", "Data Analysis Agent" |
-| | ML Pipelines | End-to-end ML workflows (training, evaluation, deployment) | "Model Training Pipeline", "Feature Engineering Pipeline" |
-| | Feature Stores | Centralized repositories for ML features | "Customer Features Store", "Transaction Features Store" |
-| AUTOMATION_WORKFLOWS | RPA Bots | Robotic Process Automation components | "RPA Bot" |
-| | No-Code Workflows | Low-code/no-code automation platforms | "Front-end Widget, No-code App, Plugin" |
-| | Business Processes | Business logic and process definitions (BPMN) | "Process/Subprocess module inventory (Bizagi)", "Revival Qualification rules" |
-| | Scheduled Jobs | Batch processing tasks | "Synchronizing data from Bancs to PVB+" |
-| DATA_ANALYTICS | Data Products | Standardized, governed datasets for business scenarios | "Data/Data product" |
-| | Data Schemas | Formal data structure definitions (JSON, Avro, etc.) | "Data Template, Data platform schema" |
-| | Datasets | Cleansed, curated foundational data collections | "Data Set" |
-| | Data Pipelines | ETL/ELT workflows for data movement and transformation | "Nightly pipeline from core systems to data warehouse" |
-| | Data Dictionaries | Centralized data element definitions and relationships | "Enterprise Data Dictionary for customer domain" |
-| ARCHITECTURE_GOVERNANCE | Reference Architectures | High-level technical architecture designs | "Automation CoE Blueprint" |
-| | Solution Patterns | Standardized designs for recurring business problems | "Revival Qualification Service Design, Partial STP Report (UI Design)" |
-| | Technology Stacks | Approved technology combinations for project types | "Standard Java Spring Boot stack" |
-| | Standards | Mandatory rules and specifications | "API Service Catalog, Data Schemas" |
-| | Principles | High-level direction statements | "Cloud-First", "CoE Vision Guiding Principles" |
-| | Checklists | Verifiable quality assurance lists | "Deployment Readiness Checklist", "Security Review Checklist" |
-| | Policies | Governance documents defining operating models | "CoE Governance Charter" |
-| | Decision Records | Immutable logs of architectural decisions | "ADR record" |
-| KNOWLEDGE_PRACTICES | SOPs | Step-by-step operational procedures | "SOP for new API deployment" |
-| | Playbooks | Strategic guides for complex tasks | "Process Optimization Playbook", "Opportunity Assessment Framework" |
-| | Best Practices | Curated principles and successful patterns | "Tool Selection Guide", "Selection criteria for Bizagi, Rule engine..." |
-| | Tutorials | Hands-on learning materials | "How to connect to the Policy API tutorial" |
-| | Quick Start Guides | Concise actionable instructions | "5-minute quick start for the development framework" |
+Welcome to **Axon** — your unified portal for discovering technical assets across the organization.
 
 ---
 
-## 🎯 Key Features
+## 🎯 What is Axon?
 
--  Search & Discovery
--  Asset Details
--  Content as Code Workflow
+**Axon is your Golden Index for automation assets.**
 
+When you need to find APIs, workflows, AI models, or best practices, Axon provides a single search interface to discover all available capabilities.
 
-## 💡 Tips & Best Practices
+### Why Use Axon?
 
-- **Use Specific Tags**: Tag assets with technologies, use cases, and business domains for better discoverability
-- **Check Regularly**: Visit the Discover page to stay updated with new and improved assets
-- **Provide Feedback**: Help improve asset quality by reporting issues or suggesting improvements
-- **Link Related Assets**: When creating new assets, link to related or dependent assets for better navigation
-- **Keep Metadata Updated**: Ensure asset metadata (version, status, owner) is kept current
+- 🔍 **Find What You Need Fast**: Search across all asset types in one place
+- 🛡️ **Trusted Information**: Metadata indexed from authoritative source systems
+- 📈 **Reuse & Accelerate**: Discover proven solutions instead of building from scratch
+- 🗺️ **Navigate Connections**: See how assets relate to business domains
 
-## 📝 Asset Metadata
+---
 
-Each asset includes the following metadata:
-- **Name**: Asset identifier and display name
-- **Description**: Brief summary of the asset
-- **Category**: Primary classification (one of 7 categories)
-- **Asset Type**: Specific type within the category
-- **Version**: Semantic versioning (e.g., 1.0.0)
-- **Status**: PUBLISHED, DRAFT, DEPRECATED, or ARCHIVED
-- **Owner**: Team or individual responsible for the asset
-- **Tags**: Multiple tags for categorization and discovery
-- **Created/Updated**: Timestamps for version tracking
+## 🚀 How to Use Axon
+
+### 1. Search for Assets
+
+Use the **search bar** on the home page to find assets by:
+- **Keywords** (e.g., "policy API", "claim automation")
+- **Technology** (e.g., "Python", "React")
+- **Business domain** (e.g., "Claim", "Financial Change")
+
+### 2. Browse by Category or Domain
+
+Navigate to the **Discover** page to browse:
+- **By Technical Category**: APIs, Workflows, AI Services, Data Products, etc.
+- **By Business Domain**: Claim, Wealth, Customer Engagement, Payment, etc.
+
+### 3. View Asset Details
+
+Click on any asset to see:
+- **Description**: What the asset does and how to use it
+- **Owner**: Who maintains it and contact information
+- **Documentation**: Detailed usage instructions and examples
+- **Related Assets**: Dependencies and connections
+- **Source Link**: Link to the original system or repository
+
+### 4. Use CoE Utilities
+
+Visit the **CoE Utilities** page to access decision-support tools:
+- **Automation Solution Designer**: Get recommendations for automation approaches
+
+---
+
+## 📦 What Can You Find in Axon?
+
+Axon organizes assets into **7 categories**:
+
+### 💻 Code & Components
+Reusable code libraries, scripts, UI components, and development frameworks
+
+### 🔌 Services & APIs
+REST APIs, GraphQL endpoints, microservices, and integration services
+
+### 🤖 AI/ML Services
+Machine learning models, LLM services, AI agents, and ML pipelines
+
+### ⚙️ Automation & Workflows
+RPA bots, no-code workflows, business processes, and scheduled jobs
+
+### 📊 Data & Analytics
+Data products, schemas, datasets, pipelines, and data dictionaries
+
+### 🏛️ Architecture & Governance
+Reference architectures, solution patterns, standards, principles, and policies
+
+### 📚 Knowledge & Practices
+SOPs, playbooks, best practices, tutorials, and quick start guides
+
+---
+
+## 🗺️ Business Domains
+
+Assets are also organized by **11 business domains** to help you find what's relevant to your work:
+
+### Core Servicing Domains
+- **Claim**: Claims processing and management
+- **Financial Change**: Policy financial transactions and changes
+- **Inquiry & General Changes**: Customer inquiries and non-financial updates
+- **Money Out**: Fund withdrawals and disbursements
+- **Wealth**: Investment and wealth management services
+
+### Support Domains
+- **Customer Engagement**: Customer interaction and experience
+- **Customer & Relationship Management**: Customer data and CRM
+- **Payment & Settlement**: Payment processing infrastructure
+- **Finance & Accounting**: Financial bookkeeping and reporting
+- **Risk & Compliance**: Regulatory compliance and risk controls
+
+### General Capabilities
+- **Common Capabilities**: Shared infrastructure and platform services
+
+---
+
+## 💡 Tips for Finding Assets
+
+- **Use specific keywords**: Include technology names, business terms, or process names
+- **Filter by domain**: Narrow down results to your business area
+- **Check related assets**: Explore connections to find complementary solutions
+- **Review documentation**: Read the full details before using an asset
+- **Contact the owner**: Reach out if you have questions or need support
+
+---
+
+## 📝 Understanding Asset Information
+
+Each asset includes:
+- **Name**: Clear identifier for the asset
+- **Description**: What it does and when to use it
+- **Category & Type**: Technical classification
+- **Business Domain**: Which business area it serves
+- **Version**: Current version number
+- **Status**: PUBLISHED (active), DEPRECATED (being phased out), or ARCHIVED (historical)
+- **Owner**: Team or person responsible
+- **Tags**: Additional keywords for discovery
+- **Source Link**: Link to detailed documentation or repository
+
+---
 
 ## ❓ Need Help?
 
-For more information or support:
-- Check the asset documentation for detailed usage instructions
-- Contact your team administrator
-- Refer to the asset owner listed in the metadata
+- **For asset usage questions**: Contact the asset owner listed in the details
+- **For platform questions**: Reach out to your team administrator
+- **For feature requests**: Use the Wishlist page (coming soon)
+
+---
+
+**Happy discovering! 🚀**
 
 
