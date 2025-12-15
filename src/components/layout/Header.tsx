@@ -8,6 +8,7 @@ export default function Header() {
   const pathname = usePathname();
   const isDiscoverActive = pathname === '/discover';
   const isUtilitiesActive = pathname === '/utilities';
+  const isWishlistActive = pathname === '/wishlist';
 
   return (
     <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-gray-200/50">
@@ -44,6 +45,18 @@ export default function Header() {
               }`}
             >
               CoE Utilities
+            </Link>
+
+            {/* Navigation - Wishlist */}
+            <Link
+              href="/wishlist"
+              className={`transition-all duration-200 ${
+                isWishlistActive
+                  ? 'text-green-700 font-bold text-base'
+                  : 'text-gray-600 font-medium text-sm hover:text-gray-900'
+              }`}
+            >
+              Wishlist
             </Link>
           </div>
 

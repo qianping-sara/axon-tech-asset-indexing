@@ -20,6 +20,7 @@ describe('Header Component', () => {
     render(<Header />);
     expect(screen.getByText('Discover')).toBeInTheDocument();
     expect(screen.getByText('CoE Utilities')).toBeInTheDocument();
+    expect(screen.getByText('Wishlist')).toBeInTheDocument();
     expect(screen.getByText('Docs')).toBeInTheDocument();
   });
 
@@ -39,6 +40,12 @@ describe('Header Component', () => {
     render(<Header />);
     const utilitiesLink = screen.getByText('CoE Utilities').closest('a');
     expect(utilitiesLink).toHaveAttribute('href', '/utilities');
+  });
+
+  it('renders Wishlist link', () => {
+    render(<Header />);
+    const wishlistLink = screen.getByText('Wishlist').closest('a');
+    expect(wishlistLink).toHaveAttribute('href', '/wishlist');
   });
 
   it('has sticky positioning', () => {
