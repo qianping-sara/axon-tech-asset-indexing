@@ -357,119 +357,106 @@ export const CATEGORIES: CategoryInfo[] = [
 
 ### Operation 5: Add Assets (Without Changing Classifications)
 
-When classifications remain unchanged, adding new assets is straightforward and can be done through multiple methods.
+When classifications remain unchanged, adding new assets depends on whether the asset has detailed content or just basic metadata.
 
-#### Method 1: Markdown File + Webhook (Recommended for Development)
+#### Scenario 1: Assets with Detailed Markdown Content
 
-**Step 1**: Create Markdown file with YAML frontmatter
-```bash
-# Create directory structure
-mkdir -p public/assets/{category}/{type}
+**Use Case**: Documentation, tutorials, best practices, SOPs, architecture designs, etc.
 
-# Create asset file
-cat > public/assets/services/rest-apis/my-api.md << 'EOF'
+**Required Files**:
+- Markdown file with YAML frontmatter in `public/assets/` directory
+- Database record with `contentPath` pointing to the markdown file
+
+**Execution Methods**:
+
+**Option A: Webhook (Development)**
+1. Create markdown file in `public/assets/{category}/{type}/`
+2. Commit and push to GitHub
+3. Webhook auto-syncs to database (5-10 seconds)
+
+**Option B: Migration (Production)**
+1. Create markdown file in `public/assets/{category}/{type}/`
+2. Create migration SQL with INSERT statement including `contentPath`
+3. Run `npx prisma migrate deploy`
+
+**Option C: API Call (Local Testing)**
+1. Create markdown file
+2. POST to `/api/assets` with `contentPath` field
+
+**Example Markdown File**:
+```markdown
 ---
-name: My API
-description: Brief description
+name: My API Documentation
+description: Complete API reference
 category: SERVICES_APIS
 assetType: REST APIs
 version: 1.0.0
 status: PUBLISHED
 owner: Team Name
 sourceSystem: Internal
-sourceLink: https://axon-tech-asset-indexing.vercel.app/assets/{asset-id}
-bizDomain: CLAIM  # Optional
+sourceLink: https://example.com/api
+bizDomain: CLAIM
 ---
-# Asset Content
-Your markdown content here...
-EOF
+# API Documentation
+Detailed content here...
 ```
 
-**Step 2**: Commit and push to GitHub
-```bash
-git add public/assets/services/rest-apis/my-api.md
-git commit -m "Add My API asset"
-git push origin main
-```
+#### Scenario 2: Assets with Basic Metadata Only
 
-**Result**: Webhook automatically syncs to database (5-10 seconds)
+**Use Case**: External tools, third-party services, links to external documentation, reference to existing systems
 
-**Code Flow**:
-- Parser: `src/lib/markdown/parser.ts` → `parseAssetMarkdown()`
-- Webhook: `src/app/api/sync/route.ts` → `POST /api/sync`
-- Sync Logic: `src/lib/api/sync.ts` → `syncAssetsFromWebhook()`
+**Required Files**:
+- Database record only (no markdown file needed)
+- `contentPath` can be null or empty
+- `sourceLink` points to external resource
 
-#### Method 2: Migration (Recommended for Production)
+**Execution Methods**:
 
-**Step 1**: Create Markdown file (same as Method 1)
-
-**Step 2**: Create migration file
-```bash
-mkdir -p prisma/migrations/add_my_asset
-cat > prisma/migrations/add_my_asset/migration.sql << 'EOF'
--- Add My Asset
+**Option A: Migration (Recommended)**
+```sql
 INSERT INTO "axon_asset" (
   id, name, description, category, "assetType", version, status, owner,
-  "contentPath", "contentHash", "sourceSystem", "sourceLink", "bizDomain",
+  "sourceSystem", "sourceLink", "bizDomain",
   "createdAt", "updatedAt", "publishedAt"
 ) VALUES (
-  'asset_my_api',
-  'My API',
-  'Brief description',
-  'SERVICES_APIS',
-  'REST APIs',
+  'asset_external_tool',
+  'External Tool Name',
+  'Brief description of the tool',
+  'CODE_COMPONENTS',
+  'Open Source Projects',
   '1.0.0',
   'PUBLISHED',
   'Team Name',
-  'public/assets/services/rest-apis/my-api.md',
-  'hash_value_here',
-  'Internal',
-  'https://axon-tech-asset-indexing.vercel.app/assets/asset_my_api',
-  'CLAIM',
-  NOW(),
-  NOW(),
-  NOW()
+  'External',
+  'https://external-tool.com/docs',
+  'COMMON_CAPABILITIES',
+  NOW(), NOW(), NOW()
 ) ON CONFLICT (id) DO NOTHING;
-EOF
 ```
 
-**Step 3**: Run migration
-```bash
-npx prisma migrate deploy
-```
-
-**Advantages**:
-- ✅ Ensures database and Markdown file synchronization
-- ✅ Supports version control and rollback
-- ✅ Suitable for production deployment
-- ✅ Can create tags and asset-tag relationships simultaneously
-
-#### Method 3: Direct API Call (Development Only)
-
-⚠️ **Only for local development with server running**
-
+**Option B: API Call**
 ```bash
 curl -X POST http://localhost:3000/api/assets \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "My API",
-    "description": "Description",
-    "category": "SERVICES_APIS",
-    "assetType": "REST APIs",
+    "name": "External Tool Name",
+    "description": "Brief description",
+    "category": "CODE_COMPONENTS",
+    "assetType": "Open Source Projects",
     "version": "1.0.0",
     "status": "PUBLISHED",
     "owner": "team@company.com",
-    "contentPath": "public/assets/services/rest-apis/my-api.md",
-    "contentHash": "abc123...",
-    "sourceSystem": "Internal",
-    "sourceLink": "https://axon-tech-asset-indexing.vercel.app/assets/asset_my_api",
-    "bizDomain": "CLAIM"
+    "sourceSystem": "External",
+    "sourceLink": "https://external-tool.com/docs",
+    "bizDomain": "COMMON_CAPABILITIES"
   }'
 ```
 
-**Code Location**:
-- API: `src/app/api/assets/route.ts` → `POST /api/assets`
-- Business Logic: `src/lib/api/assets.ts` → `createAsset()`
+**Key Differences**:
+- ❌ No `contentPath` field
+- ❌ No markdown file creation needed
+- ✅ `sourceLink` points to external resource
+- ✅ Simpler and faster to add
 
 ---
 
@@ -638,22 +625,4 @@ GET /api/assets?tags=Java
 - `API_DOCUMENTATION.md` - Detailed API documentation
 - `DATABASE_INIT.md` - Database initialization guide
 
----
-
-## 🔄 Version History
-
-### v3.0 (2025-12-15)
-- Consolidated `HOW_TO_ADD_ASSETS.md`, `ASSET_CLASSIFICATION_SYSTEM.md`, and `BIZ_DOMAIN.md`
-- Added complete CRUD operations guide for classifications
-- Updated based on current code implementation
-- Translated to English
-- Simplified and reorganized CRUD operations (common steps + specific differences)
-- Added dedicated section for adding assets without changing classifications
-
-### v2.0 (2025-11-05)
-- Added business domain classification dimension
-- Restructured business domains into three-tier architecture (core, support, common)
-
-### v1.0 (2025-10-01)
-- Initial version with 6 technical categories
 
