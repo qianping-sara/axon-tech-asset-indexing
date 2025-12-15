@@ -1,268 +1,112 @@
-# Asset Golden Index MVP
+# Axon Platform
 
-A technical asset discovery portal for Center of Excellence (CoE). Built with Next.js, Prisma, and Neon PostgreSQL.
+**AutomationCoE Hub** - A unified discovery portal for automation assets, solution design guidance, and innovation opportunities.
 
 ## 🎯 Overview
 
-**Axon** is the **AutomationCoE Hub** that unifies assets, guides solutions, and connects needs with emerging tech. It serves as the **Golden Index** for automation assets—a unified discovery portal that transforms scattered automation capabilities into circulating value.
+**Axon** transforms scattered automation capabilities into circulating value by providing:
 
-### The Problem We Solve
+1. **Unified Asset Discovery** - Enterprise-wide catalog indexing all automation assets (APIs, bots, processes, workflows)
+2. **Solution Design Advisor** - Decision-support utilities guiding teams to select the right solution approach
+3. **Innovation Marketplace** - Platform for challenges, opportunities, and emerging tech exploration
 
-**For Automation Developers & Solution Architects** - *The "Internal Silos" Need*
-When automation assets (APIs, bots, processes) are scattered across multiple, siloed systems (Spax, Bizagi, Gravitee, RPA, Confluence), teams struggle to discover reusable assets. This leads to searching, wasting development time, and increasing future maintenance costs. Your automation would lead to "reinventing the wheel."
+**Built with**: Next.js 16, React 19, TypeScript, Prisma, PostgreSQL (Neon), Tailwind CSS 4
 
-**For Solution Architects/FA & Enterprise Architects** - *The "Decision Paralysis" Need*
-A clear way to make informed choice: Only relying on experience or manual reviews is unscalable. The CoE needs a way to embed its "playbook" and design standards directly into the decision process to ensure compliance, security, and quality before bad decisions are made.
-
-**For Process Owners & Solution Architects/FA** - *The "Inspiration Gap" Need*
-(Biz-to-Tech): Business teams lack a contextual channel to explore external technology trends (e.g., GenAI) that could solve their problems in new ways.
-
-### Our Solution
-
-Axon is the **Golden Index** for automation assets. We don't replace your existing systems—we connect them, providing a **single search interface** to discover all automation capabilities across your organization.
-
-**Key Capabilities:**
-- **Reliable**: Validated and trustworthy assets from source systems
-- **Re-usable**: Build once, use multiple times across scenarios
-- **Scalable**: Support future automation with sustainable architecture
-- **Trackable**: Know which assets are used by whom and where
-
-**What Makes Axon Different:**
-- **Unified Asset Discovery**: Enterprise-wide "asset catalog" indexing all internal systems (APIs, bots, processes), transforming siloed, static technical accumulation into a portable library of dynamic, reusable components
-- **Solution Design Advisor**: The CoE's "governance engine" that externalizes architectural wisdom into playbooks, decision trees, and reference architectures, guiding teams to select the correct solution (API vs. RPA vs. Low-code) for their specific problem
-- **Innovation & Opportunity Marketplace**: The CoE's strategic "engagement center" creating a horizontal marketplace for real-time needs (via the Challenge Board) and intriguing opportunities (via the Innovation Radar), moving from a reactive "order-taker" to a proactive value orchestrator
-
-This is a "content as code" platform where users maintain Markdown files for asset details, and the website automatically indexes and renders them. It supports 6 asset categories with 30+ asset types.
-
-## 🏗️ Architecture
-
-- **Framework**: Next.js 16 with App Router
-- **Database**: Neon PostgreSQL with Prisma ORM
-- **Styling**: Tailwind CSS 4
-- **Content**: Markdown with YAML frontmatter
-- **Deployment**: Vercel
+**Content as Code**: Markdown files with YAML frontmatter, automatically indexed and rendered
 
 ## 📁 Project Structure
 
 ```
-app/                          # Next.js App Router
-├── api/                       # Backend API routes
-├── (dashboard)/               # Frontend pages
-└── layout.tsx
+src/
+├── app/                      # Next.js App Router
+│   ├── api/                  # API routes (18 endpoints)
+│   └── (dashboard)/          # Frontend pages
+├── components/               # React components
+├── lib/                      # Business logic & utilities
+└── hooks/                    # React hooks
 
-lib/                          # Shared libraries
-├── db/                        # Database client
-├── api/                       # Business logic
-├── markdown/                  # Markdown parsing
-├── types/                     # TypeScript types
-└── utils/                     # Utilities
-
-components/                   # React components
-├── layout/                    # Layout components
-├── assets/                    # Asset components
-├── common/                    # Common UI components
-└── markdown/                  # Markdown renderer
-
-assets/                       # Content (Markdown files)
-├── code/
-├── services/
-├── automation/
-├── data/
-├── architecture/
-└── knowledge/
-
-prisma/                       # Database schema
-styles/                       # Global styles
-hooks/                        # React hooks
-tests/                        # Test files
+assets/                       # Markdown content files
+prisma/                       # Database schema & migrations
+design_doc/                   # Technical documentation
 ```
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+
-- npm or yarn
-- Neon PostgreSQL account
+- Node.js >=20.9.0
+- PostgreSQL database (Neon recommended)
 
 ### Installation
 
-1. **Clone and install**
 ```bash
-cd app
+# 1. Install dependencies
 npm install
-```
 
-2. **Configure environment**
-```bash
+# 2. Configure environment
 cp .env.example .env.local
-# Edit .env.local with your Neon database URL
-```
+# Edit .env.local with your DATABASE_URL
 
-3. **Setup database**
-```bash
-npm run prisma:migrate -- --name init
+# 3. Setup database
 npm run prisma:generate
-```
+npm run prisma:migrate -- --name init
 
-4. **Start development server**
-```bash
+# 4. Start development
 npm run dev
 ```
 
 Visit `http://localhost:3000`
 
-## 📦 Available Scripts
+## 📦 Common Commands
 
 ```bash
+# Development
 npm run dev              # Start development server
 npm run build            # Build for production
 npm run start            # Start production server
+
+# Code Quality
 npm run lint             # Run ESLint
-npm run lint:fix         # Fix ESLint issues
-npm run format           # Format code with Prettier
-npm run format:check     # Check code formatting
-npm run type-check       # Run TypeScript type check
-npm run test             # Run all tests
-npm run test:watch       # Run tests in watch mode
-npm run test:coverage    # Generate coverage report
+npm run type-check       # TypeScript type check
+npm run format           # Format with Prettier
+
+# Database
 npm run prisma:generate  # Generate Prisma Client
-npm run prisma:migrate   # Run database migrations
+npm run prisma:migrate   # Run migrations
 npm run prisma:studio    # Open Prisma Studio
-```
 
-## 🗄️ Database Schema
-
-### Core Models
-- **Asset**: Main asset entity with metadata
-- **Tag**: Asset tags for categorization
-- **AssetTag**: Junction table for asset-tag relationships
-- **AssetRelation**: Asset-to-asset relationships
-- **AssetVersion**: Version history tracking
-
-### Enums
-- **Category**: 7 asset categories
-- **Status**: DRAFT, PUBLISHED, DEPRECATED, ARCHIVED
-- **RelationType**: 8 ArchiMate relationship types
-  - **Structural**: COMPOSITION, AGGREGATION, ASSIGNMENT, REALIZATION
-  - **Dependency**: SERVING, ACCESS, INFLUENCE, ASSOCIATION
-
-## 📝 Asset Categories
-
-1. **Code & Components** - Scripts, libraries, frameworks, components
-2. **Services & APIs** - REST APIs, GraphQL, microservices
-3. **Automation & Workflows** - RPA bots, workflows, processes
-4. **Data & Analytics** - Data products, schemas, pipelines
-5. **Architecture & Governance** - Architectures, patterns, standards, policies
-6. **Knowledge & Practices** - SOPs, playbooks, tutorials, guides
-
-## 🔄 Content as Code
-
-Assets are stored as Markdown files in the `assets/` directory with YAML frontmatter:
-
-```markdown
----
-name: "Asset Name"
-description: "Asset description"
-category: "CODE_COMPONENTS"
-assetType: "Script"
-version: "1.0.0"
-status: "PUBLISHED"
-owner: "team@company.com"
-tags:
-  - python
-  - data-processing
----
-
-# Asset Details
-
-Detailed content in Markdown format...
-```
-
-## 🔌 API Endpoints
-
-### Assets
-- `GET /api/assets` - List assets with filters (supports category, assetType, status, tag, search)
-- `GET /api/assets/[id]` - Get asset details
-- `POST /api/assets` - Create asset
-- `PUT /api/assets/[id]` - Update asset
-- `DELETE /api/assets/[id]` - Delete asset
-
-**Query Parameters**:
-- `category` - Filter by category (e.g., CODE_COMPONENTS)
-- `assetType` - Filter by asset type (e.g., Scripts, REST APIs)
-- `status` - Filter by status (PUBLISHED, DRAFT, DEPRECATED, ARCHIVED)
-- `tag` - Filter by tag name
-- `search` - Search in name and description
-- `owner` - Filter by owner email
-- `page` - Pagination page (default: 1)
-- `limit` - Items per page (default: 20, max: 100)
-- `sortBy` - Sort field (createdAt, updatedAt, name)
-- `sortOrder` - Sort order (asc, desc)
-
-### Tags
-- `GET /api/tags` - List all tags
-- `GET /api/tags/[id]` - Get tag details
-
-### Categories
-- `GET /api/categories` - List all categories
-
-### Search
-- `GET /api/search?q=keyword` - Search assets
-
-### Sync
-- `POST /api/sync` - GitHub webhook for content sync
-
-### Health
-- `GET /api/health` - Health check
-
-## 🧪 Testing
-
-```bash
-npm run test              # Run all tests
-npm run test:watch       # Run tests in watch mode
-npm run test:coverage    # Generate coverage report
+# Testing
+npm run test             # Run tests
+npm run test:coverage    # Coverage report
 ```
 
 ## 🚢 Deployment
 
-### Vercel (Recommended)
+**Platform**: Vercel (recommended)
 
-1. **Connect repository**
-   ```bash
-   git push origin main
-   ```
-   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
-   - Click "Add New..." → "Project"
-   - Select your GitHub repository
-   - Click "Import"
-
-2. **Configure environment variables**
-   - Add `DATABASE_URL` (pooled connection)
-   - Add `DATABASE_URL_UNPOOLED` (for migrations)
-   - Add `NEXT_PUBLIC_APP_NAME`
-   - Add `NEXT_PUBLIC_APP_URL`
-   - Add `GITHUB_WEBHOOK_SECRET`
-
-3. **Run database migration**
-   ```bash
-   DATABASE_URL_UNPOOLED="your_unpooled_url" npx prisma migrate deploy
-   ```
-
-4. **Deploy**
-   - Vercel automatically deploys on push to main
-
-### Environment Variables
-
-Required for production:
-- `DATABASE_URL` - Neon PostgreSQL pooled connection string
-- `DATABASE_URL_UNPOOLED` - Non-pooled connection (for migrations only)
+**Required Environment Variables**:
+- `DATABASE_URL` - PostgreSQL connection string (pooled)
+- `DATABASE_URL_UNPOOLED` - For migrations only
 - `NEXT_PUBLIC_APP_NAME` - Application name
 - `NEXT_PUBLIC_APP_URL` - Application URL
-- `GITHUB_WEBHOOK_SECRET` - GitHub webhook secret
+- `GITHUB_WEBHOOK_SECRET` - Webhook verification (optional)
 
-**See [VERCEL_SETUP.md](./VERCEL_SETUP.md) for detailed deployment instructions.**
+**See**: [VERCEL_SETUP.md](./VERCEL_SETUP.md) for detailed instructions
+
+---
+
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [DATABASE_OVERVIEW.md](design_doc/DATABASE_OVERVIEW.md) | Database schema, tables, enums, tech stack |
+| [API_DOCUMENTATION.md](design_doc/API_DOCUMENTATION.md) | All API endpoints with file locations |
+| [ASSET_CLASSIFICATION_GUIDE.md](design_doc/ASSET_CLASSIFICATION_GUIDE.md) | Asset classification system and operations |
+| [COE_UTILITIES_IMPLEMENTATION_SUMMARY.md](design_doc/COE_UTILITIES_IMPLEMENTATION_SUMMARY.md) | Utility registry and management |
+| [AUTOMATION_SOLUTION_DESIGNER_GUIDE.md](design_doc/AUTOMATION_SOLUTION_DESIGNER_GUIDE.md) | Solution design evaluation logic |
+| [STYLE_GUIDE_SUMMARY.md](design_doc/STYLE_GUIDE_SUMMARY.md) | UI design principles and standards |
+
+---
 
 ## 📄 License
 
 MIT
-
