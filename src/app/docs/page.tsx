@@ -35,7 +35,7 @@ export default function DocsPage() {
     <div className="min-h-screen bg-white">
       <Header />
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
